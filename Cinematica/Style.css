@@ -1,0 +1,96 @@
+body{
+    background-color: #000A1C;
+    overflow: none;
+    margin: 0%;
+    padding: 0%;
+}
+header{
+    background-color: #003552; 
+    box-sizing: border-box;
+    
+}
+.navbar{    
+    width: 100%;
+    height: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+.navbar img{
+    height: 10%;
+    width: 10%;
+    padding: 1%;
+}
+.logo{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.login{
+    padding: 1%;
+}
+.slider {
+    position: relative;
+    width: 100%;
+    height: 80vh; 
+    overflow: hidden;
+    margin-bottom: 10%;
+  }
+  .slides {
+    display: flex;
+    width: 400%; 
+    height: 100%;
+    animation: slide 15s infinite;
+  }
+  .slides img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+  }
+  @keyframes slide {
+  0% {margin-left: 0%;}
+  20% {margin-left: 0%;}
+
+  25% {margin-left: -100%;}
+  45% {margin-left: -100%;}
+
+  50% {margin-left: -200%;}
+  70% {margin-left: -200%;}
+
+  75% {margin-left: -300%;}
+  100% {margin-left: -300%;}
+}
+.butacas{
+    margin-bottom: 10%;
+    position: absolute;
+    height: 50vh;
+    width: 100%;
+    background-image: url(../Cinematica/butacas.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center 50%;
+}
+h1{
+    padding-top: 30%;
+    font-size: 100px;
+    color: white;
+}
+h2{
+    margin-left: 50%;
+    margin-top: 10%;
+    transform: translateX(-50%);
+    font-size: 5vw;
+    color: white;
+}
+.cartelera{
+    margin-bottom: 10%;
+    position: absolute;
+    height: 50vh;
+    width: 100%;
+    background-color: #00A4E1;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center 50%;
+}

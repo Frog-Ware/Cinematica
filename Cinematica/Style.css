@@ -3,6 +3,7 @@ body{
     overflow: none;
     margin: 0%;
     padding: 0%;
+    font-family: "Raleway", sans-serif;
 }
 header{
     background-color: #003552; 
@@ -33,7 +34,7 @@ header{
 .slider {
     position: relative;
     width: 100%;
-    height: 80vh; 
+    height: 30vw; 
     overflow: hidden;
     margin-bottom: 10%;
   }
@@ -65,7 +66,7 @@ header{
 .butacas{
     margin-bottom: 10%;
     position: absolute;
-    height: 50vh;
+    height: 30vh;
     width: 100%;
     background-image: url(../Cinematica/butacas.jpg);
     background-repeat: no-repeat;
@@ -74,22 +75,59 @@ header{
 }
 h1{
     padding-top: 30%;
-    font-size: 100px;
+    font-size: 4vw;
     color: white;
+
 }
 h2{
     margin-left: 50%;
-    margin-top: 10%;
+    margin-top: 5%;
     transform: translateX(-50%);
-    font-size: 5vw;
+    font-size: 4vw;
     color: white;
 }
 .cartelera{
     margin-bottom: 10%;
     position: absolute;
-    height: 50vh;
+    height: 45vh;
     width: 100%;
     background-color: #00A4E1;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center 50%;
+}
+.cartelera>img{
+    width: 15%;
+    height: 90%;
+    margin-top: 1%;
+    margin-left: 8%;
+}
+
+.botonIzq{
+    position: absolute;
+    align-items: center;
+    font-size: 5vw;
+    margin-top: 8vw;
+    border: transparent;
+    background-color: transparent;
+
+}
+.botonDer{
+    position: absolute;
+    align-items: center;
+    font-size: 5vw;
+    margin-top: 8vw;
+    right: 0%;
+    border: transparent;
+    background-color: transparent;
+
+}
+footer{
+    margin-top: 30%;
+    position: absolute;
+    height: 45vh;
+    width: 100%;
+    background-color: #003552;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center 50%;

@@ -223,10 +223,12 @@ body
 }
 
 /*estilos cartelera*/
-.slider-cartelera{
-    margin: 2%;
+.slider-cartelera
+{
+    margin: 5% 2%; 
 }
-.cartelera{
+.cartelera
+{
     display: flex;
     max-width: 97%;
     position: relative;
@@ -250,7 +252,7 @@ body
 }
 
 .cartelera i:hover{
-    background-color: #00EDFF;
+    background-color:#006794;
 }
 .cartelera i:first-child
 {
@@ -275,14 +277,122 @@ body
     height: 500px;
     object-fit: cover;
     user-select: none;
-    margin-left: 14px;
+    margin-left: 15px;
     width: 300px;
     border-radius: 14px;
+    transition: 0.4s ease-in-out;
 }
 .carrusel img:first-child
 {
     margin-left: 0px;
 }
+.carrusel > img:hover
+{
+    border: #00fffc 1px solid;
+}
+/* boton */
+
+.centrar{
+    display: flex;
+    justify-content: center;
+}
+
+.cartelera_btn {
+    width: 200px;
+    height: 110px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+    top: 30px;
+    display: inline-block;
+    box-shadow: inset 2px 
+    2px 2px 0px #00fffc,
+      7px 7px 20px 0px rgba(0, 0, 0, .1),
+      4px 4px 5px 0px rgba(0, 0, 0, .1);
+    outline: none;
+  }
+
+.btn_girar {
+    position: relative;
+    right: 20px;
+    bottom: 20px;
+    border: none;
+    box-shadow: none;
+    width: 130px;
+    height: 40px;
+    line-height: 42px;
+    -webkit-perspective: 230px;
+    perspective: 230px;
+  }
+
+  .btn_girar span {
+    /* background: #000; */
+    display: block;
+    font-weight: 800;
+    position: absolute;
+    width: 130px;
+    height: 40px;
+    box-shadow: inset 2px 2px 2px 0px #00fffc,
+      7px 7px 20px 0px rgba(0, 0, 0, .1),
+      4px 4px 5px 0px rgba(0, 0, 0, .1);
+    border-radius: 5px;
+    margin: 0;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+  }
+
+  .btn_girar span:nth-child(1) {
+    -webkit-transform: rotateX(90deg);
+    -moz-transform: rotateX(90deg);
+    transform: rotateX(90deg);
+    -webkit-transform-origin: 50% 50% -20px;
+    -moz-transform-origin: 50% 50% -20px;
+    transform-origin: 50% 50% -20px;
+  }
+
+  .btn_girar span:nth-child(2) {
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    -webkit-transform-origin: 50% 50% -20px;
+    -moz-transform-origin: 50% 50% -20px;
+    transform-origin: 50% 50% -20px;
+  }
+
+  .btn_girar:hover span:nth-child(1) {
+    background-color: #00fffc;
+    color: #000;
+    font-weight: 800;
+    box-shadow: inset 2px 2px 2px 0px #00fffc,
+      7px 7px 20px 0px rgba(0, 0, 0, .1),
+      4px 4px 5px 0px rgba(0, 0, 0, .1);
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+  }
+
+  .btn_girar:hover span:nth-child(2) {
+    background-color: #00fffc;
+    color: #000;
+    font-weight: 800;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
+      7px 7px 20px 0px rgba(0, 0, 0, .1),
+      4px 4px 5px 0px rgba(0, 0, 0, .1);
+    color: transparent;
+    -webkit-transform: rotateX(-90deg);
+    -moz-transform: rotateX(-90deg);
+    transform: rotateX(-90deg);
+  }
 
 @media only screen and (min-width:1920px)
 {

@@ -31,7 +31,7 @@ document.onclick = function (e) {
 };
 
 
-//slider
+//slider arriba
 
 document.addEventListener('DOMContentLoaded', () => {
     let slideIndex = 0;
@@ -70,7 +70,7 @@ const showHideIcons = () => {
 
 arrowIcons.forEach(icon => {
     icon.addEventListener("click", () => {
-        let firstImgWidth = firstImg.clientWidth + 14; // consigue el ancho de la primera imagen y lo añade como margen
+        let firstImgWidth = firstImg.clientWidth + 400; // consigue el ancho de la primera imagen y lo añade como margen
         // si clickeas el boton de la izquierda, .el carrusel se desplaza con el ancho de la imagen sino se desplaza a la derecha
         carousel.scrollLeft += icon.id == "left" ? -firstImgWidth : firstImgWidth;
         setTimeout(() => showHideIcons(), 60); // oculta el botone despues de 60ms

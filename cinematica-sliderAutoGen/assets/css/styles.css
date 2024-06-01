@@ -1,0 +1,432 @@
+html
+{
+    font-family: 'Raleway', sans-serif;
+}
+body
+{
+    background-color: #000A1C;
+}
+a
+{
+    text-decoration: none;
+}
+
+/*estilos navbar*/
+.navbar
+{
+    height: 9vh;
+    width: 100%;
+    background-color: #003552;
+    background-attachment:fixed;
+    opacity: 0.95;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+}
+
+.navbar_logo
+{
+    width: 110px;
+    height: 32px;
+    background-color: #DDDDDD;
+}
+
+.navbar > div
+{
+    margin: 0 20px;
+}
+
+/* estilos sidebar */
+.sideBar {
+    position: fixed;
+    width: 248px;
+    height: 100vh;
+    background-color: #000A1C;
+    left: -270px;
+    z-index: 2;
+    display: block;
+    transition: 0.3s;
+    top: 0;
+    border: 1px solid #00EDFF;
+}
+
+.sideBar #cerrar {
+    float: left;
+    margin-left: 10px;
+    color: #2dea8f;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.sideBar ul {
+    list-style: none;
+    margin-top: 15vh;
+}
+
+.sideBar li {
+    font-family: "Raleway", sans-serif;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    text-align: center;
+    transition: 0.2s; 
+    cursor: pointer;
+}
+
+
+
+#botonAbrir {
+    font-size: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+}
+
+/* sidebar botones */
+.sideBar_btn
+{
+        width: 230px;
+        height: 40px;
+        color: #00EDFF;
+        border-radius: 5px;
+        padding: 10px 25px;
+        font-family: 'Raleway', sans-serif;
+        font-weight: 500;
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
+        box-shadow: inset 2px 
+        2px 2px 0px #00EDFF;
+        outline: none;
+}
+
+.btn_link {
+    background: #000A1C;
+    color: #00EDFF;
+    font-weight: 800;
+    border: none;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.btn_link:after {
+    position: absolute;
+    content: " ";
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s ease;
+    -webkit-transform: scale(.1);
+    transform: scale(.1);
+}
+
+.btn_link:hover {
+    color: #020101;
+    border: none;
+    background: transparent;
+}
+
+.btn_link:hover:after {
+    background: #00fffc;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+.expositor
+{
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.slider
+{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+}
+.slide
+{
+    min-width: 100%;
+    height: 100%;
+    transition: transform 1s ease;
+}
+.slide img
+{
+    width: 100%;
+    height: 100%; 
+    object-fit: cover; 
+    display: block;
+}
+
+/* estilos input */
+.busqueda
+{
+    margin-top: 5%;
+    position: relative;
+}
+
+.busqueda h1
+{
+    text-align: center; 
+    color: #FFFFFF;
+    font-size: 40px;
+    margin-bottom: 1%;
+}
+
+.custom_input
+{
+	display: flex;
+	align-items: center;
+	position: relative;
+	max-width: 20%;
+    left: 40%;
+}
+
+.input
+{
+	font-size: 18px;
+	padding: 5px 10px;
+	width: 100%;
+	padding-left: 35px;
+	outline: none;
+	background: #003552;
+	color: #00fffc;
+	border: 1px solid #00A4E1;
+	border-radius: 5px;
+	box-shadow: 3px 3px 2px 0px #006794;
+	transition: .3s ease;
+}
+
+.input:focus
+{
+	background: #006794;
+	border: 1px solid #00fffc;
+	border-radius: 10px;
+}
+
+.input::placeholder {color: #00fffc;}
+
+.svg_icon
+{
+	position: absolute;
+	left: 10px;
+	fill: #00fffc;
+	width: 18px;
+	height: 18px;
+}
+
+/*estilos cartelera*/
+.slider-cartelera
+{
+    margin: 5% 2%; 
+}
+.cartelera
+{
+    display: flex;
+    max-width: 97%;
+    position: relative;
+    padding-left: 1%;
+
+}
+.cartelera i
+{
+    top: 50%;
+    height: 44px;
+    width: 44px;
+    cursor: pointer;
+    font-size: 1.15rem;
+    position: absolute;
+    text-align: center;
+    line-height: 44px;
+    background: #00EDFF;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.1s linear;
+    z-index: 4;
+}
+
+.cartelera i:hover{
+    background-color:#006794;
+}
+.cartelera i:first-child
+{
+    left: -5px;
+    display: none;
+}
+.cartelera i:last-child
+{
+    right: -22px;
+}
+.cartelera .carrusel
+{
+    font-size: 0px;
+    cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+}
+  
+.carrusel img
+{
+    height: 500px;
+    object-fit: cover;
+    user-select: none;
+    margin: 5% 0;
+    margin-left: 16px;
+    width: 300px;
+    border-radius: 14px;
+    transition: 0.4s ease-in-out;
+    
+}
+.carrusel img:first-child
+{
+    margin-left: 16px;
+}
+.carrusel > img:hover
+{
+    outline: 2px solid #00fffc;
+    transform: scale(1.05); 
+}
+/* boton */
+
+.centrar{
+    display: flex;
+    justify-content: center;
+}
+
+.cartelera_btn {
+    width: 200px;
+    height: 110px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+    display: inline-block;
+    box-shadow: inset 2px 
+    2px 2px 0px #00fffc,
+      7px 7px 20px 0px rgba(0, 0, 0, .1),
+      4px 4px 5px 0px rgba(0, 0, 0, .1);
+    outline: none;
+  }
+
+.btn_girar {
+    position: relative;
+    right: 20px;
+    bottom: 20px;
+    border: none;
+    box-shadow: none;
+    width: 130px;
+    height: 40px;
+    line-height: 42px;
+    -webkit-perspective: 230px;
+    perspective: 230px;
+  }
+
+  .btn_girar span {
+    /* background: #000; */
+    display: block;
+    font-weight: 800;
+    position: absolute;
+    width: 130px;
+    height: 40px;
+    box-shadow: inset 2px 2px 2px 0px #00fffc,
+      7px 7px 20px 0px rgba(0, 0, 0, .1),
+      4px 4px 5px 0px rgba(0, 0, 0, .1);
+    border-radius: 5px;
+    margin: 0;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+  }
+
+  .btn_girar span:nth-child(1) {
+    -webkit-transform: rotateX(90deg);
+    -moz-transform: rotateX(90deg);
+    transform: rotateX(90deg);
+    -webkit-transform-origin: 50% 50% -20px;
+    -moz-transform-origin: 50% 50% -20px;
+    transform-origin: 50% 50% -20px;
+  }
+
+  .btn_girar span:nth-child(2) {
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    -webkit-transform-origin: 50% 50% -20px;
+    -moz-transform-origin: 50% 50% -20px;
+    transform-origin: 50% 50% -20px;
+  }
+
+  .btn_girar:hover span:nth-child(1) {
+    background-color: #00fffc;
+    color: #000;
+    font-weight: 800;
+    box-shadow: inset 2px 2px 2px 0px #00fffc,
+      7px 7px 20px 0px rgba(0, 0, 0, .1),
+      4px 4px 5px 0px rgba(0, 0, 0, .1);
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+  }
+
+  .btn_girar:hover span:nth-child(2) {
+    background-color: #00fffc;
+    color: #000;
+    font-weight: 800;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
+      7px 7px 20px 0px rgba(0, 0, 0, .1),
+      4px 4px 5px 0px rgba(0, 0, 0, .1);
+    color: transparent;
+    -webkit-transform: rotateX(-90deg);
+    -moz-transform: rotateX(-90deg);
+    transform: rotateX(-90deg);
+  }
+
+
+  /* promociones */
+
+
+
+@media only screen and (max-width:1920px)
+{
+    .carrusel img
+    {
+        height: 400px;
+        object-fit: cover;
+        user-select: none;
+        margin-left: 15px;
+        width: 200px;
+        border-radius: 14px;
+        transition: 0.4s ease-in-out;
+    }
+}
+
+/*tablet rules*/
+@media only screen and (max-width: 1199px) and (min-width: 768px), only screen and (max-width: 767px) and (min-width: 480px) and (orientation: landscape)
+{
+
+}
+
+/*tablet verticales rules*/
+@media only screen and (max-width: 767px) and (min-width: 480px) and (orientation: portrait){}
+
+/*mobile rules*/
+@media screen and (max-width: 479px){}

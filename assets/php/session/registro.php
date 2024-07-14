@@ -4,8 +4,8 @@
 
 header("Content-Type: application/json");
 session_start();
-require ("../db/insertar.php");
-require ("../db/traer.php");
+require "../db/insertar.php";
+require "../db/traer.php";
 
 // Asigna un código de error según el caso.
 enum codigoError: int {
@@ -20,14 +20,18 @@ enum codigoError: int {
 $campos = ['email', 'nombre', 'apellido', 'imagenPerfil', 'passwd', 'numeroCelular'];
 foreach ($campos as $x) $datos[$x] = $_POST[$x];
 $datos['passwd'] = md5($datos['passwd']);
-$datos['token'] = md5(generarToken());
+$token = generarToken();
+$datos['token'] = md5($token);
 
 // Devuelve por JSON el código de error e inicia sesión si se ha realizado exitosamente el registro.
 $error = comprobarError();
-if ($error = codigoError::SUCCESS) inicioSesion($datos['email']);
-echo json_encode(['error' => $error]);
+if ($error == codigoError::SUCCESS) {
+    inicioSesion($datos['email']);
+    echo json_encode(['error' => $error, 'token' => $token]);
+} else echo json_encode(['error' => $error]);
 
 die();
+
 
 function comprobarError() {
     global $campos, $datos;
@@ -58,5 +62,3 @@ function inicioSesion($email) {
     $_SESSION['user'] = $email;
     ini_set('session.gc_lifetime', 7*24*3600);
 }
-
-?>

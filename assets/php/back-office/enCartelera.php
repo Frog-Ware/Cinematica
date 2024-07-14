@@ -1,6 +1,6 @@
 <?php
 
-// Este script registra una nueva película o devuelve un código de error según la coincidencia de los valores ingresados por el usuario y los valores guardados en la base de datos.
+// Este script añade la pelicula deseada a la cartelera.
 
 header("Content-Type: application/json");
 require "../db/insertar.php";
@@ -16,12 +16,9 @@ enum codigoError: int{
 }
 
 // Guarda las variables en un array llamado datos y los valores multiples en otro array llamado valores.
-$campos = ['idProducto', 'actores', 'sinopsis', 'duracion', 'nombre', 'pegi', 'trailer', 'director', 'poster', 'cabecera'];
-$valMultiples = ['categorias', 'dimensiones', 'idiomas'];
+$campos = ['idProducto', 'fechaInicio', 'cantidadSemanas'];
 foreach ($campos as $x)
     $datos[$x] = $_POST[$x];
-foreach ($valMultiples as $x)
-    $valores[$x] = explode(', ', $_POST[$x]);
 
 // Devuelve por JSON el código de error.
 $error = comprobarError();
@@ -31,20 +28,21 @@ die();
 
 
 function comprobarError() {
-    global $campos, $datos, $valMultiples, $valores;
+    global $campos, $datos;
 
     // Devuelve un código de error si una variable no esta seteada.
-    foreach (array_merge($campos, $valMultiples) as $x)
+    foreach ($campos as $x)
         if (!isset($_POST[$x])) return codigoError::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
-    foreach (array_merge($campos, $valMultiples) as $x)
+    foreach ($campos as $x)
         if (empty($_POST[$x])) return codigoError::EMPTY;
 
-    // Devuelve un código de error si la película ya esta ingresada.
-    if (traerPelicula($datos['idProducto']) != null) return codigoError::EXISTENT;
+    // Devuelve un código de error si la película ya esta en cartelera.
+    foreach (traerCartelera() as $x)
+        if ($x['idProducto'] == $datos['idProducto']) return codigoError::EXISTENT;
 
-    // Intenta ingresar la película en la base de datos y devuelve su correspondiente código de error.
-    return (nuevaPelicula($datos, $valores)) ?
+    // Verifica que la película exista e intenta ingresar la película en la cartelera, devolviendo su correspondiente código de error.
+    return (traerPelicula($datos['idProducto']) != null && nuevaEnCartelera($datos)) ?
         codigoError::SUCCESS : codigoError::NO_SUCCESS;
 }

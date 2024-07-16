@@ -6,6 +6,10 @@ header("Content-Type: application/json");
 session_start();
 require "../db/traer.php";
 
+confirmarSesion();
+
 // Si hay una sesión iniciada, envia los datos del usuario via JSON. Si no es así, devuelve un error.
-echo isset($_SESSION['user']) ?
+function confirmarSesion(){
+    echo isset($_SESSION['user']) ?
     json_encode(traerUsuario($_SESSION['user'])) : json_encode(['error' => "No esta iniciada la sesión."]);
+}

@@ -5,6 +5,7 @@
 header("Content-Type: application/json");
 session_start();
 require "../db/traer.php";
+include "confirmarSesion.php";
 
 // Asigna un código de error según el caso.
 enum codigoError: int{
@@ -13,7 +14,7 @@ enum codigoError: int{
     case NO_ACCOUNT = 2; // La dirección de correo ingresada no se encuentra registrada.
     case EMPTY = 3; // Al menos un campo está vacio.
     case NOT_SET = 4; // Al menos un campo no está asignado.
-    case ADMIN = 5; // La dirección de correo ingresadase encuentra registrada como administrador.
+    case ADMIN = 5; // La dirección de correo ingresada se encuentra registrada como administrador.
 }
 
 // Guarda las variables en un array llamado datos.
@@ -51,4 +52,5 @@ function comprobarError() {
 function inicioSesion($email) {
     $_SESSION['user'] = $email;
     ini_set('session.gc_lifetime', 7*24*3600);
+    confirmarSesion();
 }

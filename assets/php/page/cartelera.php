@@ -7,4 +7,4 @@ require "../db/traer.php";
 // Devuelve los datos de la película si no hay errores y un código de error si no hay resultados.
 $datos = traerCartelera();
 echo ($datos != null) ?
-    json_encode([$datos]) : json_encode(['error' => 'No hay películas en cartelera']);
+    json_encode(['cartelera' => $datos]) : json_encode(['error' => 'No hay películas en cartelera']);

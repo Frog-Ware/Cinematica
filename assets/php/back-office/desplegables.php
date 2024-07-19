@@ -9,4 +9,4 @@ $datos[] = traerCategorias();
 $datos[] = traerDimensiones();
 $datos[] = traerIdiomas();
 
-echo json_encode($datos);
+echo json_encode(['desplegables' => $datos]);

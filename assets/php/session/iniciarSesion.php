@@ -3,9 +3,8 @@
 // Este script inicia sesión o devuelve un código de error según la coincidencia de los valores ingresados por el usuario y los valores guardados en la base de datos.
 
 header("Content-Type: application/json");
-session_start();
-require "../db/traer.php";
-include "confirmarSesion.php";
+if (session_status() == PHP_SESSION_NONE) session_start();
+require_once "../db/traer.php";
 
 // Asigna un código de error según el caso.
 enum codigoError: int{
@@ -52,5 +51,5 @@ function comprobarError() {
 function inicioSesion($email) {
     $_SESSION['user'] = $email;
     ini_set('session.gc_lifetime', 7*24*3600);
-    confirmarSesion();
+    echo json_encode(['datosUsuario' => traerUsuario($_SESSION['user'])]);
 }

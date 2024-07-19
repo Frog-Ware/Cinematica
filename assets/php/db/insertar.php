@@ -2,7 +2,7 @@
 
 // Este script inserta en la base de datos los datos del usuario que necesitan de permanencia.
 
-require "conn.php";
+require_once "conn.php";
 
 // Registra un usuario en la base de datos.
 function nuevoUsuario($datos) {

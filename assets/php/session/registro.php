@@ -3,9 +3,9 @@
 // Este script registra un nuevo usuario o devuelve un código de error según la coincidencia de los valores ingresados por el usuario y los valores guardados en la base de datos.
 
 header("Content-Type: application/json");
-session_start();
-require "../db/insertar.php";
-require "../db/traer.php";
+if (session_status() == PHP_SESSION_NONE) session_start();
+require_once "../db/insertar.php";
+require_once "../db/traer.php";
 
 // Asigna un código de error según el caso.
 enum codigoError: int {

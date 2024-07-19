@@ -2,7 +2,7 @@
 
 // Este script devuelve los datos requeridos por diferentes scripts.
 
-require "conn.php";
+require_once "conn.php";
 
 // Devuelve la contraseña asociada al usuario poseedor del email ingresado.
 function traerPasswd($email) {

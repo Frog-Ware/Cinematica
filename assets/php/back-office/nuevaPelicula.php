@@ -3,8 +3,8 @@
 // Este script registra una nueva película o devuelve un código de error según la coincidencia de los valores ingresados por el usuario y los valores guardados en la base de datos.
 
 header("Content-Type: application/json");
-require "../db/insertar.php";
-require "../db/traer.php";
+require_once "../db/insertar.php";
+require_once "../db/traer.php";
 
 // Asigna un código de error según el caso.
 enum codigoError: int{

@@ -3,9 +3,9 @@
 // Este script permite cambiar la contraseña asociada a una cuenta en particular.
 
 header("Content-Type: application/json");
-session_start();
-require ("../db/traer.php");
-require ("../db/insertar.php");
+if (session_status() == PHP_SESSION_NONE) session_start();
+require_once "../db/traer.php";
+require_once "../db/insertar.php";
 
 // Asigna un código de error según el caso.
 enum codigoError: int{

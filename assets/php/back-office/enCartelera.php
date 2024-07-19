@@ -3,8 +3,8 @@
 // Este script añade la pelicula deseada a la cartelera.
 
 header("Content-Type: application/json");
-require "../db/insertar.php";
-require "../db/traer.php";
+require_once "../db/insertar.php";
+require_once "../db/traer.php";
 
 // Asigna un código de error según el caso.
 enum codigoError: int{

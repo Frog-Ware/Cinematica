@@ -2,7 +2,7 @@
 
 // Este script devuelve un array con todos los datos de las películas.
 header("Content-Type: application/json");
-require "../db/traer.php";
+require_once "../db/traer.php";
 
 // Devuelve los datos de la película si no hay errores y un código de error si no hay resultados.
 $datos = traerCartelera();

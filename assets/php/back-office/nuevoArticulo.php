@@ -20,12 +20,15 @@ $campos = ['idProducto', 'nombreArticulo', 'descripcion', 'precio', 'imagen'];
 foreach ($campos as $x)
     $datos[$x] = $_POST[$x];
 
-// Devuelve por JSON el código de error.
-$error = comprobarError();
-echo json_encode(['error' => $error]);
+// Devuelve el código de error.
+$response['error'] = comprobarError();
+echo json_encode($response);
 
 die();
 
+
+
+// Funciones
 
 function comprobarError() {
     global $campos, $datos;

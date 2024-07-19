@@ -72,7 +72,6 @@ function insertar($datos, $lineaSql) {
         $statement = $con->prepare($lineaSql);
         return $statement -> execute(array_values($datos));
     } catch (PDOException $pe) {
-        echo json_encode(['mensaje' => "Error en insertar.php, insertar():" . $pe->getMessage()]);
         return false;
     }
 }

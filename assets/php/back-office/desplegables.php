@@ -5,8 +5,12 @@
 header ("Content-Type: application/json");
 require_once "../db/traer.php";
 
-$datos[] = traerCategorias();
-$datos[] = traerDimensiones();
-$datos[] = traerIdiomas();
+$datos['categorias'] = traerCategorias();
+$datos['dimensiones'] = traerDimensiones();
+$datos['idiomas'] = traerIdiomas();
 
-echo json_encode(['desplegables' => $datos]);
+// Devuelve el código de error.
+$response['desplegables'] = $datos;
+echo json_encode($response);
+
+die();

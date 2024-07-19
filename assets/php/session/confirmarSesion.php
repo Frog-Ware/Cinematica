@@ -7,5 +7,10 @@ if (session_status() == PHP_SESSION_NONE) session_start();
 require_once "../db/traer.php";
 
 // Si hay una sesión iniciada, envia los datos del usuario via JSON. Si no es así, devuelve un error.
-echo isset($_SESSION['user']) ?
-    json_encode(['datosUsuario' => traerUsuario($_SESSION['user'])]) : json_encode(['error' => "No esta iniciada la sesión."]);
+isset($_SESSION['user']) ?
+    $response ['datosUsuario'] = traerUsuario($_SESSION['user']) : $response['error'] = "No esta iniciada la sesión.";
+
+// Envía la respuesta.
+echo json_encode($response);
+
+die();

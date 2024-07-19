@@ -93,7 +93,6 @@ function consulta($consultaSql) {
         while ($fila = $statement->fetch(PDO::FETCH_ASSOC))
             $datos[] = $fila;
     } catch (PDOException $pe) {
-        echo json_encode(['mensaje' => "Error en traer.php, consulta():" . $pe->getMessage()]);
         return null;
     }
     return (!empty($datos)) ?
@@ -109,7 +108,6 @@ function consultaClave($consultaSql, $clave) {
         while ($fila = $statement->fetch(PDO::FETCH_ASSOC))
             $datos[] = $fila;
     } catch (PDOException $pe) {
-        echo json_encode(['mensaje' => "Error en traer.php, consultaClave():" . $pe->getMessage()]);
         return null;
     }
     return (!empty($datos)) ?

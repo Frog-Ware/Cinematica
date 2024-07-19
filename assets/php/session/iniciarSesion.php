@@ -16,40 +16,55 @@ enum codigoError: int{
     case ADMIN = 5; // La dirección de correo ingresada se encuentra registrada como administrador.
 }
 
-// Guarda las variables en un array llamado datos.
+// Guarda las variables sanitizadas en un array llamado datos.
 $campos = ['email', 'passwd'];
-foreach ($campos as $x) $datos[$x] = $_POST[$x];
+foreach ($campos as $x)
+    $datos[$x] = filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING);
 
-// Devuelve por JSON el código de error e inicia sesión si se ha realizado exitosamente el registro.
+// Verifica los datos e inicia sesión si se ha realizado exitosamente el registro, además de enviar los datos correspondientes.
 $error = comprobarError();
-if ($error == codigoError::MATCH) inicioSesion($datos['email']);
-echo json_encode(['error' => $error]);
+if ($error == codigoError::MATCH) {
+    inicioSesion($datos['email']);
+    $response['datosUsuario'] = traerUsuario($_SESSION['user']);
+}
+
+// Devuelve un código de error segun el caso.
+$response['error'] = $error;
+
+// Envía la respuesta.
+echo json_encode($response);
 
 die();
 
+
+
+// Funciones
 
 function comprobarError() {
     global $campos, $datos;
 
     // Devuelve un código de error si una variable no esta seteada.
-    foreach ($campos as $x) if (!isset($_POST[$x])) return codigoError::NOT_SET;
+    foreach ($campos as $x)
+        if (!isset($_POST[$x])) return codigoError::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
-    foreach ($campos as $x) if (empty($_POST[$x])) return codigoError::EMPTY;
+    foreach ($campos as $x)
+        if (empty($_POST[$x])) return codigoError::EMPTY;
 
     // Devuelve un código de error si la dirección de correo no está registrada.
     if (traerPasswd($datos['email']) == null) return codigoError::NO_ACCOUNT;
 
     // Devuelve un codigo de error si la contraseña no coincide.
-    if (traerPasswd($datos['email']) != md5($datos['passwd'])) return codigoError::NO_MATCH;
+    if (!password_verify($datos['passwd'], traerPasswd($datos['email']))) return codigoError::NO_MATCH;
 
     // Devuelve un código de error dependiendo si la cuenta es de rol Cliente o Administrador.
-    return (traerRol($datos['email'])) ? codigoError::ADMIN : codigoError::MATCH;
+    return (traerRol($datos['email'])) ?
+        codigoError::ADMIN : codigoError::MATCH;
 }
 
 // Inicia la sesión por 7 días.
 function inicioSesion($email) {
     $_SESSION['user'] = $email;
+    session_regenerate_id(true);
     ini_set('session.gc_lifetime', 7*24*3600);
-    echo json_encode(['datosUsuario' => traerUsuario($_SESSION['user'])]);
 }

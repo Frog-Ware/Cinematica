@@ -19,14 +19,17 @@ enum codigoError: int{
 // Guarda las variables en un array llamado datos.
 $campos = ['email', 'token', 'passwd'];
 foreach ($campos as $x)
-    $datos[$x] = $_POST[$x];
+    $datos[$x] = filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING);
 
-// Devuelve por JSON el código de error.
-$error = comprobarError();
-echo json_encode(['error' => $error]);
+// Devuelve el código de error.
+$response['error'] = comprobarError();
+echo json_encode($response);
 
 die();
 
+
+
+// Funciones
 
 function comprobarError() {
     global $campos, $datos;
@@ -40,7 +43,7 @@ function comprobarError() {
         if (empty($_POST[$x])) return codigoError::EMPTY;
 
     // Devuelve un código de error si la nueva contraseña es la ya existente.
-    if (traerPasswd($datos['email']) == md5($datos['passwd'])) return codigoError::EXISTENT;
+    if (password_verify($datos['passwd'], traerPasswd($datos['email']))) return codigoError::EXISTENT;
 
     // Intenta actualizar la contraseña en la base de datos y devuelve su correspondiente código de error.
     return ((traerToken($datos['email']) == md5($datos['token'])) && actPasswd($datos)) ?

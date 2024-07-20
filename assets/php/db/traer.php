@@ -39,11 +39,11 @@ function traerToken($email) {
 function traerPelicula($id) {
     $consultaSql = "SELECT * FROM Pelicula WHERE idProducto = ?";
     $datos = consultaClave($consultaSql, [$id]);
-    $consultas = ['categorias' => "SELECT nombreCategoria FROM tieneCategorias WHERE idProducto = ?",
-                'dimensiones' => "SELECT dimension FROM tieneDimensiones WHERE idProducto = ?",
-                'idiomas' => "SELECT idioma FROM tieneIdiomas WHERE idProducto = ?"];
+    $consultas = ['nombreCategoria' => "SELECT nombreCategoria FROM tieneCategorias WHERE idProducto = ?",
+                'dimension' => "SELECT dimension FROM tieneDimensiones WHERE idProducto = ?",
+                'idioma' => "SELECT idioma FROM tieneIdiomas WHERE idProducto = ?"];
     foreach ($consultas as $k => $v)
-        $datos[$k] = consultaClave($v, [$id]);
+        $datos[$k] = array_column(consultaClave($v, [$id]), $k);
     return (!empty($datos)) ?
         $datos : null;
 }

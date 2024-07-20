@@ -43,7 +43,7 @@ function comprobarError() {
         if (empty($_POST[$x])) return codigoError::EMPTY;
 
     // Devuelve un código de error si la nueva contraseña es la ya existente.
-    if (password_verify($datos['passwd'], traerPasswd($datos['email']))) return codigoError::EXISTENT;
+    if ($datos['passwd'] == traerPasswd($datos['email'])) return codigoError::EXISTENT;
 
     // Intenta actualizar la contraseña en la base de datos y devuelve su correspondiente código de error.
     return ((traerToken($datos['email']) == md5($datos['token'])) && actPasswd($datos)) ?

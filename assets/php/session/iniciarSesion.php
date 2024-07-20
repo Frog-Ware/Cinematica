@@ -55,7 +55,7 @@ function comprobarError() {
     if (traerPasswd($datos['email']) == null) return codigoError::NO_ACCOUNT;
 
     // Devuelve un codigo de error si la contraseña no coincide.
-    if (!password_verify($datos['passwd'], traerPasswd($datos['email']))) return codigoError::NO_MATCH;
+    if (md5($datos['passwd']) != traerPasswd($datos['email'])) return codigoError::NO_MATCH;
 
     // Devuelve un código de error dependiendo si la cuenta es de rol Cliente o Administrador.
     return (traerRol($datos['email'])) ?

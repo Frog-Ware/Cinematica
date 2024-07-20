@@ -39,6 +39,11 @@ function traerToken($email) {
 function traerPelicula($id) {
     $consultaSql = "SELECT * FROM Pelicula WHERE idProducto = ?";
     $datos = consultaClave($consultaSql, [$id]);
+    $consultas = ['categorias' => "SELECT nombreCategoria FROM tieneCategorias WHERE idProducto = ?",
+                'dimensiones' => "SELECT dimension FROM tieneDimensiones WHERE idProducto = ?",
+                'idiomas' => "SELECT idioma FROM tieneIdiomas WHERE idProducto = ?"];
+    foreach ($consultas as $k => $v)
+        $datos[$k] = consultaClave($v, [$id]);
     return (!empty($datos)) ?
         $datos : null;
 }
@@ -110,6 +115,9 @@ function consultaClave($consultaSql, $clave) {
     } catch (PDOException $pe) {
         return null;
     }
-    return (!empty($datos)) ?
-        $datos[0] : null;
+    if (!empty($datos)) {
+        return (count($datos) > 1) ?
+            $datos : $datos[0];
+    } else return null;
+        
 }

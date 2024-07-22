@@ -7,7 +7,7 @@ require_once "conn.php";
 // Devuelve la contraseña asociada al usuario poseedor del email ingresado.
 function traerPasswd($email) {
     $consultaSql = "SELECT passwd FROM Usuario WHERE email = ?";
-    $datos = consultaClave($consultaSql, [$email]);
+    $datos = consultaClave($consultaSql, [$email])[0];
     return (!empty($datos) && isset($datos['passwd'])) ?
         $datos['passwd'] : null;
 }
@@ -15,7 +15,7 @@ function traerPasswd($email) {
 // Devuelve los datos asociados al usuario poseedor del email ingresado.
 function traerUsuario($email) {
     $consultaSql = "SELECT email, nombre, apellido, imagenPerfil FROM Usuario WHERE email = ?";
-    $datos = consultaClave($consultaSql, [$email]);
+    $datos = consultaClave($consultaSql, [$email])[0];
     return (!empty($datos)) ?
         $datos : null;
 }
@@ -23,14 +23,14 @@ function traerUsuario($email) {
 // Devuelve el rol del usuario en cuestion.
 function traerRol($email) {
     $consultaSql = "SELECT email, 1 AS rol FROM Administrador WHERE email = ? UNION ALL SELECT email, 0 AS rol FROM Cliente WHERE email = ?";
-    $datos = consultaClave($consultaSql, [$email, $email]);
+    $datos = consultaClave($consultaSql, [$email, $email])[0];
     return (!empty($datos) && isset($datos['rol'])) ?
         $datos['rol'] : null;
 }
 
 function traerToken($email) {
     $consultaSql = "SELECT token FROM Usuario WHERE email = ?";
-    $datos = consultaClave($consultaSql, [$email]);
+    $datos = consultaClave($consultaSql, [$email])[0];
     return (!empty($datos) && isset($datos['token'])) ?
         $datos['token'] : null;
 }
@@ -38,12 +38,13 @@ function traerToken($email) {
 // Devuelve la pelicula asociada al nombre.
 function traerPelicula($id) {
     $consultaSql = "SELECT * FROM Pelicula WHERE idProducto = ?";
-    $datos = consultaClave($consultaSql, [$id]);
+    $datos = consultaClave($consultaSql, [$id])[0];
     $consultas = ['nombreCategoria' => "SELECT nombreCategoria FROM tieneCategorias WHERE idProducto = ?",
                 'dimension' => "SELECT dimension FROM tieneDimensiones WHERE idProducto = ?",
                 'idioma' => "SELECT idioma FROM tieneIdiomas WHERE idProducto = ?"];
-    foreach ($consultas as $k => $v)
+    foreach ($consultas as $k => $v) {
         $datos[$k] = array_column(consultaClave($v, [$id]), $k);
+    }
     return (!empty($datos)) ?
         $datos : null;
 }
@@ -115,9 +116,8 @@ function consultaClave($consultaSql, $clave) {
     } catch (PDOException $pe) {
         return null;
     }
-    if (!empty($datos)) {
-        return (count($datos) > 1) ?
-            $datos : $datos[0];
-    } else return null;
-        
+    return (!empty($datos)) ?
+        $datos : null;
 }
+
+

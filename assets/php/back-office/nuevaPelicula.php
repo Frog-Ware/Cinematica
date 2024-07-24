@@ -36,6 +36,9 @@ foreach ($valMultiples as $x)
 
 // Devuelve el código de error correspondiente.
 $response['error'] = comprobarError();
+if ($response['error'] == codigoError::SUCCESS)
+    // Código temporal.
+    nuevaEnCartelera([$datos['idProducto'], date('Y-m-d'), 4]);
 echo json_encode($response);
 
 // Mata la ejecución.
@@ -66,12 +69,8 @@ function comprobarError() {
         return codigoError::EXISTENT;
 
     // Guarda el nombre de las imagenes en datos.
-    foreach ($camposImg as $x) {
-        $ext = ($_FILES[$x]['type'] == "image/jpeg") ?
-            '.jpg' : '.png';
-        $nom = $datos['nombrePelicula'] . "_" . $x . $ext;
-        $datos[$x] = str_replace(" ", "_", $nom);
-    }
+    foreach ($camposImg as $x)
+        $datos[$x] = str_replace(" ", "_", $datos['nombrePelicula'] . "_" . $x . '.webp');
 
     // Intenta subir las imagenes a la carpeta.
     foreach ($camposImg as $x)

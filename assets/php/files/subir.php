@@ -8,7 +8,7 @@ function subirImg($img, $nombre, $carpeta) {
     if ($img['error'] != UPLOAD_ERR_OK) return false;
 
     // Verifica que la imagen sea JPG o PNG.
-    if (mime_content_type($img['tmp_name']) === 'image/webp') return false;
+    if (!mime_content_type($img['tmp_name']) === 'image/webp') return false;
 
     // Verifica que la imagen sea menor en tamaño a los 10MB.
     if ($img['size'] > 10 * 1024 * 1024) return false;

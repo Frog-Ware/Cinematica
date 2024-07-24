@@ -72,8 +72,7 @@ function traerPeliculaNombre($n) {
 // Devuelve la cartelera de películas en su totalidad.
 function traerCartelera() {
     $consultaSql = "SELECT * FROM Cartelera";
-    $datos = consulta($consultaSql);
-    if (empty($datos)) return null;
+    if (empty(consulta($consultaSql))) return null;
     foreach (consulta($consultaSql) as $x) 
         $datos[] = array_merge(traerPelicula($x['idProducto']), $x);   
     return $datos;

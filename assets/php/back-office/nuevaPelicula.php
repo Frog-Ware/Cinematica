@@ -18,26 +18,21 @@ enum codigoError: int{
 }
 
 
-// Genera una ID para la película.
-$datos['idProducto'] = generarID();
 
-// Guarda las variables sanitizadas en un array llamado datos.
+// Establece los campos requeridos.
 $campos = ['actores', 'sinopsis', 'duracion', 'nombrePelicula', 'pegi', 'trailer', 'director'];
 $valMultiples = ['categorias', 'dimensiones', 'idiomas'];
 $camposImg = ['poster', 'cabecera'];
 $totalCampos = array_merge($campos, $valMultiples);
+
+// Genera una ID para la película.
+$datos['idProducto'] = generarID();
+
+// Guarda las variables sanitizadas en un array llamado datos y los valores multiples en otro array llamado valores.
 foreach ($campos as $x)
     $datos[$x] = filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING);
 foreach ($valMultiples as $x)
     $valores[$x] = explode(', ', filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING));
-
-// Guarda el nombre de las imagenes en datos.
-foreach ($camposImg as $x) {
-    $ext = ($_FILES[$x]['type'] == "image/jpeg") ?
-        '.jpg' : '.png';
-    $nom = $datos['nombrePelicula'] . "_" . $x . $ext;
-    $datos[$x] = str_replace(" ", "_", $nom);
-}
 
 // Devuelve el código de error correspondiente.
 $response['error'] = comprobarError();
@@ -70,9 +65,17 @@ function comprobarError() {
     if ($comp != null && $comp['director'] == $datos['director'])
         return codigoError::EXISTENT;
 
+    // Guarda el nombre de las imagenes en datos.
+    foreach ($camposImg as $x) {
+        $ext = ($_FILES[$x]['type'] == "image/jpeg") ?
+            '.jpg' : '.png';
+        $nom = $datos['nombrePelicula'] . "_" . $x . $ext;
+        $datos[$x] = str_replace(" ", "_", $nom);
+    }
+
     // Intenta subir las imagenes a la carpeta.
     foreach ($camposImg as $x)
-        if (!subirImg($_FILES[$x], $datos[$x])) return codigoError::IMG_ERROR;
+        if (!subirImg($_FILES[$x], $datos[$x], 'peliculas')) return codigoError::IMG_ERROR;
         
     // Intenta ingresar la película en la base de datos y devuelve su correspondiente código de error.
     return (nuevaPelicula($datos, $valores)) ?

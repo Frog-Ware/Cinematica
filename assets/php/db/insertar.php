@@ -14,15 +14,15 @@ function nuevoUsuario($datos) {
 
 // Registra un usuario del tipo cliente en la base de datos.
 function nuevoCliente($datos) {
-    nuevoUsuario($datos);
     $lineaSql = "INSERT INTO cliente(email) VALUES (?)";
-    return insertar([$datos['email']], $lineaSql);
+    return (nuevoUsuario($datos)) ?
+        insertar([$datos['email']], $lineaSql) : false;
 }
 
 // Actualiza la contraseña del usuario.
 function actPasswd($datos) {
     $lineaSql = "UPDATE Usuario SET passwd = ? WHERE email = ?";
-    return insertar([md5($datos['passwd']), $datos['email']], $lineaSql);   
+    return insertar([$datos['passwd'], $datos['email']], $lineaSql);   
 }
 
 
@@ -32,7 +32,6 @@ function actPasswd($datos) {
 // Ingresa un producto en la base de datos.
 function nuevoProducto($idProducto) {
     $lineaSql = "INSERT INTO producto (idProducto) VALUES (?)";
-    print ($idProducto);
     return insertar([$idProducto], $lineaSql);
 }
 
@@ -63,9 +62,9 @@ function nuevaPelicula($datos, $valores) {
 
 // Ingresa un producto de tipo artículo en la base de datos.
 function nuevoArticulo($datos) {
-    nuevoProducto($datos['idProducto']);
     $lineaSql = "INSERT INTO articulo VALUES (?, ?, ?, ?, ?)";
-    return insertar($datos, $lineaSql);
+    return nuevoProducto($datos['idProducto']) ? 
+        insertar($datos, $lineaSql) : false;
 }
 
 // Ingresa una película ya existente en la cartelera.
@@ -85,7 +84,6 @@ function insertar($datos, $lineaSql) {
         $statement = $con->prepare($lineaSql);
         return $statement -> execute(array_values($datos));
     } catch (PDOException $pe) {
-        print $pe;
         return false;
     }
 }

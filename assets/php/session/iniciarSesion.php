@@ -21,6 +21,10 @@ $campos = ['email', 'passwd'];
 foreach ($campos as $x)
     $datos[$x] = filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING);
 
+// Cifra la contraseña en md5.
+if (!empty($datos['passwd']))
+    $datos['passwd'] = md5($datos['passwd']);
+
 // Verifica los datos e inicia sesión si se ha realizado exitosamente el registro, además de guardar los datos correspondientes como respuesta.
 $error = comprobarError();
 if ($error == codigoError::MATCH) {
@@ -44,17 +48,17 @@ function comprobarError() {
 
     // Devuelve un código de error si una variable no esta seteada.
     foreach ($campos as $x)
-        if (!isset($_POST[$x])) return codigoError::NOT_SET;
+        if (!isset($datos[$x])) return codigoError::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
     foreach ($campos as $x)
-        if (empty($_POST[$x])) return codigoError::EMPTY;
+        if (empty($datos[$x])) return codigoError::EMPTY;
 
     // Devuelve un código de error si la dirección de correo no está registrada.
     if (traerPasswd($datos['email']) == null) return codigoError::NO_ACCOUNT;
 
     // Devuelve un codigo de error si la contraseña no coincide.
-    if (md5($datos['passwd']) != traerPasswd($datos['email'])) return codigoError::NO_MATCH;
+    if ($datos['passwd'] != traerPasswd($datos['email'])) return codigoError::NO_MATCH;
 
     // Devuelve un código de error dependiendo si la cuenta es de rol Cliente o Administrador.
     return (traerRol($datos['email'])) ?

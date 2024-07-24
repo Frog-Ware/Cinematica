@@ -13,6 +13,7 @@ enum codigoError: int{
     case EXISTENT = 2; // La película a añadir ya está en la cartelera.
     case EMPTY = 3; // Al menos un campo está vacio.
     case NOT_SET = 4; // Al menos un campo no está asignado.
+    case DATE_ERROR = 5; // Fecha anterior a la actual.
 }
 
 // Guarda las variables recibidas por POST en un array llamado datos.
@@ -33,6 +34,9 @@ die();
 
 function comprobarError() {
     global $campos, $datos;
+
+    // Devuelve un código de error si la fecha es anterior a la actual.
+    if ($datos['fechaInicio'] < date('Y-m-d')) return codigoError::DATE_ERROR;
 
     // Devuelve un código de error si una variable no esta seteada.
     foreach ($campos as $x)

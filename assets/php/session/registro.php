@@ -22,7 +22,8 @@ foreach ($campos as $x)
     $datos[$x] = filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING);
 
 // Cifra la contraseña y el token generado en md5.
-$datos['passwd'] = md5($datos['passwd']);
+if (!empty($datos['passwd']))
+    $datos['passwd'] = md5($datos['passwd']);
 $token = generarToken();
 $datos['token'] = md5($token);
 
@@ -50,11 +51,11 @@ function comprobarError() {
 
     // Devuelve un código de error si una variable no esta seteada.
     foreach ($campos as $x)
-        if (!isset($_POST[$x])) return codigoError::NOT_SET;
+        if (!isset($datos[$x])) return codigoError::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
     foreach ($campos as $x)
-        if (empty($_POST[$x])) return codigoError::EMPTY;
+        if (empty($datos[$x])) return codigoError::EMPTY;
 
     // Devuelve un código de error si el usuario ya esta registrado.
     if (traerPasswd($datos['email']) != null) return codigoError::EXISTENT;

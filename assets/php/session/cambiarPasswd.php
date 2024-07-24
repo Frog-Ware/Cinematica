@@ -21,6 +21,10 @@ $campos = ['email', 'token', 'passwd'];
 foreach ($campos as $x)
     $datos[$x] = filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING);
 
+// Cifra la nueva contraseña y el token en md5.
+if (!empty($datos['passwd']))
+    $datos['passwd'] = md5($datos['passwd']);
+
 // Devuelve el código de error correspondiente.
 $response['error'] = comprobarError();
 echo json_encode($response);
@@ -37,11 +41,11 @@ function comprobarError() {
 
     // Devuelve un código de error si una variable no esta seteada.
     foreach ($campos as $x)
-        if (!isset($_POST[$x])) return codigoError::NOT_SET;
+        if (!isset($datos[$x])) return codigoError::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
     foreach ($campos as $x)
-        if (empty($_POST[$x])) return codigoError::EMPTY;
+        if (empty($datos[$x])) return codigoError::EMPTY;
 
     // Devuelve un código de error si la nueva contraseña es la ya existente.
     if ($datos['passwd'] == traerPasswd($datos['email'])) return codigoError::EXISTENT;

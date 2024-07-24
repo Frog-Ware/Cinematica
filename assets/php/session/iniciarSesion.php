@@ -21,19 +21,18 @@ $campos = ['email', 'passwd'];
 foreach ($campos as $x)
     $datos[$x] = filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING);
 
-// Verifica los datos e inicia sesión si se ha realizado exitosamente el registro, además de enviar los datos correspondientes.
+// Verifica los datos e inicia sesión si se ha realizado exitosamente el registro, además de guardar los datos correspondientes como respuesta.
 $error = comprobarError();
 if ($error == codigoError::MATCH) {
     inicioSesion($datos['email']);
     $response['datosUsuario'] = traerUsuario($_SESSION['user']);
 }
-
-// Devuelve un código de error segun el caso.
 $response['error'] = $error;
 
-// Envía la respuesta.
+// Envía la respuesta mediante JSON.
 echo json_encode($response);
 
+// Mata la ejecución.
 die();
 
 

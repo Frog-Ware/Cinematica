@@ -16,15 +16,16 @@ enum codigoError: int{
     case NOT_SET = 4; // Al menos un campo no está asignado.
 }
 
-// Guarda las variables en un array llamado datos.
+// Guarda las variables sanitizadas en un array llamado datos.
 $campos = ['email', 'token', 'passwd'];
 foreach ($campos as $x)
     $datos[$x] = filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING);
 
-// Devuelve el código de error.
+// Devuelve el código de error correspondiente.
 $response['error'] = comprobarError();
 echo json_encode($response);
 
+// Mata la ejecución.
 die();
 
 

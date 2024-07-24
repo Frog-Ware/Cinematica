@@ -4,6 +4,8 @@
 
 require_once "conn.php";
 
+// Funciones de manipulación de datos de usuario.
+
 // Registra un usuario en la base de datos.
 function nuevoUsuario($datos) {
     $lineaSql = "INSERT INTO usuario(email, nombre, apellido, imagenPerfil, passwd, numeroCelular, token) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -17,15 +19,26 @@ function nuevoCliente($datos) {
     return insertar([$datos['email']], $lineaSql);
 }
 
+// Actualiza la contraseña del usuario.
+function actPasswd($datos) {
+    $lineaSql = "UPDATE Usuario SET passwd = ? WHERE email = ?";
+    return insertar([md5($datos['passwd']), $datos['email']], $lineaSql);   
+}
+
+
+
+// Funciones de manipulación de datos de productos.
+
 // Ingresa un producto en la base de datos.
 function nuevoProducto($idProducto) {
     $lineaSql = "INSERT INTO producto (idProducto) VALUES (?)";
+    print ($idProducto);
     return insertar([$idProducto], $lineaSql);
 }
 
 // Ingresa un producto de tipo película en la base de datos.
 function nuevaPelicula($datos, $valores) {
-    nuevoProducto($datos['idProducto']);
+    if (!nuevoProducto($datos['idProducto'])) return false;
     $lineaSql = "INSERT INTO pelicula VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     if (insertar($datos, $lineaSql)) {
         // De ingresar la pelicula, registra sus categorias.
@@ -45,33 +58,34 @@ function nuevaPelicula($datos, $valores) {
 
         // De insertar todo correctamente en la base de datos, devuelve true.
         return true;
-
     } else return false;
 }
 
+// Ingresa un producto de tipo artículo en la base de datos.
 function nuevoArticulo($datos) {
     nuevoProducto($datos['idProducto']);
     $lineaSql = "INSERT INTO articulo VALUES (?, ?, ?, ?, ?)";
     return insertar($datos, $lineaSql);
 }
 
+// Ingresa una película ya existente en la cartelera.
 function nuevaEnCartelera($datos) {
     $lineaSql = "INSERT INTO cartelera VALUES (?, ?, ?)";
     return insertar($datos, $lineaSql);
 }
 
-function actPasswd($datos) {
-    $lineaSql = "UPDATE Usuario SET passwd = ? WHERE email = ?";
-    return insertar([md5($datos['passwd']), $datos['email']], $lineaSql);   
-}
 
 
+// Funciones de acceso a la base de datos.
+
+// Inserta los datos enviados según la linea de código provista.
 function insertar($datos, $lineaSql) {
     global $con;
     try{
         $statement = $con->prepare($lineaSql);
         return $statement -> execute(array_values($datos));
     } catch (PDOException $pe) {
+        print $pe;
         return false;
     }
 }

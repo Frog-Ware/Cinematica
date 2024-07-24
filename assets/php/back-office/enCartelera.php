@@ -10,20 +10,21 @@ require_once "../db/traer.php";
 enum codigoError: int{
     case SUCCESS = 0; // Procedimiento realizado con éxito.
     case NO_SUCCESS = 1; // Hubo un error en la inserción en la base de datos.
-    case EXISTENT = 2; // La película a añadir ya está en la base de datos.
+    case EXISTENT = 2; // La película a añadir ya está en la cartelera.
     case EMPTY = 3; // Al menos un campo está vacio.
     case NOT_SET = 4; // Al menos un campo no está asignado.
 }
 
-// Guarda las variables en un array llamado datos y los valores multiples en otro array llamado valores.
+// Guarda las variables recibidas por POST en un array llamado datos.
 $campos = ['idProducto', 'fechaInicio', 'cantidadSemanas'];
 foreach ($campos as $x)
-    $datos[$x] = $_POST[$x];
+    $datos[$x] = filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING);
 
-// Devuelve el código de error.
+// Devuelve el código de error correspondiente.
 $response['error'] = comprobarError();
 echo json_encode($response);
 
+// Mata la ejecución.
 die();
 
 
@@ -35,11 +36,11 @@ function comprobarError() {
 
     // Devuelve un código de error si una variable no esta seteada.
     foreach ($campos as $x)
-        if (!isset($_POST[$x])) return codigoError::NOT_SET;
+        if (!isset($datos[$x])) return codigoError::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
     foreach ($campos as $x)
-        if (empty($_POST[$x])) return codigoError::EMPTY;
+        if (empty($datos[$x])) return codigoError::EMPTY;
 
     // Devuelve un código de error si la película ya esta en cartelera.
     foreach (traerCartelera() as $x)

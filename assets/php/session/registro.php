@@ -20,24 +20,25 @@ enum codigoError: int {
 $campos = ['email', 'nombre', 'apellido', 'imagenPerfil', 'passwd', 'numeroCelular'];
 foreach ($campos as $x)
     $datos[$x] = filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING);
+
+// Cifra la contraseña y el token generado en md5.
 $datos['passwd'] = md5($datos['passwd']);
 $token = generarToken();
 $datos['token'] = md5($token);
 
-// Verifica los datos e inicia sesión si se ha realizado exitosamente el registro, además de enviar los datos correspondientes.
+// Verifica los datos e inicia sesión si se ha realizado exitosamente el registro, además de guardar los datos correspondientes como respuesta.
 $error = comprobarError();
 if ($error == codigoError::SUCCESS) {
     inicioSesion($datos['email']);
     $response['datosUsuario'] = traerUsuario($_SESSION['user']);
     $response['token'] = $token;
 }
-
-// Devuelve un código de error segun el caso.
 $response['error'] = $error;
 
-// Envía la respuesta.
+// Envía la respuesta mediante JSON.
 echo json_encode($response);
 
+// Mata la ejecución.
 die();
 
 

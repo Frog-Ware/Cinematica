@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backoffice - Cine</title>
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/general.css">
+    <link rel="stylesheet" href="assets/css/backoffice.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>  
+        <nav class="navbar scroll-Snap" id="nav">
+                <div id="botonAbrir">
+                    <i class='bx bx-menu'></i>
+                </div>
+                <!-- menu desplegable -->
+                <div class="sideBar" id="sideBar">
+                    <a id="cerrar">&times;</a>
+                    <ul>
+                        
+                        <li><a href="cartelera.html"><button class="sideBar_btn btn_link">CARTELERA</button></a></li>
+                        <li><a href="productos.html"><button class="sideBar_btn btn_link">PRODUCTOS</button></a></li>
+                        <li><a href="index.html"><button class="sideBar_btn btn_link">INICIO</button></a></li>
+                    </ul>
+                </div> <!--fin del sidebar -->
+                <div class="navbar_logo" id="logo"><h2>CINEMÁTICA</h2></div>
+                <div class="navbar_nombre" id="nombreAdmin"></div>
+                               
+        </nav>
+    </header>
+    <main>
+        <div class="formulario">
+            <label for="Poster" class="custom-file-upload">
+                POSTER
+            </label>
+            <input id="Poster" name="Poster" type="file" onchange="previewImage(event, 'poster-preview')" />
+    
+            <label for="Cabecera" class="custom-file-upload">
+                CABECERA
+            </label>
+            <input id="Cabecera" name="Cabecera" type="file" onchange="previewImage(event, 'cabecera-preview')" />
+    
+            <label for="sinopsis">Sinopsis</label>
+            <textarea name="sinopsis" id="sinopsis"></textarea>
+    
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" required>
+    
+            <label for="actores">Actores</label>
+            <input type="text" id="actores" name="actores" required>
+    
+            <label for="Duracion">Duración</label>
+            <input type="time" id="Duracion" name="Duracion" required>
+    
+            <label for="Trailer">Trailer</label>
+            <input type="text" id="Trailer" name="Trailer" required>
+    
+            <label for="pegi">PEGI</label>
+            <select id="pegi" name="pegi" required>
+                <option value="" disabled selected>Selecciona una clasificación</option>
+                <option value="G">General</option>
+                <option value="PG">PG</option>
+                <option value="12">PG-12</option>
+                <option value="15">PG-15</option>
+                <option value="R">R</option>
+                </select>
+
+            <label for="director">Director</label>
+            <input type="text" id="director" name="director" required>
+
+                <label for="categoria">Categoría</label>
+                <select id="categoria" name="categoria" required>
+                    <option value="" disabled selected>Selecciona una categoría</option>
+                    <option value="Acción">Acción</option>
+                    <option value="Aventura">Aventura</option>
+                    <option value="Ciencia Ficción">Ciencia Ficción</option>
+                    <option value="Crimen">Crimen</option>
+                    <option value="Drama">Drama</option>
+                    <option value="Fantasía">Fantasía</option>
+                    <option value="Romance">Romance</option>
+                </select>
+
+                <label for="categoria1">Categoría 2</label>
+                <select id="categoria1" name="categoria1" required>
+                    <option value="" disabled selected>Selecciona una categoría</option>
+                    <option value="Acción">Acción</option>
+                    <option value="Aventura">Aventura</option>
+                    <option value="Ciencia Ficción">Ciencia Ficción</option>
+                    <option value="Crimen">Crimen</option>
+                    <option value="Drama">Drama</option>
+                    <option value="Fantasía">Fantasía</option>
+                    <option value="Romance">Romance</option>
+                </select>
+            
+                <label for="idiomas">Idiomas</label>
+                <select id="idiomas" name="idiomas" required>
+                    <option value="" disabled selected>Selecciona un idioma</option>
+                    <option value="Español">Español</option>
+                    <option value="Inglés">Inglés</option>
+                </select>
+
+                <label for="idiomas1">Idiomas 2</label>
+                <select id="idiomas1" name="idiomas1" required>
+                    <option value="" disabled selected>Selecciona un idioma</option>
+                    <option value="Español">Español</option>
+                    <option value="Inglés">Inglés</option>
+                </select>
+            
+                <label for="dimension">Dimensión</label>
+                <select id="dimension" name="dimension" required>
+                    <option value="" disabled selected>Selecciona una dimensión</option>
+                    <option value="2D">2D</option>
+                    <option value="3D">3D</option>
+                </select>
+
+                <label for="dimension1">Dimensión 2</label>
+                <select id="dimension1" name="dimension1" required>
+                    <option value="" disabled selected>Selecciona una dimensión</option>
+                    <option value="2D">2D</option>
+                    <option value="3D">3D</option>
+                </select>
+            
+                <button type="button" id="enviar">Enviar</button>
+        </div>
+        <div class="preview-container">
+            <div id="poster-preview" class="image-preview">
+                <p>Previsualización del póster</p>
+            </div>
+            <div id="cabecera-preview" class="image-preview">
+                <p>Previsualización de la cabecera</p>
+            </div>
+        </div>
+
+        
+    </main>
+    <script src="assets/scripts/sesion.js"></script>
+    <script src="assets/scripts/backoffice.js"></script>
+
+
+</body>
+</html>

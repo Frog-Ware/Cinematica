@@ -2,7 +2,7 @@
 
 // Este script registra una nueva película o devuelve un código de error según la coincidencia de los valores ingresados por el usuario y los valores guardados en la base de datos.
 
-header("Content-Type: application/json");
+header ("Content-Type: application/json; charset=utf-8");
 require_once "../db/insertar.php";
 require_once "../db/traer.php";
 require_once "../files/subir.php";

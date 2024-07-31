@@ -2,7 +2,7 @@
 
 // Este script inicia sesión o devuelve un código de error según la coincidencia de los valores ingresados por el usuario y los valores guardados en la base de datos.
 
-header("Content-Type: application/json");
+header("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE) session_start();
 require_once "../db/traer.php";
 

@@ -2,7 +2,7 @@
 
 // Este script devuelve las listas de los valores desplegables.
 
-header ("Content-Type: application/json");
+header ("Content-Type: application/json; charset=utf-8");
 require_once "../db/traer.php";
 
 // Asigna los datos extraidos de la base de datos a su correspondiente posición en el array.

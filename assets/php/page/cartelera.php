@@ -2,7 +2,7 @@
 
 // Este script devuelve un array con todos los datos de las películas en cartelera.
 
-header("Content-Type: application/json");
+header ("Content-Type: application/json; charset=utf-8");
 require_once "../db/traer.php";
 
 // Devuelve los datos de las películas de no haber errores y un código de error si no hay resultados.

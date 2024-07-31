@@ -2,7 +2,7 @@
 
 // Este script devuelve los datos del usuario de estar la sesión activa. Si no es así, devuelve un error.
 
-header("Content-Type: application/json");
+header ("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE) session_start();
 require_once "../db/traer.php";
 

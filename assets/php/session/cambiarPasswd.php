@@ -2,7 +2,7 @@
 
 // Este script permite cambiar la contraseña asociada a una cuenta en particular.
 
-header("Content-Type: application/json");
+header ("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE) session_start();
 require_once "../db/traer.php";
 require_once "../db/insertar.php";

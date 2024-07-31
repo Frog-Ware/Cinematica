@@ -2,7 +2,7 @@
 
 // Este script añade la pelicula deseada a la cartelera.
 
-header("Content-Type: application/json");
+header ("Content-Type: application/json; charset=utf-8");
 require_once "../db/insertar.php";
 require_once "../db/traer.php";
 

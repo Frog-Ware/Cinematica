@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es  ">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Productos</title>
+    <!-- link a boxicons -->
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <!-- links css -->
+    <link rel="stylesheet" href="assets/css/reset.css" />
+    <link rel="stylesheet" href="assets/css/general.css" />
+    <link rel="stylesheet" href="assets/css/producto.css" />
+    <!-- links a google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header>
+      <nav class="navbar scroll-Snap" id="nav">
+        <div id="botonAbrir">
+          <i class="bx bx-menu"></i>
+        </div>
+        <!-- menú desplegable -->
+        <div class="sideBar" id="sideBar">
+          <a id="cerrar">&times;</a>
+          <ul>
+            <!-- navegacion del sidebar -->
+            <li>
+              <a href="index.html"
+                ><button class="sideBar_btn btn_link">INICIO</button></a
+              >
+            </li>
+            <li>
+              <a href="cartelera.html"
+                ><button class="sideBar_btn btn_link">CARTELERA</button></a
+              >
+            </li>
+            <!-- li vacio con fin practico -->
+            <li></li>
+          </ul>
+        </div>
+        <!--fin del sidebar -->
+
+        <div class="navbar_logo" id="logo"><h2>CINEMÁTICA</h2></div>
+
+        <!-- iniciar sesión y cerrar sesión son elementos que se intercambian por js -->
+        <div class="navbar_login" id="abrirlogin"><p>INICIAR SESIÓN</p></div>
+        <div class="navbar_login cerrarSesion" id="cerrarSesion">
+          <p>CERRAR SESIÓN</p>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <!-- filtor de productos -->
+      <div class="filtro">
+        <ul>
+          <li><button>bebidas</button></li>
+          <li><button>pop</button></li>
+          <li><button>packs</button></li>
+          <li><button>snacks</button></li>
+        </ul>
+      </div>
+      <!-- productos -->
+      <div id="contenedor" class="contenedorProductos scroll-Snap"></div>
+    </main>
+
+    <footer class="scroll-Snap">
+      <div class="footer__arriba">
+        <!-- Logo y eslogan -->
+        <div class="footer__seccion">
+          <a class="ancla__inicio" href="#logo">CINEMÁTICA</a>
+          <h6>Todas las estrellas en un solo lugar</h6>
+        </div>
+
+        <!-- links -->
+        <div class="footer__seccion">
+          <a class="ancla__redireccion">¿Quieres trabajar con nosotros?</a>
+          <a class="ancla__redireccion">Preguntas frecuentes</a>
+        </div>
+
+        <div class="footer__seccion">
+          <a class="ancla__redireccion" href="cartelera.html">CARTELERA</a>
+          <a class="ancla__redireccion" href="productos.html">PRODUCTOS</a>
+        </div>
+
+        <!-- cambiar tema -->
+        <div class="footer__seccion">
+          <button id="cambiarModo">Modo claro</button>
+        </div>
+      </div>
+
+      <!-- links a redes sociales -->
+      <div class="footer__abajo">
+        <div class="footer__redes">
+          <i class="bx bxl-facebook"></i>
+          <i class="bx bxl-instagram"></i>
+          <i class="bx bxl-linkedin-square"></i>
+          <i class="bx bxl-youtube"></i>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Login -->
+    <div class="login" id="contenedorLogin">
+      <!-- Lado de iniciar sesión -->
+      <div class="login__iniciar" id="seccionIniciar">
+        <h2 class="login__titulo">INICIAR SESIÓN</h2>
+        <!-- Campos de iniciar sesión -->
+        <div class="login__inputs flex-Centrado">
+          <input
+            id="correoIniciarSesion"
+            class="input"
+            type="email"
+            placeholder="Correo"
+          />
+          <input
+            id="passwdIniciarSesion"
+            class="input"
+            type="password"
+            placeholder="Contraseña"
+          />
+
+          <input
+            id="botonEnviarIniciarSesion"
+            class="input--boton"
+            type="button"
+            value="Enviar"
+          />
+        </div>
+        <!-- fin de campos iniciar sesión -->
+
+        <!-- opciones para cambiar de lado, cerrar o cambiar contraseña -->
+        <div class="login__texto">
+          <p id="cambiarLadoRegistro">REGISTRARSE</p>
+          <a href="changepasswd.html">¿Olvidaste tu contraseña?</a>
+          <p class="login__cerrar">&times;</p>
+        </div>
+      </div>
+      <!-- fin del lado iniciar sesión -->
+
+      <!-- lado de registrarse -->
+      <div class="login__registrar" id="seccionRegistrar">
+        <h2 class="login__titulo">registrarse</h2>
+        <!-- campos de registrarse -->
+        <div class="login__inputs--registar">
+          <input
+            id="nombreRegistrar"
+            class="input"
+            type="text"
+            placeholder="Nombre"
+          />
+          <input
+            id="apellidoRegistrar"
+            class="input"
+            type="text"
+            placeholder="Apellido"
+          />
+          <input
+            id="emailRegistrar"
+            class="input"
+            type="email"
+            placeholder="Correo"
+          />
+          <input
+            id="passwdRegistrar"
+            class="input"
+            type="password"
+            placeholder="Contraseña"
+          />
+          <input
+            id="passwdConfirmar"
+            class="input"
+            type="password"
+            placeholder="Confirmar contraseña"
+          />
+          <input
+            id="telefonoRegistrar"
+            class="input"
+            type="tel"
+            placeholder="Teléfono"
+          />
+
+          <input
+            id="botonEnviarRegistrar"
+            class="input--boton"
+            type="button"
+            value="Enviar"
+          />
+        </div>
+        <!-- fin campos registrarse -->
+
+        <div class="login__texto">
+          <p id="cambiarLadoIniciar">INICIAR SESIÓN</p>
+          <p class="login__cerrar">&times;</p>
+        </div>
+      </div>
+    </div>
+    <!-- fin de login -->
+    <!-- conexion a los scripts -->
+    <script src="assets/scripts/login/login.js"></script>
+    <script src="assets/scripts/productos.js"></script>
+    <script src="assets/scripts/login/loginEnvioDatos.js"></script>
+    <script src="assets/scripts/login/loginValidacion.js"></script>
+  </body>
+</html>

@@ -3,6 +3,7 @@
 // Este script inserta en la base de datos los datos del usuario que necesitan de permanencia.
 
 require_once "conn.php";
+require_once "../config/acceso.php";
 
 // Funciones de manipulación de datos de usuario.
 

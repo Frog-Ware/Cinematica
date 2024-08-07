@@ -4,6 +4,7 @@
 
 header ("Content-Type: application/json; charset=utf-8");
 require_once "../db/traer.php";
+require_once "../config/acceso.php";
 
 // Asigna los datos extraidos de la base de datos a su correspondiente posición en el array.
 $datos['categorias'] = traerCategorias();

@@ -3,6 +3,7 @@
 // Este script devuelve los datos requeridos por diferentes scripts.
 
 require_once "conn.php";
+require_once "../config/acceso.php";
 
 // Funciones de Inicio de Sesión
 
@@ -110,6 +111,14 @@ function traerArticulos() {
         $datos : null;
 }
 
+function traerBusqueda($busqueda) {
+    $consultaSql = "SELECT idProducto FROM Pelicula WHERE nombrePelicula LIKE ?";
+    $id = consultaClave($consultaSql, [$busqueda]);
+    if (empty($id)) return null;
+    foreach ($id as $x) 
+        $datos[] = array_merge(traerPelicula($x['idProducto']), $x);   
+    return $datos;
+}
 
 
 // Funciones de acceso a la base de datos.

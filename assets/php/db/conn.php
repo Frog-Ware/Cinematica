@@ -2,6 +2,8 @@
 
 // Este script conecta a la base de datos mediante PDO.
 
+require_once "../config/acceso.php";
+
 // Asigna los datos de ingreso a la BD en variables.
 $host = "localhost";
 $dbname = "Cinematica";

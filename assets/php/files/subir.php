@@ -2,6 +2,8 @@
 
 // Este script inserta en sus carpetas correspondientes los archivos del usuario que necesitan de permanencia.
 
+require_once "../config/acceso.php";
+
 // Valida los datos y sube la imagen ingresada.
 function subirImg($img, $nombre, $carpeta) {
     // Verifica que la imagen haya sido subida correctamente a la página.

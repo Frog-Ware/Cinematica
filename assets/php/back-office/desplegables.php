@@ -2,7 +2,7 @@
 
 // Este script devuelve las listas de los valores desplegables.
 
-header ("Content-Type: application/json; charset=utf-8");
+header("Content-Type: application/json; charset=utf-8");
 require_once "../db/traer.php";
 require_once "../config/acceso.php";
 

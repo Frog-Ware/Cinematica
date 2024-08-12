@@ -2,14 +2,16 @@
 
 // Este script permite cambiar la contraseña asociada a una cuenta en particular.
 
-header ("Content-Type: application/json; charset=utf-8");
-if (session_status() == PHP_SESSION_NONE) session_start();
+header("Content-Type: application/json; charset=utf-8");
+if (session_status() == PHP_SESSION_NONE)
+    session_start();
 require_once "../db/traer.php";
 require_once "../db/insertar.php";
 require_once "../config/acceso.php";
 
 // Asigna un código de error según el caso.
-enum codigoError: int{
+enum codigoError: int
+{
     case SUCCESS = 0; // Procedimiento realizado con éxito.
     case NO_SUCCESS = 1; // Al menos un dato ingresado no corresponde con el resto.
     case EXISTENT = 2; // La nueva contraseña es idéntica a la anterior.
@@ -37,19 +39,23 @@ die();
 
 // Funciones
 
-function comprobarError() {
+function comprobarError()
+{
     global $campos, $datos;
 
     // Devuelve un código de error si una variable no esta seteada.
     foreach ($campos as $x)
-        if (!isset($datos[$x])) return codigoError::NOT_SET;
+        if (!isset($datos[$x]))
+            return codigoError::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
     foreach ($campos as $x)
-        if (empty($datos[$x])) return codigoError::EMPTY;
+        if (empty($datos[$x]))
+            return codigoError::EMPTY;
 
     // Devuelve un código de error si la nueva contraseña es la ya existente.
-    if ($datos['passwd'] == traerPasswd($datos['email'])) return codigoError::EXISTENT;
+    if ($datos['passwd'] == traerPasswd($datos['email']))
+        return codigoError::EXISTENT;
 
     // Intenta actualizar la contraseña en la base de datos y devuelve su correspondiente código de error.
     return ((traerToken($datos['email']) == md5($datos['token'])) && actPasswd($datos)) ?

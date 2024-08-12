@@ -12,14 +12,14 @@ $password = "";
 
 // Setea las opciones de PDO
 $opc = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
+    PDO::ATTR_EMULATE_PREPARES => false
 ];
 
 // Intenta conectarse a la BD y de no lograrlo, mata la ejecución.
 try {
     $con = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password, $opc);
 } catch (PDOException $pe) {
-    die ("Could not connect to the database $dbname :" . $pe->getMessage());
+    die("Could not connect to the database $dbname :" . $pe->getMessage());
 }

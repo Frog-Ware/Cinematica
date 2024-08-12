@@ -2,7 +2,7 @@
 
 // Este script devuelve un array con todos los datos de las películas que coincidan con lo buscado.
 
-header ("Content-Type: application/json; charset=utf-8");
+header("Content-Type: application/json; charset=utf-8");
 require_once "../db/traer.php";
 require_once "../files/subir.php";
 require_once "../config/acceso.php";

@@ -9,14 +9,27 @@ require_once "../files/subir.php";
 require_once "../config/acceso.php";
 
 // Asigna un código de error según el caso.
-enum codigoError: int
+enum err: int
 {
-    case SUCCESS = 0; // Procedimiento realizado con éxito.
-    case NO_SUCCESS = 1; // Hubo un error en la inserción en la base de datos.
-    case EXISTENT = 2; // La película a añadir ya está en la base de datos.
-    case EMPTY = 3; // Al menos un campo está vacio.
-    case NOT_SET = 4; // Al menos un campo no está asignado.
-    case IMG_ERROR = 5; // Al menos una imagen tiene un error.
+    case SUCCESS = 0;
+    case NO_SUCCESS = 1;
+    case EXISTENT = 2;
+    case EMPTY = 3;
+    case NOT_SET = 4;
+    case IMG_ERROR = 5;
+
+    // Devuelve el mensaje asociado con el código de error.
+    function getMsg()
+    {
+        return match ($this) {
+            self::SUCCESS => "Procedimiento realizado con éxito.",
+            self::NO_SUCCESS => "Hubo un error en la inserción en la base de datos.",
+            self::EXISTENT => "El producto a añadir ya existe.",
+            self::EMPTY => "Al menos un campo está vacio.",
+            self::NOT_SET => "Al menos un campo no está asignado.",
+            self::IMG_ERROR => "Al menos una imagen tiene un error."
+        };
+    }
 }
 
 // Genera una ID para el producto.
@@ -25,10 +38,11 @@ $datos['idProducto'] = generarID();
 // Guarda las variables sanitizadas en un array llamado datos y los valores multiples en otro array llamado valores.
 $campos = ['nombreArticulo', 'descripcion', 'precio'];
 foreach ($campos as $x)
-    $datos[$x] = filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING);
+    $datos[$x] = filter_input(INPUT_POST, $x);
 
 // Devuelve el código de error correspondiente.
-$response['error'] = comprobarError();
+$error = comprobarError();
+$response = ['error' => $error, 'errMsg' => $error->getMsg()];
 echo json_encode($response);
 
 // Mata la ejecución.
@@ -45,35 +59,33 @@ function comprobarError()
     // Devuelve un código de error si una variable no esta seteada.
     foreach ($campos as $x)
         if (!isset($_POST[$x]))
-            return codigoError::NOT_SET;
+            return err::NOT_SET;
     if (!isset($_FILES['imagen']))
-        return codigoError::NOT_SET;
+        return err::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
     foreach ($campos as $x)
         if (empty($_POST[$x]))
-            return codigoError::EMPTY;
+            return err::EMPTY;
     if (empty($_FILES['imagen']))
-        return codigoError::EMPTY;
+        return err::EMPTY;
 
-    // Devuelve un código de error si hay una película ingresada con el mismo nombre y director.
-    $comp = traerArticulos();
-    foreach ($comp as $x)
+    // Devuelve un código de error si hay un artículo con el mismo nombre.
+    $articuloDB = traerArticulos('nombreArticulo');
+    foreach ($articuloDB as $x)
         if ($x['nombreArticulo'] == $datos['nombreArticulo'])
-            return codigoError::EXISTENT;
+            return err::EXISTENT;
 
     // Guarda el nombre de la imagen en datos.
-    $ext = ($_FILES['imagen']['type'] == "image/jpeg") ?
-        '.jpg' : '.png';
-    $datos['imagen'] = str_replace(" ", "_", $datos['nombreArticulo'] . $ext);
+    $datos['imagen'] = str_replace(" ", "_", $datos['nombreArticulo'] . "_" . $x . '.webp');
 
-    // Intenta subir las imagenes a la carpeta.
+    // Intenta subir la imagen a la carpeta.
     if (!subirImg($_FILES['imagen'], $datos['imagen'], 'productos'))
-        return codigoError::IMG_ERROR;
+        return err::IMG_ERROR;
 
     // Intenta ingresar el artículo en la base de datos y devuelve su correspondiente código de error.
     return (nuevoArticulo($datos)) ?
-        codigoError::SUCCESS : codigoError::NO_SUCCESS;
+        err::SUCCESS : err::NO_SUCCESS;
 }
 
 // Genera un ID de 11 numeros aleatorios.
@@ -81,6 +93,6 @@ function generarID()
 {
     do
         $id = mt_rand(100000000, 999999999);
-    while (!in_array($id, array_column(traerArticulos(), 'idProducto')));
+    while (traerArticulo($id, 'idProducto') != null);
     return $id;
 }

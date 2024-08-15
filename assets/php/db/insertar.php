@@ -105,7 +105,7 @@ function actPelicula($datos, $valores, $idProducto)
     // Si debe, actualiza la disponibilidad de idiomas.
     if (!empty($valores['idiomas'])) {
         $del = "DELETE FROM tieneIdiomas WHERE idProducto = ?";
-        if (!insertar([$datos['idProducto']], $del))
+        if (!insertar([$idProducto], $del))
             return false;
         $lineaSql = "INSERT INTO tieneIdiomas VALUES (?, ?)";
         foreach ($valores['idiomas'] as $x)
@@ -116,12 +116,45 @@ function actPelicula($datos, $valores, $idProducto)
     return true;
 }
 
+// Elimina un producto de tipo película en la base de datos.
+function eliminarPelicula($idProducto)
+{
+    $tablas = ['funciones', 'tieneCategorias', 'tieneDimensiones', 'tieneIdiomas', 'cartelera', 'pelicula', 'producto'];
+    foreach ($tablas as $x) {
+        $lineaSql = "DELETE FROM $x WHERE idProducto = ?";
+        if (!insertar([$idProducto], $lineaSql))
+            return false;
+    }
+    return true;
+}
+
 // Ingresa un producto de tipo artículo en la base de datos.
 function nuevoArticulo($datos)
 {
     $lineaSql = "INSERT INTO articulo VALUES (?, ?, ?, ?, ?)";
     return nuevoProducto($datos['idProducto']) ?
         insertar($datos, $lineaSql) : false;
+}
+
+// Actualiza un producto de tipo película en la base de datos.
+function actArticulo($datos, $idProducto)
+{
+    $set = implode(" = ?, ", array_keys($datos)) . " = ?";
+    $datos['idProducto'] = $idProducto;
+    $lineaSql = "UPDATE Articulo SET $set WHERE idProducto = ?";
+    return insertar($datos, $lineaSql);
+}
+
+// Elimina un producto de tipo artículo en la base de datos.
+function eliminarArticulo($idProducto)
+{
+    $tablas = ['articulo', 'producto'];
+    foreach ($tablas as $x) {
+        $lineaSql = "DELETE FROM $x WHERE idProducto = ?";
+        if (!insertar([$idProducto], $lineaSql))
+            return false;
+    }
+    return true;
 }
 
 // Ingresa una película ya existente en la cartelera.

@@ -9,14 +9,27 @@ require_once "../files/subir.php";
 require_once "../config/acceso.php";
 
 // Asigna un código de error según el caso.
-enum codigoError: int
+enum err: int
 {
-    case SUCCESS = 0; // Procedimiento realizado con éxito.
-    case NO_SUCCESS = 1; // Hubo un error en la inserción en la base de datos.
-    case EXISTENT = 2; // La película a añadir ya está en la base de datos.
-    case EMPTY = 3; // Al menos un campo está vacio.
-    case NOT_SET = 4; // Al menos un campo no está asignado.
-    case IMG_ERROR = 5; // Al menos una imagen tiene un error.
+    case SUCCESS = 0;
+    case NO_SUCCESS = 1;
+    case EXISTENT = 2;
+    case EMPTY = 3;
+    case NOT_SET = 4;
+    case IMG_ERROR = 5;
+
+    // Devuelve el mensaje asociado con el código de error.
+    function getMsg()
+    {
+        return match ($this) {
+            self::SUCCESS => "Procedimiento realizado con éxito.",
+            self::NO_SUCCESS => "Hubo un error en la inserción en la base de datos.",
+            self::EXISTENT => "La película a añadir ya existe.",
+            self::EMPTY => "Al menos un campo está vacio.",
+            self::NOT_SET => "Al menos un campo no está asignado.",
+            self::IMG_ERROR => "Al menos una imagen tiene un error."
+        };
+    }
 }
 
 
@@ -32,15 +45,13 @@ $datos['idProducto'] = generarID();
 
 // Guarda las variables sanitizadas en un array llamado datos y los valores multiples en otro array llamado valores.
 foreach ($campos as $x)
-    $datos[$x] = filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING);
+    $datos[$x] = filter_input(INPUT_POST, $x);
 foreach ($valMultiples as $x)
-    $valores[$x] = explode(', ', filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING));
+    $valores[$x] = explode(', ', filter_input(INPUT_POST, $x));
 
 // Devuelve el código de error correspondiente.
-$response['error'] = comprobarError();
-if ($response['error'] == codigoError::SUCCESS)
-    // Código temporal.
-    nuevaEnCartelera([$datos['idProducto'], date('Y-m-d'), 4]);
+$error = comprobarError();
+$response = ['error' => $error, 'errMsg' => $error->getMsg()];
 echo json_encode($response);
 
 // Mata la ejecución.
@@ -57,23 +68,23 @@ function comprobarError()
     // Devuelve un código de error si una variable no esta seteada.
     foreach (array_merge($totalCampos) as $x)
         if (!isset(array_merge($datos, $valores)[$x]))
-            return codigoError::NOT_SET;
+            return err::NOT_SET;
     foreach ($camposImg as $x)
         if (!isset($_FILES[$x]))
-            return codigoError::NOT_SET;
+            return err::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
     foreach (array_merge($totalCampos) as $x)
         if (empty(array_merge($datos, $valores)[$x]))
-            return codigoError::EMPTY;
+            return err::EMPTY;
     foreach ($camposImg as $x)
         if ($_FILES[$x]['error'] != UPLOAD_ERR_OK)
-            return codigoError::EMPTY;
+            return err::EMPTY;
 
     // Devuelve un código de error si hay una película ingresada con el mismo nombre y director.
-    $comp = traerPeliculaNombre($datos['nombrePelicula']);
-    if ($comp != null && $comp['director'] == $datos['director'])
-        return codigoError::EXISTENT;
+    $peliculaDB = traerPeliculaNombre($datos['nombrePelicula'], 'director');
+    if ($peliculaDB != null && $peliculaDB['director'] == $datos['director'])
+        return err::EXISTENT;
 
     // Guarda el nombre de las imagenes en datos.
     foreach ($camposImg as $x)
@@ -82,11 +93,11 @@ function comprobarError()
     // Intenta subir las imagenes a la carpeta.
     foreach ($camposImg as $x)
         if (!subirImg($_FILES[$x], $datos[$x], 'peliculas'))
-            return codigoError::IMG_ERROR;
+            return err::IMG_ERROR;
 
     // Intenta ingresar la película en la base de datos y devuelve su correspondiente código de error.
     return (nuevaPelicula($datos, $valores)) ?
-        codigoError::SUCCESS : codigoError::NO_SUCCESS;
+        err::SUCCESS : err::NO_SUCCESS;
 }
 
 // Genera un ID de 11 numeros aleatorios.
@@ -94,6 +105,6 @@ function generarID()
 {
     do
         $id = mt_rand(100000000, 999999999);
-    while (traerPelicula($id) != null);
+    while (traerPelicula($id, 'idProducto') != null);
     return $id;
 }

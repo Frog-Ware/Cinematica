@@ -24,7 +24,7 @@ enum err: int
         return match ($this) {
             self::SUCCESS => "Procedimiento realizado con éxito.",
             self::NO_SUCCESS => "Hubo un error en la inserción en la base de datos.",
-            self::NONEXISTENT => "La película a actualizar no existe.",
+            self::NONEXISTENT => "El artículo a actualizar no existe.",
             self::EMPTY => "Todos los campos o el campo ID estan vacios.",
             self::ID_NOT_SET => "La ID no esta seteada.",
             self::IMG_ERROR => "Al menos una imagen tiene un error."
@@ -34,15 +34,13 @@ enum err: int
 
 // Establece los campos requeridos, limpiando los vacios o no ingresados.
 array_filter($_POST);
-$campos = descartarVacios(['actores', 'sinopsis', 'duracion', 'nombrePelicula', 'pegi', 'trailer', 'director']);
-$valMultiples = descartarVacios(['categorias', 'dimensiones', 'idiomas']);
-$camposImg = descartarImg(['poster', 'cabecera']);
+$campos = descartarVacios(['nombreArticulo', 'descripcion', 'precio', 'imagen']);
+if ($_FILES['imagen']['error'] != UPLOAD_ERR_OK)
+    unset($_FILES['imagen']);
 
-// Guarda las variables sanitizadas en un array llamado datos y los valores multiples en otro array llamado valores.
+// Guarda las variables sanitizadas en un array llamado datos.
 foreach ($campos as $x)
     $datos[$x] = filter_input(INPUT_POST, $x);
-foreach ($valMultiples as $x)
-    $valores[$x] = explode(', ', filter_input(INPUT_POST, $x));
 
 // Devuelve el código de error correspondiente.
 $error = comprobarError();
@@ -69,27 +67,27 @@ function comprobarError()
     // Devuelve un código de error si el id o todos los otros campos estan vacios.
     if (empty($idProducto))
         return err::EMPTY;
-    if (empty($datos) && empty($valores) && empty($camposImg))
+    if (empty($datos) && empty($_FILES['imagen']))
         return err::EMPTY;
 
-    // Devuelve un código de error si no existe la pelicula a actualizar.
-    $peliculaDB = traerPelicula($idProducto, 'nombrePelicula, poster, cabecera');
-    if ($peliculaDB == null)
+    // Devuelve un código de error si no existe el artículo a actualizar.
+    $articuloDB = traerArticulo($idProducto, 'nombreArticulo, imagen');
+    if ($articuloDB == null)
         return err::NONEXISTENT;
 
-    // Guarda el nombre de las imagenes en datos.
-    $nmb = empty($datos['nombrePelicula']) ?
-        $peliculaDB['nombrePelicula'] : $datos['nombrePelicula'];
-    foreach ($camposImg as $x)
-        $datos[$x] = str_replace(" ", "_", $nmb . "_" . $x . '.webp');
+    // Guarda el nombre de la imagen en datos e intenta subir la imagen a la carpeta.
+    if (isset($_FILES['imagen'])) {
+        $nmb = empty($datos['nombreArticulo']) ?
+            $articuloDB['nombreArticulo'] : $datos['nombreArticulo'];
+        $datos['imagen'] = str_replace(" ", "_", "$nmb.webp");
 
-    // Intenta subir las imagenes a la carpeta.
-    foreach ($camposImg as $x)
-        if (!updImg($_FILES[$x], $datos[$x], $peliculaDB[$x], 'peliculas'))
+        if (!updImg($_FILES['imagen'], $datos['imagen'], $articuloDB['imagen'], 'peliculas'))
             return err::IMG_ERROR;
+    }
+
 
     // Intenta ingresar la película en la base de datos y devuelve su correspondiente código de error.
-    return (actPelicula($datos, $valores, $idProducto)) ?
+    return (actArticulo($datos, $idProducto)) ?
         err::SUCCESS : err::NO_SUCCESS;
 }
 
@@ -99,17 +97,6 @@ function descartarVacios($array)
     $desc = [];
     foreach ($array as $x)
         if (empty($_POST[$x]))
-            $desc[] = array_search($x, $array);
-    foreach ($desc as $x)
-        unset($array[$x]);
-    return $array;
-}
-
-function descartarImg($array)
-{
-    $desc = [];
-    foreach ($array as $x)
-        if ($_FILES[$x]['error'] != UPLOAD_ERR_OK)
             $desc[] = array_search($x, $array);
     foreach ($desc as $x)
         unset($array[$x]);

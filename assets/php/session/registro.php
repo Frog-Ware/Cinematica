@@ -12,17 +12,29 @@ require_once "../config/acceso.php";
 // Asigna un código de error según el caso.
 enum codigoError: int
 {
-    case SUCCESS = 0; // Procedimiento realizado con éxito.
-    case NO_SUCCESS = 1; // Hubo un error en la inserción en la base de datos.
-    case EXISTENT = 2; // El email a registrar ya está en la base de datos.
-    case EMPTY = 3; // Al menos un campo está vacio.
-    case NOT_SET = 4; // Al menos un campo no está asignado.
+    case SUCCESS = 0;
+    case NO_SUCCESS = 1;
+    case EXISTENT = 2;
+    case EMPTY = 3;
+    case NOT_SET = 4;
+
+    // Devuelve el mensaje asociado con el código de error.
+    function getMsg()
+    {
+        return match ($this) {
+            self::SUCCESS => "Procedimiento realizado con éxito.",
+            self::NO_SUCCESS => "Hubo un error en la inserción en la base de datos.",
+            self::EXISTENT => "El email a registrar ya está en la base de datos.",
+            self::EMPTY => "Al menos un campo está vacio.",
+            self::NOT_SET => "Al menos un campo no está asignado."
+        };
+    }
 }
 
 // Guarda las variables sanitizadas en un array llamado datos.
 $campos = ['email', 'nombre', 'apellido', 'imagenPerfil', 'passwd', 'numeroCelular'];
 foreach ($campos as $x)
-    $datos[$x] = filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING);
+    $datos[$x] = filter_input(INPUT_POST, $x);
 
 // Cifra la contraseña y el token generado en md5.
 if (!empty($datos['passwd']))

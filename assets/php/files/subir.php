@@ -15,8 +15,8 @@ function subirImg($img, $nombre, $carpeta)
     if (mime_content_type($img['tmp_name']) !== 'image/webp')
         return false;
 
-    // Verifica que la imagen sea menor en tamaño a los 10MB.
-    if ($img['size'] > 10 * 1024 * 1024)
+    // Verifica que la imagen sea menor en tamaño a los 200KB.
+    if ($img['size'] > 200 * 1024)
         return false;
 
     // Intenta subir la imagen y de no lograrlo devuelve falso.
@@ -27,7 +27,8 @@ function subirImg($img, $nombre, $carpeta)
 function borrarImg($nombre, $carpeta)
 {
     $dir = "../../img/$carpeta/$nombre";
-    if (!file_exists($dir)) return true;
+    if (!file_exists($dir))
+        return true;
     return is_writable($dir) ?
         unlink($dir) : false;
 }

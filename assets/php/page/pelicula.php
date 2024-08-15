@@ -8,10 +8,12 @@ require_once "../config/acceso.php";
 
 // Trae los datos de la pelicula por ID o nombre, según lo enviado
 if (isset($_POST['idProducto']))
-    $datos = traerPelicula($_POST['idProducto']);
+    $datos = empty($_POST['campos']) ?
+        traerPelicula($_POST['idProducto'], '*') : traerPelicula($_POST['idProducto'], $_POST['campos']);
 else if (isset($_POST['nombrePelicula']))
-    $datos = traerPeliculaNombre($_POST['nombrePelicula']);
-else 
+    $datos = empty($_POST['campos']) ?
+        traerPeliculaNombre($_POST['idProducto'], '*') : traerPelicula($_POST['idProducto'], $_POST['campos']);
+else
     $datos = null;
 $response = ($datos != null) ?
     ['resultado' => $datos] : ['error' => 'No hay artículos disponibles'];

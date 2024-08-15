@@ -11,18 +11,30 @@ require_once "../config/acceso.php";
 // Asigna un código de error según el caso.
 enum codigoError: int
 {
-    case MATCH = 0; // Los valores ingresados coinciden.
-    case NO_MATCH = 1; // La dirección de correo y contraseña ingresada no coinciden.
-    case NO_ACCOUNT = 2; // La dirección de correo ingresada no se encuentra registrada.
-    case EMPTY = 3; // Al menos un campo está vacio.
-    case NOT_SET = 4; // Al menos un campo no está asignado.
-    case ADMIN = 5; // La dirección de correo ingresada se encuentra registrada como administrador.
+    case MATCH = 0;
+    case NO_MATCH = 1;
+    case NO_ACCOUNT = 2;
+    case EMPTY = 3;
+    case NOT_SET = 4;
+    case ADMIN = 5;
+
+    // Devuelve el mensaje asociado con el código de error.
+    function getMsg()
+    {
+        return match ($this) {
+            self::MATCH => "Los valores ingresados coinciden.",
+            self::NO_MATCH => "La dirección de correo y contraseña ingresada no coinciden.",
+            self::NO_ACCOUNT => "La dirección de correo ingresada no se encuentra registrada.",
+            self::EMPTY => "Al menos un campo está vacio.",
+            self::NOT_SET => "Al menos un campo no está asignado."
+        };
+    }
 }
 
 // Guarda las variables sanitizadas en un array llamado datos.
 $campos = ['email', 'passwd'];
 foreach ($campos as $x)
-    $datos[$x] = filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING);
+    $datos[$x] = filter_input(INPUT_POST, $x);
 
 // Cifra la contraseña en md5.
 if (!empty($datos['passwd']))

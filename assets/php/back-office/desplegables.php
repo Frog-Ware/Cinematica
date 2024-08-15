@@ -12,7 +12,8 @@ $datos['dimensiones'] = traerDimensiones();
 $datos['idiomas'] = traerIdiomas();
 
 // Envia los datos mediante JSON.
-$response['desplegables'] = $datos;
+$response = (!empty($datos)) ?
+    ['resultado' => $datos] : ['errMsg' => 'No hay artículos disponibles'];
 echo json_encode($response);
 
 // Mata la ejecución.

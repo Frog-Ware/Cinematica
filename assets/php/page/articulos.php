@@ -7,7 +7,8 @@ require_once "../db/traer.php";
 require_once "../config/acceso.php";
 
 // Devuelve los datos de los artículos si no hay errores y un código de error si no hay resultados.
-$datos = traerArticulos();
+$datos = empty($_POST['campos']) ?
+    traerArticulos('*') : traerArticulos($_POST['campos']);
 $response = ($datos != null) ?
     ['articulos' => $datos] : ['error' => 'No hay artículos disponibles'];
 

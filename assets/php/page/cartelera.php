@@ -7,7 +7,8 @@ require_once "../db/traer.php";
 require_once "../config/acceso.php";
 
 // Devuelve los datos de las películas de no haber errores y un código de error si no hay resultados.
-$datos = traerCartelera();
+$datos = empty($_POST['campos']) ?
+    traerCartelera('*') : traerCartelera($_POST['campos']);
 $response = ($datos != null) ?
     ['cartelera' => $datos] : ['error' => 'No hay artículos disponibles'];
 

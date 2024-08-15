@@ -8,23 +8,37 @@ require_once "../db/traer.php";
 require_once "../config/acceso.php";
 
 // Asigna un código de error según el caso.
-enum codigoError: int
+enum err: int
 {
-    case SUCCESS = 0; // Procedimiento realizado con éxito.
-    case NO_SUCCESS = 1; // Hubo un error en la inserción en la base de datos.
-    case EXISTENT = 2; // La película a añadir ya está en la cartelera.
-    case EMPTY = 3; // Al menos un campo está vacio.
-    case NOT_SET = 4; // Al menos un campo no está asignado.
-    case DATE_ERROR = 5; // Fecha anterior a la actual.
+    case SUCCESS = 0;
+    case NO_SUCCESS = 1;
+    case EXISTENT = 2;
+    case EMPTY = 3;
+    case NOT_SET = 4;
+    case DATE_ERROR = 5;
+
+    // Devuelve el mensaje asociado con el código de error.
+    function getMsg()
+    {
+        return match ($this) {
+            self::SUCCESS => "Procedimiento realizado con éxito.",
+            self::NO_SUCCESS => "Hubo un error en la inserción en la base de datos.",
+            self::EXISTENT => "La película a añadir ya está en la cartelera.",
+            self::EMPTY => "Al menos un campo está vacio.",
+            self::NOT_SET => "Al menos un campo no está asignado.",
+            self::DATE_ERROR => "Fecha anterior a la actual."
+        };
+    }
 }
 
 // Guarda las variables recibidas por POST en un array llamado datos.
 $campos = ['idProducto', 'fechaInicio', 'cantidadSemanas'];
 foreach ($campos as $x)
-    $datos[$x] = filter_input(INPUT_POST, $x, FILTER_SANITIZE_STRING);
+    $datos[$x] = filter_input(INPUT_POST, $x);
 
 // Devuelve el código de error correspondiente.
-$response['error'] = comprobarError();
+$error = comprobarError();
+$response = ['error' => $error, 'errMsg' => $error->getMsg()];
 echo json_encode($response);
 
 // Mata la ejecución.
@@ -40,24 +54,24 @@ function comprobarError()
 
     // Devuelve un código de error si la fecha es anterior a la actual.
     if ($datos['fechaInicio'] < date('Y-m-d'))
-        return codigoError::DATE_ERROR;
+        return err::DATE_ERROR;
 
     // Devuelve un código de error si una variable no esta seteada.
     foreach ($campos as $x)
         if (!isset($datos[$x]))
-            return codigoError::NOT_SET;
+            return err::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
     foreach ($campos as $x)
         if (empty($datos[$x]))
-            return codigoError::EMPTY;
+            return err::EMPTY;
 
     // Devuelve un código de error si la película ya esta en cartelera.
-    foreach (traerCartelera() as $x)
+    foreach (traerCartelera('idProducto') as $x)
         if ($x['idProducto'] == $datos['idProducto'])
-            return codigoError::EXISTENT;
+            return err::EXISTENT;
 
     // Verifica que la película exista e intenta ingresar la película en la cartelera, devolviendo su correspondiente código de error.
-    return (traerPelicula($datos['idProducto']) != null && nuevaEnCartelera($datos)) ?
-        codigoError::SUCCESS : codigoError::NO_SUCCESS;
+    return (traerPelicula($datos['idProducto'], 'idProducto') != null && nuevaEnCartelera($datos)) ?
+        err::SUCCESS : err::NO_SUCCESS;
 }

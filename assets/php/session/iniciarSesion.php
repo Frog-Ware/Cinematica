@@ -9,7 +9,7 @@ require_once "../db/traer.php";
 require_once "../config/acceso.php";
 
 // Asigna un código de error según el caso.
-enum codigoError: int
+enum err: int
 {
     case MATCH = 0;
     case NO_MATCH = 1;
@@ -41,13 +41,12 @@ if (!empty($datos['passwd']))
     $datos['passwd'] = md5($datos['passwd']);
 
 // Verifica los datos e inicia sesión si se ha realizado exitosamente el registro, además de guardar los datos correspondientes como respuesta.
-$response['error'] = comprobarError();
-if ($response['error'] == codigoError::MATCH || $error == codigoError::ADMIN) {
+$error = comprobarError();
+$response = ['error' => $error, 'errMsg' => $error->getMsg()];
+if ($error == err::MATCH || $error == err::ADMIN) {
     inicioSesion($datos['email']);
     $response['datosUsuario'] = traerUsuario($_SESSION['user']);
 }
-
-// Envía la respuesta mediante JSON.
 echo json_encode($response);
 
 // Mata la ejecución.
@@ -64,24 +63,24 @@ function comprobarError()
     // Devuelve un código de error si una variable no esta seteada.
     foreach ($campos as $x)
         if (!isset($datos[$x]))
-            return codigoError::NOT_SET;
+            return err::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
     foreach ($campos as $x)
         if (empty($datos[$x]))
-            return codigoError::EMPTY;
+            return err::EMPTY;
 
     // Devuelve un código de error si la dirección de correo no está registrada.
     if (traerPasswd($datos['email']) == null)
-        return codigoError::NO_ACCOUNT;
+        return err::NO_ACCOUNT;
 
     // Devuelve un codigo de error si la contraseña no coincide.
     if ($datos['passwd'] != traerPasswd($datos['email']))
-        return codigoError::NO_MATCH;
+        return err::NO_MATCH;
 
     // Devuelve un código de error dependiendo si la cuenta es de rol Cliente o Administrador.
     return (traerRol($datos['email'])) ?
-        codigoError::ADMIN : codigoError::MATCH;
+        err::ADMIN : err::MATCH;
 }
 
 // Inicia la sesión por 7 días.

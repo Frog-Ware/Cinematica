@@ -162,6 +162,7 @@ function traerBusqueda($busqueda, $campos)
     return $datos;
 }
 
+// Trae los registros de compra asociados a ese producto.
 function traerRegistro($idProducto)
 {
     $consultaSql = "SELECT * FROM Compra WHERE idProducto = ?";
@@ -169,6 +170,19 @@ function traerRegistro($idProducto)
     return (!empty($datos)) ?
         $datos : null;
 }
+
+// Devuelve los datos del carrito.
+function traerCarrito($email)
+{
+    $consultaSql = "SELECT * FROM Carrito WHERE email = ?";
+    $datos = consultaUnica($consultaSql, [$email]);
+    if (empty($datos))
+        return null;
+    $consultaSql = "SELECT idProducto, cantidad FROM CarritoArticulo WHERE email = ?";
+    $datos['articulos'] = consultaClave($consultaSql, [$email]);
+    return $datos;
+}
+
 
 
 // Funciones de acceso a la base de datos.

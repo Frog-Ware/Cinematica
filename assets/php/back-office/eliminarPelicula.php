@@ -65,13 +65,13 @@ function comprobarError()
     if ($peliculaDB == null)
         return err::NONEXISTENT;
 
-    // Intenta borrar las imagenes de la carpeta.
-    if (!borrarImg($peliculaDB['poster'], 'peliculas') || !borrarImg($peliculaDB['cabecera'], 'peliculas'))
-        return err::IMG_ERR;
-
     // Si hay registro de compras existente con esa ID, devuelve un error.
     if (traerRegistro($idProducto))
         return err::REG_EXIST;
+
+    // Intenta borrar las imagenes de la carpeta.
+    if (!borrarImg($peliculaDB['poster'], 'peliculas') || !borrarImg($peliculaDB['cabecera'], 'peliculas'))
+        return err::IMG_ERR;
 
     // Intenta ingresar la película en la base de datos y devuelve su correspondiente código de error.
     return (eliminarPelicula($idProducto)) ?

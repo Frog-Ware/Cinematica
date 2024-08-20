@@ -10,7 +10,7 @@ require_once "../db/traer.php";
 require_once "../config/acceso.php";
 
 // Asigna un código de error según el caso.
-enum codigoError: int
+enum err: int
 {
     case SUCCESS = 0;
     case NO_SUCCESS = 1;
@@ -43,8 +43,9 @@ $token = generarToken();
 $datos['token'] = md5($token);
 
 // Verifica los datos e inicia sesión si se ha realizado exitosamente el registro, además de guardar los datos correspondientes como respuesta.
-$response['error'] = comprobarError();
-if ($response['error'] == codigoError::SUCCESS) {
+$error = comprobarError();
+$response = ['error' => $error, 'errMsg' => $error->getMsg()];
+if ($error == err::SUCCESS) {
     inicioSesion($datos['email']);
     $response['datosUsuario'] = traerUsuario($_SESSION['user']);
     $response['token'] = $token;
@@ -67,20 +68,20 @@ function comprobarError()
     // Devuelve un código de error si una variable no esta seteada.
     foreach ($campos as $x)
         if (!isset($datos[$x]))
-            return codigoError::NOT_SET;
+            return err::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
     foreach ($campos as $x)
         if (empty($datos[$x]))
-            return codigoError::EMPTY;
+            return err::EMPTY;
 
     // Devuelve un código de error si el usuario ya esta registrado.
     if (traerPasswd($datos['email']) != null)
-        return codigoError::EXISTENT;
+        return err::EXISTENT;
 
     // Intenta registrar al usuario en la base de datos y devuelve su correspondiente código de error.
     return (nuevoCliente($datos)) ?
-        codigoError::SUCCESS : codigoError::NO_SUCCESS;
+        err::SUCCESS : err::NO_SUCCESS;
 }
 
 // Genera un código de 6 caracteres aleatorios.

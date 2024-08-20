@@ -8,9 +8,26 @@ if (session_status() == PHP_SESSION_NONE)
 require_once "../db/traer.php";
 require_once "../config/acceso.php";
 
+// Asigna un código de error según el caso.
+enum err: int
+{
+    case SUCCESS = 0;
+    case NO_SUCCESS = 1;
+
+    // Devuelve el mensaje asociado con el código de error.
+    function getMsg()
+    {
+        return match ($this) {
+            self::SUCCESS => "La sesión esta iniciada.",
+            self::NO_SUCCESS => "No esta iniciada la sesión."
+        };
+    }
+}
+
 // Si hay una sesión iniciada, guarda los datos del usuario en cuestión como respuesta. Si no es así, guarda un mensaje de error.
-isset($_SESSION['user']) ?
-    $response['datosUsuario'] = traerUsuario($_SESSION['user']) : $response['error'] = "No esta iniciada la sesión.";
+$response = (session_status() === PHP_SESSION_ACTIVE) ?
+    ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'datosUsuario' => traerUsuario($_SESSION['user'])] :
+    ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
 
 // Envía la respuesta mediante JSON.
 echo json_encode($response);

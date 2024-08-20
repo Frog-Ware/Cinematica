@@ -78,7 +78,7 @@ function actPelicula($datos, $valores, $idProducto)
     if (!empty($datos)) {
         $set = implode(" = ?, ", array_keys($datos)) . " = ?";
         $datos['idProducto'] = $idProducto;
-        $lineaSql = "UPDATE Pelicula SET $set WHERE idProducto = ?";
+        $lineaSql = "UPDATE pelicula SET $set WHERE idProducto = ?";
         if (!insertar($datos, $lineaSql))
             return false;
     }
@@ -141,7 +141,7 @@ function actArticulo($datos, $idProducto)
 {
     $set = implode(" = ?, ", array_keys($datos)) . " = ?";
     $datos['idProducto'] = $idProducto;
-    $lineaSql = "UPDATE Articulo SET $set WHERE idProducto = ?";
+    $lineaSql = "UPDATE articulo SET $set WHERE idProducto = ?";
     return insertar($datos, $lineaSql);
 }
 
@@ -161,6 +161,15 @@ function eliminarArticulo($idProducto)
 function nuevaEnCartelera($datos)
 {
     $lineaSql = "INSERT INTO cartelera VALUES (?, ?, ?)";
+    return insertar($datos, $lineaSql);
+}
+
+// Crea o actualiza el carrito en la base de datos.
+function actCarrito($datos, $nuevo)
+{
+    $lineaSql = $nuevo ?
+        "INSERT INTO carrito (idFuncion, asientos, email) VALUES (?, ?, ?)" :
+        "UPDATE carrito SET idFuncion = ?, asientos = ? WHERE email = ?";
     return insertar($datos, $lineaSql);
 }
 

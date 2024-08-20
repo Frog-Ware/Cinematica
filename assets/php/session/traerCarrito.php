@@ -1,8 +1,10 @@
 <?php
 
-// Este script devuelve un array con todos los datos de las películas.
+// Este script evuelve el carrito asociado con el usuario.
 
 header("Content-Type: application/json; charset=utf-8");
+if (session_status() == PHP_SESSION_NONE)
+    session_start();
 require_once "../db/traer.php";
 require_once "../config/acceso.php";
 
@@ -17,16 +19,16 @@ enum err: int
     {
         return match ($this) {
             self::SUCCESS => "Procedimiento realizado con éxito.",
-            self::NO_SUCCESS => "No hay peliculas disponibles."
+            self::NO_SUCCESS => "No hay datos disponibles."
         };
     }
 }
 
-// Devuelve los datos de las películas de no haber errores y un código de error si no hay resultados.
-$datos = empty($_POST['campos']) ?
-    traerPeliculas('*') : traerPeliculas($_POST['campos']);
+// Asigna el valor de búsqueda a una variable.
+$datos = isset($_SESSION['user']) ?
+    traerCarrito($_SESSION['user']) : null;
 $response = ($datos != null) ?
-    ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'lista' => $datos] :
+    ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'carrito' => $datos] :
     ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
 echo json_encode($response);
 

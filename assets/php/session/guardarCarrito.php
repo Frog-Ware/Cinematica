@@ -1,6 +1,6 @@
 <?php
 
-// Este script permite cambiar la contraseña asociada a una cuenta en particular.
+// Este script guarda en la base de datos el carrito.
 
 header("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE)
@@ -14,7 +14,7 @@ enum err: int
 {
     case SUCCESS = 0;
     case NO_SUCCESS = 1;
-    case EXISTENT = 2;
+    case NO_SESSION = 2;
     case EMPTY = 3;
     case NOT_SET = 4;
 
@@ -23,8 +23,8 @@ enum err: int
     {
         return match ($this) {
             self::SUCCESS => "Procedimiento realizado con éxito.",
-            self::NO_SUCCESS => "Al menos un dato ingresado no corresponde con el resto.",
-            self::EXISTENT => "La nueva contraseña es idéntica a la anterior.",
+            self::NO_SUCCESS => "Hubo un error en la inserción en la base de datos.",
+            self::NO_SESSION => "La sesión no estaba iniciada.",
             self::EMPTY => "Al menos un campo está vacio.",
             self::NOT_SET => "Al menos un campo no está asignado."
         };
@@ -32,13 +32,9 @@ enum err: int
 }
 
 // Guarda las variables sanitizadas en un array llamado datos.
-$campos = ['email', 'token', 'passwd'];
+$campos = ['idFuncion', 'asientos'];
 foreach ($campos as $x)
     $datos[$x] = filter_input(INPUT_POST, $x);
-
-// Cifra la nueva contraseña y el token en md5.
-if (!empty($datos['passwd']))
-    $datos['passwd'] = md5($datos['passwd']);
 
 // Devuelve el código de error correspondiente.
 $error = comprobarError();
@@ -56,6 +52,13 @@ function comprobarError()
 {
     global $campos, $datos;
 
+    // Devuelve un código de error si la sesión no está iniciada.
+    if (isset($_SESSION['user']))
+        $datos['email'] = $_SESSION['user'];
+    else
+        return err::NO_SESSION;
+
+
     // Devuelve un código de error si una variable no esta seteada.
     foreach ($campos as $x)
         if (!isset($datos[$x]))
@@ -66,11 +69,7 @@ function comprobarError()
         if (empty($datos[$x]))
             return err::EMPTY;
 
-    // Devuelve un código de error si la nueva contraseña es la ya existente.
-    if ($datos['passwd'] == traerPasswd($datos['email']))
-        return err::EXISTENT;
-
-    // Intenta actualizar la contraseña en la base de datos y devuelve su correspondiente código de error.
-    return ((traerToken($datos['email']) == md5($datos['token'])) && actPasswd($datos)) ?
+    // Intenta persistir el carrito en la base de datos
+    return actCarrito($datos['email'], empty(traerCarrito($datos['email']))) ?
         err::SUCCESS : err::NO_SUCCESS;
 }

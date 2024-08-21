@@ -1,6 +1,6 @@
 <?php
 
-// Este script permite cambiar la contraseña asociada a una cuenta en particular.
+// Este script permite cambiar la imagen de perfil asociada a una cuenta en particular.
 
 header("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE)
@@ -34,7 +34,7 @@ enum err: int
 }
 
 // Sanitiza el dato ingresado.
-$datos['imagen'] = filter_input(INPUT_POST, 'imagen');
+$datos['imagenPerfil'] = filter_input(INPUT_POST, 'imagenPerfil');
 
 // Devuelve el código de error correspondiente.
 $error = comprobarError();
@@ -53,25 +53,24 @@ function comprobarError()
     global $datos;
 
     // Devuelve un código de error si una variable no esta seteada.
-    if (!isset($datos['imagen']))
+    if (!isset($datos['imagenPerfil']))
         return err::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
-    if (empty($datos['imagen']))
+    if (empty($datos['imagenPerfil']))
         return err::EMPTY;
 
-    if (!file_exists("../../img/perfil/" . $datos['imagen']))
+    // Devuelve un código de error si la imagen no existe.
+    if (!file_exists("../../img/perfil/" . $datos['imagenPerfil']))
         return err::IMG_ERR;
 
     // Devuelve un código de error si la sesión no está iniciada.
-    if (isset($_SESSION['user']) && traerCarrito($_SESSION['user']))
+    if (isset($_SESSION['user']))
         $datos['email'] = $_SESSION['user'];
     else
-        return err::NONEXISTENT;
+        return err::NO_SESSION;
 
-    print_r($datos);
-
-    // Intenta actualizar la contraseña en la base de datos y devuelve su correspondiente código de error.
+    // Intenta actualizar la imagen en la base de datos y devuelve su correspondiente código de error.
     return (actImagen($datos)) ?
         err::SUCCESS : err::NO_SUCCESS;
 }

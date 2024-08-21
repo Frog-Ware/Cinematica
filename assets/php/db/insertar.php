@@ -29,9 +29,19 @@ function actPasswd($datos)
     return insertar([$datos['passwd'], $datos['email']], $lineaSql);
 }
 
+// Actualiza la imagen del usuario.
 function actImagen($datos)
 {
     $lineaSql = "UPDATE Usuario SET imagenPerfil = ? WHERE email = ?";
+    return insertar($datos, $lineaSql);
+}
+
+
+// Actualiza los datos del usuario.
+function actUsuario($datos, $email)
+{
+    $set = implode(" = ?, ", array_keys($datos)) . " = ?";
+    $lineaSql = "UPDATE usuario SET $set WHERE email = \"$email\"";
     return insertar($datos, $lineaSql);
 }
 

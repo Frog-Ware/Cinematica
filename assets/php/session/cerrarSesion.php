@@ -8,7 +8,8 @@ if (session_status() == PHP_SESSION_NONE)
 require_once "../config/acceso.php";
 
 // Si hay una sesión iniciada, la cierra.
-if (isset($_SESSION['user'])) session_destroy();
+if (isset($_SESSION['user']))
+    session_destroy();
 
 // Mata la ejecución.
 die();

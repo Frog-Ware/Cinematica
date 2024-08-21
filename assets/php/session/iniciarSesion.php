@@ -26,7 +26,8 @@ enum err: int
             self::NO_MATCH => "La dirección de correo y contraseña ingresada no coinciden.",
             self::NO_ACCOUNT => "La dirección de correo ingresada no se encuentra registrada.",
             self::EMPTY => "Al menos un campo está vacio.",
-            self::NOT_SET => "Al menos un campo no está asignado."
+            self::NOT_SET => "Al menos un campo no está asignado.",
+            self::ADMIN => "Los valores ingresados coinciden y el usuario tiene permisos de Administrador."
         };
     }
 }

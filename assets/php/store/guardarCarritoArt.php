@@ -71,11 +71,13 @@ function comprobarError()
 
     // Devuelve un código de error si una variable no esta seteada.
     foreach ($datos as $x)
-        if (!isset($x)) return err::NOT_SET;
+        if (!isset($x))
+            return err::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
     foreach ($arrCampos as $x)
-        if (!isset($x)) return err::EMPTY;
+        if (!isset($x))
+            return err::EMPTY;
 
     // Intenta persistir el carrito en la base de datos
     return actCarritoArt($email, $datos) ?

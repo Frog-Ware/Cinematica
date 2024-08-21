@@ -193,8 +193,9 @@ function actCarrito($datos, $nuevo)
 function actCarritoArt($email, $datos)
 {
     $lineaSql = "INSERT INTO carritoArticulo VALUES (\"$email\", ?, ?)";
-    foreach ($datos as $x) 
-        if (!insertar($x, $lineaSql)) return false;
+    foreach ($datos as $x)
+        if (!insertar($x, $lineaSql))
+            return false;
     return true;
 }
 

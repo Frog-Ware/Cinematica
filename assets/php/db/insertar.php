@@ -29,6 +29,12 @@ function actPasswd($datos)
     return insertar([$datos['passwd'], $datos['email']], $lineaSql);
 }
 
+function actImagen($datos)
+{
+    $lineaSql = "UPDATE Usuario SET imagenPerfil = ? WHERE email = ?";
+    return insertar($datos, $lineaSql);
+}
+
 
 
 // Funciones de manipulación de datos de productos.
@@ -171,6 +177,15 @@ function actCarrito($datos, $nuevo)
         "INSERT INTO carrito (idFuncion, asientos, email) VALUES (?, ?, ?)" :
         "UPDATE carrito SET idFuncion = ?, asientos = ? WHERE email = ?";
     return insertar($datos, $lineaSql);
+}
+
+// Guarda artículos en el carrito.
+function actCarritoArt($email, $datos)
+{
+    $lineaSql = "INSERT INTO carritoArticulo VALUES (\"$email\", ?, ?)";
+    foreach ($datos as $x) 
+        if (!insertar($x, $lineaSql)) return false;
+    return true;
 }
 
 

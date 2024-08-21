@@ -70,6 +70,6 @@ function comprobarError()
             return err::EMPTY;
 
     // Intenta persistir el carrito en la base de datos
-    return actCarrito($datos['email'], empty(traerCarrito($datos['email']))) ?
+    return actCarrito($datos, empty(traerCarrito($datos['email']))) ?
         err::SUCCESS : err::NO_SUCCESS;
 }

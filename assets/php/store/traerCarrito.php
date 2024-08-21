@@ -24,7 +24,7 @@ enum err: int
     }
 }
 
-// Asigna el valor de búsqueda a una variable.
+// Devuelve los valores del carrito y un mensaje de error por JSON.
 $datos = isset($_SESSION['user']) ?
     traerCarrito($_SESSION['user']) : null;
 $response = ($datos != null) ?

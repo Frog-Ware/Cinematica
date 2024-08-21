@@ -24,7 +24,6 @@ enum err: int
     }
 }
 
-print(session_status());
 // Si hay una sesión iniciada, la cierra.
 if (isset($_SESSION['user'])) session_destroy();
 print_r($_SESSION);

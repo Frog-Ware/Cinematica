@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/css/changepasswd.css" />
+    <title>cambiarpaswd</title>
+  </head>
+  <body>
+    <h2>Cambiar Contraseña</h2>
+    <div>
+      <label for="token">Token:</label>
+      <input type="text" id="token" name="token" required />
+    </div>
+    <div>
+      <label for="email">Email:</label>
+      <input type="text" id="email" name="email" required />
+    </div>
+    <div>
+      <label for="new-password">Nueva Contraseña:</label>
+      <input type="password" id="nuevapassword" name="nuevapassword" required />
+    </div>
+    <div>
+      <button onclick="submitForm()">Cambiar Contraseña</button>
+    </div>
+
+    <script>
+      function submitForm() {
+        const token = document.getElementById("token").value;
+        const nuevaPassword = document.getElementById("nuevapassword").value;
+        const email = document.getElementById("email").value;
+        // Validaciones básicas
+        if (!token || !nuevaPassword || !email) {
+          alert("Por favor, completa todos los campos.");
+          return;
+        }
+
+        let datos = new FormData();
+        datos.append("token", token);
+        datos.append("passwd", nuevaPassword);
+        datos.append("email", email);
+
+        fetch("assets/php/session/cambiarPasswd.php", {
+          method: "POST",
+          body: datos,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              alert("Contraseña cambiada con éxito.");
+            } else {
+              alert("Error al cambiar la contraseña: " + data.error);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Error al cambiar la contraseña.");
+          });
+
+        // window.location.href = 'index.html';
+      }
+    </script>
+  </body>
+</html>

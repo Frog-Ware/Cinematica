@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
+<body>
+    <!-- <div id="peliculas">
+
+
+    </div> -->
+
+    <div class="mensaje">
+      <p><span class="icono"><i class='bx bx-x-circle'></i></span> Error al iniciar sesion </p>
+    </div>
+</body>
+</html>
+
+<style>
+  .icono
+  {
+    background-color: red;
+  }
+  .mensaje
+  {
+    height: 50px;
+    width: 30%;
+    background-color: rgb(250, 10, 10, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mensaje > p
+  {
+    font-size: 21px;
+    font-weight: bold;
+    color: red;
+    
+  }
+</style>
+
+<!-- <style>
+    #peliculas
+    {
+        font-size: 0px;
+        cursor: pointer;
+        overflow: hidden;
+        white-space: nowrap;
+        scroll-behavior: smooth;
+        padding: 20px;
+    }
+
+    #peliculas>img 
+    {
+        height: 400px;
+        object-fit: cover;
+        user-select: none;
+        margin-left: 15px;
+        width: 200px;
+        border-radius: 14px;
+        transition: 0.4s ease-in-out;
+    }
+</style>
+
+<script>
+    fetch("assets/php/page/cartelera.php")
+    .then((response) => response.json())
+    .then((data) => {
+      let peliculas = data.cartelera;
+      console.log(data.cartelera);
+
+      if (!peliculas || peliculas.length === 0) {
+        console.log("cartelera vacía");
+        return;
+      }
+
+      const contenedorPeliculas = document.getElementById("peliculas");
+      peliculas.forEach((movie) => {
+        const pelicula = document.createElement("img");
+        pelicula.src = "assets/img/peliculas/" + movie.poster;
+        pelicula.id = movie.idProducto;
+        contenedorPeliculas.appendChild(pelicula);
+
+        pelicula.addEventListener("click",()=>{
+          localStorage.setItem("peliculas", JSON.stringify(movie));
+          window.location.href = "peliculas.html";
+        })
+      });
+
+      iniciarCarrucel();
+    })
+    .catch((error) => {
+      console.error("Error al cargar los datos:", error);
+    });
+</script> -->

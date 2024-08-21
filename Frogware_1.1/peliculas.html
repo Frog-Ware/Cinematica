@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Película</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/general.css">
+    <link rel="stylesheet" href="assets/css/keyframes.css">
+    <link rel="stylesheet" href="assets/css/peliculasIndividuales.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+<body>
+    <header>
+        <nav class="navbar scroll-Snap" id="nav">
+          <div id="botonAbrir">
+            <i class="bx bx-menu"></i>
+          </div>
+          <!-- menú desplegable -->
+          <div class="sideBar" id="sideBar">
+            <a id="cerrar">&times;</a>
+            <ul>
+              <!-- navegacion del sidebar -->
+              <li>
+                <a href="cartelera.html"
+                  ><button class="sideBar_btn btn_link">CARTELERA</button></a
+                >
+              </li>
+              <li>
+                <a href="productos.html"
+                  ><button class="sideBar_btn btn_link">PRODUCTOS</button></a
+                >
+              </li>
+              <!-- li vacio con fin practico -->
+              <li></li>
+            </ul>
+          </div>
+          <!--fin del sidebar -->
+  
+          <div class="navbar_logo" id="logo"><h2>CINEMÁTICA</h2></div>
+  
+          <!-- iniciar sesión y cerrar sesión son elementos que se intercambian por js -->
+          <div class="navbar_login" id="abrirlogin"><p>INICIAR SESIÓN</p></div>
+          <div class="navbar_login cerrarSesion" id="cerrarSesion">
+            <p>CERRAR SESIÓN</p>
+          </div>
+        </nav>
+      </header>
+    <main>
+        <div id="peliculaCabecera" class="cabecera">
+            <!-- <img src="53.jpg" alt=""> -->
+        </div>
+        <div id="play" class="boton_play"> &#9654;</div>
+        <section class="contenido">
+            <div id="peliculaPoster" class="poster">
+                <!-- <img src="300.webp" alt=""> -->
+            </div>
+            <div class="info">
+            <div class="texto">
+                <div id="peliculaNombre" class="titulo">
+                    <!-- <h1>300</h1> -->
+                </div>
+                <div id="peliculaSinopsis" class="sinopsis">
+                    <!-- <p>En el año 480 antes de Cristo, existe un estado de guerra entre Persia, dirigida por el rey Jerjes, y Grecia. En la batalla de la Termópilas, Leonidas, rey de la ciudad griega de Esparta, encabeza a sus 300 bravos soldados en contra del numeroso ejército persa. A pesar de que la muerte aguarda a los espartanos, su sacrificio inspira a toda Grecia para unirla en contra de su enemigo común.</p> -->
+                </div>
+            </div>
+            <div id="peliculaEtiquetas" class="etiquetas">
+                <div>
+                <div class="etiqueta bounce-in-fwd">Clasficación: R </div>
+                <div class="etiqueta bounce-in-fwd">Director: Zack Snyder </div>
+                </div>
+                <div>
+                <div class="etiqueta bounce-in-fwd">Género: Acción, Aventura</div>
+                <div class="etiqueta bounce-in-fwd">Duración: 1:57 </div>
+                <div class="etiqueta bounce-in-fwd">Actores: Gerard Butler, Rodrigo Santoro</div>
+                </div>
+            </div>
+            </div>
+        </section>
+        <hr>
+        <section class="cine_info">
+            <div class="cineYsala">
+            <label for="cine">CINE</label>
+            <select class="cine-etiqueta" name="cine" id="cine">
+                <option value="cine">Cine</option>
+                <option value="costa">COSTA URBANA</option>
+                <option value="chaplin">CINE CHAPLIN</option>
+            </select>
+            <label for="sala">SALA</label>
+            <select class="sala-etiqueta" name="sala" id="sala">
+                <option value="sala">Sala</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+            <button id="botonEnviarCine" class="boton_cine">BUSCAR</button>
+            </div>
+            <!-- <div class="horarios">
+               <h2>HORARIOS</h2> 
+                <div class="horarios_etiquetas">
+                    <div class="h_etiqueta">18:30</div>
+                    <div class="h_etiqueta">19:30</div>
+                </div>
+            </div> -->
+
+<!--             
+            <div class="expo_butaca">
+               
+                <div id="expo-ocupada" class="butaca butaca--ocupada "></div>
+                <div id="expo-especial" class="butaca butaca--especial"></div>
+                <div id="expo-libre" class="butaca "></div>
+            </div> -->
+                
+           <div id="cuadroButacas" class="cuadro_butacas">
+           </div>
+           <div id="b_etiqueta" class="butacaEtiquetas">
+           </div>
+           <button id="botonReservar" class="boton_reservar">SIGUIENTE</button>
+        </section>
+    </main>
+    <div>&nbsp;</div>
+
+    <!-- Modal para el video -->
+<div id="videoTrailer" class="video-trailer">
+    <div class="video-trailer-contenido">
+        <span class="cerrar">&times;</span>
+        <iframe id="youtubeVideo" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+
+    <script src="assets/scripts/peliculasIndividual.js"></script>
+    <script src="assets/scripts/scripts.js"></script>
+</body> 
+</html>

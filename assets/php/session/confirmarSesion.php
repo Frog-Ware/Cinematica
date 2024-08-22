@@ -24,12 +24,10 @@ enum err: int
     }
 }
 
-// Si hay una sesión iniciada, guarda los datos del usuario en cuestión como respuesta. Si no es así, guarda un mensaje de error.
-$response = (session_status() === PHP_SESSION_ACTIVE) ?
+// Si hay una sesión iniciada, envía los datos del usuario en cuestión como respuesta, además de sus respectivos mensajes de error.
+$response = isset($_SESSION['user']) ?
     ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'datosUsuario' => traerUsuario($_SESSION['user'])] :
     ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
-
-// Envía la respuesta mediante JSON.
 echo json_encode($response);
 
 // Mata la ejecución.

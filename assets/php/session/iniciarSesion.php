@@ -17,6 +17,7 @@ enum err: int
     case EMPTY = 3;
     case NOT_SET = 4;
     case ADMIN = 5;
+    case SESSION_ACT = 6;
 
     // Devuelve el mensaje asociado con el código de error.
     function getMsg()
@@ -27,7 +28,8 @@ enum err: int
             self::NO_ACCOUNT => "La dirección de correo ingresada no se encuentra registrada.",
             self::EMPTY => "Al menos un campo está vacio.",
             self::NOT_SET => "Al menos un campo no está asignado.",
-            self::ADMIN => "Los valores ingresados coinciden y el usuario tiene permisos de Administrador."
+            self::ADMIN => "Los valores ingresados coinciden y el usuario tiene permisos de Administrador.",
+            self::SESSION_ACT => "La sesión ya está iniciada."
         };
     }
 }
@@ -44,10 +46,8 @@ if (!empty($datos['passwd']))
 // Verifica los datos e inicia sesión si se ha realizado exitosamente el registro, además de guardar los datos correspondientes como respuesta.
 $error = comprobarError();
 $response = ['error' => $error, 'errMsg' => $error->getMsg()];
-if ($error == err::MATCH || $error == err::ADMIN) {
-    inicioSesion($datos['email']);
+if (in_array($error, [err::MATCH, err::ADMIN, err::SESSION_ACT]))
     $response['datosUsuario'] = traerUsuario($_SESSION['user']);
-}
 echo json_encode($response);
 
 // Mata la ejecución.
@@ -79,15 +79,19 @@ function comprobarError()
     if ($datos['passwd'] != traerPasswd($datos['email']))
         return err::NO_MATCH;
 
-    // Devuelve un código de error dependiendo si la cuenta es de rol Cliente o Administrador.
+    // Devuelve un código de error si la sesión está iniciada.
+    if (isset($_SESSION['user']))
+        return err::SESSION_ACT;
+
+    // Inicia sesión y devuelve un código de error dependiendo si la cuenta es de rol Cliente o Administrador.
+    inicioSesion($datos['email']);
     return (traerRol($datos['email'])) ?
         err::ADMIN : err::MATCH;
 }
 
-// Inicia la sesión por 7 días.
+// Inicia la sesión por 1 día.
 function inicioSesion($email)
 {
     $_SESSION['user'] = $email;
     session_regenerate_id(true);
-    ini_set('session.gc_lifetime', 7 * 24 * 3600);
 }

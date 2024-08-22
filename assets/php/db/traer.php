@@ -19,7 +19,7 @@ function traerPasswd($email)
 // Devuelve los datos asociados al usuario poseedor del email ingresado.
 function traerUsuario($email)
 {
-    $consultaSql = "SELECT email, nombre, apellido, imagenPerfil FROM Usuario WHERE email = ?";
+    $consultaSql = "SELECT email, nombre, apellido, imagenPerfil, numeroCelular FROM Usuario WHERE email = ?";
     $datos = consultaUnica($consultaSql, [$email]);
     return (!empty($datos)) ?
         $datos : null;

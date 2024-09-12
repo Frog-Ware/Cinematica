@@ -52,9 +52,9 @@ function traerToken($email)
 // Funciones de datos referidos a los productos
 
 // Devuelve la pelicula asociada al ID ingresado.
-function traerPelicula($id, $campos)
+function traerPelicula($id)
 {
-    $consultaSql = "SELECT $campos FROM Pelicula WHERE idProducto = ?";
+    $consultaSql = "SELECT * FROM Pelicula WHERE idProducto = ?";
     $datos = consultaUnica($consultaSql, [$id]);
     if (empty($datos))
         return null;
@@ -64,15 +64,14 @@ function traerPelicula($id, $campos)
         'idioma' => "SELECT idioma FROM tieneIdiomas WHERE idProducto = ?"
     ];
     foreach ($consultas as $k => $v)
-        if (in_array($k, explode(', ', $campos)) || $campos == '*')
-            $datos[$k] = array_column(consultaClave($v, [$id]), $k);
+        $datos[$k] = array_column(consultaClave($v, [$id]), $k);
     return $datos;
 }
 
 // Devuelve la pelicula según su nombre.
-function traerPeliculaNombre($n, $campos)
+function traerPeliculaNombre($n)
 {
-    $consultaSql = "SELECT $campos FROM Pelicula WHERE nombrePelicula = ?";
+    $consultaSql = "SELECT * FROM Pelicula WHERE nombrePelicula = ?";
     $datos = consultaUnica($consultaSql, [$n]);
     if (empty($datos))
         return null;
@@ -82,13 +81,12 @@ function traerPeliculaNombre($n, $campos)
         'idioma' => "SELECT idioma FROM tieneIdiomas WHERE idProducto = ?"
     ];
     foreach ($consultas as $k => $v)
-        if (in_array($k, explode(', ', $campos)) || $campos == '*')
-            $datos[$k] = array_column(consultaClave($v, [$datos['idProducto']]), $k);
+        $datos[$k] = array_column(consultaClave($v, [$datos['idProducto']]), $k);
     return $datos;
 }
 
 // Devuelve todas las peliculas.
-function traerPeliculas($campos)
+function traerPeliculas()
 {
     $consultaSql = "SELECT idProducto FROM Pelicula";
     foreach (consulta($consultaSql) as $x)
@@ -96,19 +94,19 @@ function traerPeliculas($campos)
     if (empty($ids))
         return null;
     foreach ($ids as $x)
-        $datos[] = traerPelicula($x, $campos);
+        $datos[] = traerPelicula($x);
     return $datos;
 }
 
 // Devuelve la cartelera de películas en su totalidad.
-function traerCartelera($campos)
+function traerCartelera()
 {
     $consultaSql = "SELECT * FROM Cartelera";
     $ids = consulta($consultaSql);
     if (empty($ids))
         return null;
     foreach ($ids as $x)
-        $datos[] = traerPelicula($x['idProducto'], $campos);
+        $datos[] = traerPelicula($x['idProducto']);
     return $datos;
 }
 
@@ -148,40 +146,40 @@ function traerIdiomas()
 }
 
 // Devuelve el artículo asociada al ID ingresado.
-function traerArticulo($idProducto, $campos)
+function traerArticulo($idProducto)
 {
-    $consultaSql = "SELECT $campos FROM Articulo WHERE idProducto = ?";
+    $consultaSql = "SELECT '*' FROM Articulo WHERE idProducto = ?";
     $datos = consultaUnica($consultaSql, [$idProducto]);
     return (!empty($datos)) ?
         $datos : null;
 }
 
 // Devuelve el artículo asociada al nombre ingresado.
-function traerArticuloNombre($n, $campos)
+function traerArticuloNombre($n)
 {
-    $consultaSql = "SELECT $campos FROM Articulo WHERE nombreArticulo = ?";
+    $consultaSql = "SELECT '*' FROM Articulo WHERE nombreArticulo = ?";
     $datos = consultaUnica($consultaSql, [$n]);
     return (!empty($datos)) ?
         $datos : null;
 }
 
 // Devuelve la lista de artículos en su totalidad. 
-function traerArticulos($campos)
+function traerArticulos()
 {
-    $consultaSql = "SELECT $campos FROM Articulo";
+    $consultaSql = "SELECT * FROM Articulo";
     $datos = consulta($consultaSql);
     return (!empty($datos)) ?
         $datos : null;
 }
 
-function traerBusqueda($busqueda, $campos)
+function traerBusqueda($busqueda)
 {
     $consultaSql = "SELECT idProducto FROM Pelicula WHERE nombrePelicula LIKE ?";
     $id = consultaClave($consultaSql, [$busqueda]);
     if (empty($id))
         return null;
     foreach ($id as $x)
-        $datos[] = array_merge(traerPelicula($x['idProducto'], $campos), $x);
+        $datos[] = array_merge(traerPelicula($x['idProducto']), $x);
     return $datos;
 }
 
@@ -206,37 +204,37 @@ function traerCarrito($email)
     return $datos;
 }
 
-function traerFunc($idFuncion, $campos)
+function traerFunc($idFuncion)
 {
-    $consultaSql = "SELECT $campos FROM Funciones WHERE idFuncion = ?";
+    $consultaSql = "SELECT * FROM Funciones WHERE idFuncion = ?";
     $datos = consultaClave($consultaSql, [$idFuncion]);
     return (!empty($datos)) ?
         $datos : null;
 }
 
-function traerFuncFecha($fecha, $campos)
+function traerFuncFecha($fecha)
 {
-    $consultaSql = "SELECT $campos FROM Funciones WHERE fechaPelicula = ?";
+    $consultaSql = "SELECT * FROM Funciones WHERE fechaPelicula = ?";
     $datos = consultaClave($consultaSql, [$fecha]);
     return (!empty($datos)) ?
         $datos : null;
 }
 
 // Devuelve las funciones programadas desde el día actual (incluido) en adelante.
-function traerFuncFuturas($campos)
+function traerFuncFuturas()
 {
     $fecha = new DateTime('now', new DateTimeZone('America/Montevideo'));
-    $consultaSql = "SELECT $campos FROM Funciones WHERE fechaPelicula >= ?";
+    $consultaSql = "SELECT * FROM Funciones WHERE fechaPelicula >= ?";
     $datos = consultaClave($consultaSql, [$fecha->format('Y-m-d')]);
     return (!empty($datos)) ?
         $datos : null;
 }
 
 // Devuelve las funciones programadas para una pelicula en específico desde el día actual (incluido) en adelante.
-function traerFuncFuturasEsp($idProducto, $campos)
+function traerFuncFuturasEsp($idProducto)
 {
     $fecha = new DateTime('now', new DateTimeZone('America/Montevideo'));
-    $consultaSql = "SELECT $campos FROM Funciones WHERE idProducto = ? AND fechaPelicula >= ?";
+    $consultaSql = "SELECT * FROM Funciones WHERE idProducto = ? AND fechaPelicula >= ?";
     $datos = consultaClave($consultaSql, [$idProducto, $fecha->format('Y-m-d')]);
     return (!empty($datos)) ?
         $datos : null;

@@ -4,6 +4,7 @@
 
 header("Content-Type: application/json; charset=utf-8");
 require_once "../db/traer.php";
+require_once "../utilities/validacion.php";
 
 // Asigna un código de error según el caso.
 enum err: int
@@ -21,15 +22,17 @@ enum err: int
     }
 }
 
-// Revisa si hay alguna especificación sobre los campos requeridos y trae los datos necesarios.
-$datos = empty($_POST['campos']) ?
-    traerArticulos('*') : traerArticulos($_POST['campos']);
-
-// Devuelve los datos de los artículos si no hay errores y un código de error si no hay resultados.
-$response = ($datos != null) ?
-    ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'articulos' => $datos] :
-    ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
-echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Devuelve los datos de los artículos si no hay errores y un código de error si no hay resultados.
+    $datos = traerArticulos();
+    $response = ($datos != null) ?
+        ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'articulos' => $datos] :
+        ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
+    echo json_encode($response);
+} else {
+    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
+    header('HTTP/1.0 405 Method Not Allowed');
+}
 
 // Mata la ejecución.
 die();

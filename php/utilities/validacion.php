@@ -1,5 +1,10 @@
 <?php
 
+// Verifica que una variable sea vacía (string vacío, nula, solo espacios en blanco o un array vacío).
+function blank($var) {
+    return is_null($var) || $var === '' || preg_match('/^\s*$/', $var) || (is_array($var) && empty($var));
+}
+
 // Valida un integer, verificando que solo contenga numeros y su longitud sea la permitida.
 function validarInt($var, $len = 9)
 {
@@ -30,7 +35,8 @@ function validarURL($var, $len)
 
 function validarEmail($var, $len)
 {
-    $regex = '';
+    $regex = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
+    return preg_match($regex, $var) && strlen($var) <= $len;
 }
 
 // Valida una imagen, verificando que su formato y tamaño sean los permitidos.

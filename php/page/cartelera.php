@@ -4,6 +4,7 @@
 
 header("Content-Type: application/json; charset=utf-8");
 require_once "../db/traer.php";
+require_once "../utilities/validacion.php";
 
 // Asigna un código de error según el caso.
 enum err: int
@@ -21,13 +22,10 @@ enum err: int
     }
 }
 
-// Revisa si hay alguna especificación sobre los campos requeridos y trae los datos necesarios.
-$datos = empty($_POST['campos']) ?
-    traerCartelera('*') : traerCartelera($_POST['campos']);
-
 // Devuelve los datos de las películas si no hay errores y un código de error si no hay resultados.
+$datos = traerCartelera();
 $response = ($datos != null) ?
-    ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'cartelera' => $datos] :
+    ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'datos' => $datos] :
     ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
 echo json_encode($response);
 

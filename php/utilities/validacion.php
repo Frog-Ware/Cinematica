@@ -3,7 +3,7 @@
 // Verifica que una variable sea vacía (string vacío, nula, solo espacios en blanco o un array vacío).
 function blank($var) {
     return is_array($var) ?
-        !empty($var) : is_null($var) || $var === '' || preg_match('/^\s*$/', $var);
+        empty($var) : is_null($var) || $var === '' || preg_match('/^\s*$/', $var);
 }
 
 // Valida un integer, verificando que solo contenga numeros y su longitud sea la permitida.

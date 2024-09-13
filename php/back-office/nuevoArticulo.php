@@ -33,7 +33,6 @@ enum err: int
         };
     }
 }
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Genera una ID para el producto.
     $datos['idProducto'] = generarID();
@@ -83,7 +82,7 @@ function comprobar($datos, $img)
         return err::VALIDATION;
 
     // Devuelve un código de error si hay un artículo con el mismo nombre.
-    if (!empty(traerArticuloNombre($datos['nombreArticulo'])))
+    if (!is_null(traerArticuloNombre($datos['nombreArticulo'])))
         return err::EXISTENT;
 
     // Guarda el nombre de la imagen en datos.

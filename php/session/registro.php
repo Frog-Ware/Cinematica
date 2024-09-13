@@ -45,8 +45,8 @@ $datos['token'] = md5($token);
 $error = comprobarError();
 $response = ['error' => $error, 'errMsg' => $error->getMsg()];
 if ($error == err::SUCCESS) {
-    inicioSesion($datos['email']);
-    $response['datosUsuario'] = traerUsuario($_SESSION['user']);
+    //inicioSesion($datos['email']);
+    $response['datosUsuario'] = traerUsuario($datos['email']);
     $response['token'] = $token;
 }
 
@@ -75,7 +75,7 @@ function comprobarError()
             return err::EMPTY;
 
     // Devuelve un código de error si el usuario ya esta registrado.
-    if (traerPasswd($datos['email']) != null)
+    if (!is_null(traerPasswd($datos['email'])))
         return err::EXISTENT;
 
     // Intenta registrar al usuario en la base de datos y devuelve su correspondiente código de error.
@@ -92,10 +92,10 @@ function generarToken()
     return substr($token, 0, 6);
 }
 
-// Inicia la sesión por 7 días.
-function inicioSesion($email)
-{
-    $_SESSION['user'] = $email;
-    session_regenerate_id(true);
-    ini_set('session.gc_lifetime', 7 * 24 * 3600);
-}
+// // Inicia la sesión por 7 días.
+// function inicioSesion($email)
+// {
+//     $_SESSION['user'] = $email;
+//     session_regenerate_id(true);
+//     ini_set('session.gc_lifetime', 7 * 24 * 3600);
+// }

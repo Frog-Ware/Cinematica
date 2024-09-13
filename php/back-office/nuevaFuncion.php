@@ -63,7 +63,7 @@ function comprobar($datos)
 
     // Devuelve un código de error si una variable esta vacía.
     foreach ($datos as $x)
-        if (empty($x))
+        if (blank($x))
             return err::EMPTY;
 
     // Devuelve un código de error si algun campo no pasa la validación.
@@ -71,8 +71,8 @@ function comprobar($datos)
         return err::VALIDATION;
 
     // Devuelve un código de error si hay una función en un rango de 2hs y 30 min, antes o despues de la función a agregar.
-    $funcFecha = traerFuncFecha($datos['fechaPelicula'], 'horaPelicula, nombreCine, numeroSala');
-    if (!empty($funcFecha)) {
+    $funcFecha = traerFuncFecha($datos['fechaPelicula']);
+    if (!is_null($funcFecha)) {
         foreach ($funcFecha as $x)
         if ($datos['nombreCine'] == $x['nombreCine'] && $datos['numeroSala'] == $x['numeroSala'])
             if (rangoHorario($datos['horaPelicula'], $x['horaPelicula'], 2.5))
@@ -89,7 +89,7 @@ function generarID()
 {
     do
         $id = mt_rand(100000000, 999999999);
-    while (traerPelicula  ($id, 'idProducto') != null);
+    while (!is_null(traerPelicula($id)));
     return $id;
 }
 
@@ -104,7 +104,7 @@ function validacion($datos)
     if (!validarAl($datos['nombreCine'], 20))
         return false;
     $pos = array_search($datos['nombreCine'], array_column(traerCines(), 'nombreCine'));
-    if ($pos === null || !in_array($datos['numeroSala'], traerCines()[$pos]['salas']))
+    if (is_null($pos) || !in_array($datos['numeroSala'], traerCines()[$pos]['salas']))
         return false;
 
     // Valida la fecha, verificando que este en el formato permitido.

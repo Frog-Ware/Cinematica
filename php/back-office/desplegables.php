@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $datos['idioma'] = array_column(traerIdiomas(), 'idioma');
 
     // Envia los datos mediante JSON.
-    $response = ($datos != null) ?
+    $response = (!is_null($datos)) ?
         ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'valores' => $datos] :
         ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
     echo json_encode($response);

@@ -61,7 +61,7 @@ function comprobar()
     }
 
     // Devuelve un código de error si el ID esta vacío.
-    if (empty($idProducto))
+    if (blank($idProducto))
         return err::EMPTY;
 
     // Devuelve un código de error si el ID no pasa la validación.
@@ -69,7 +69,7 @@ function comprobar()
         return err::VALIDATION;
 
     // Devuelve un código de error si no existe el artículo a eliminar.
-    $articuloDB = traerArticulo($idProducto, 'imagen');
+    $articuloDB = traerArticulo($idProducto);
     if ($articuloDB == null)
         return err::NONEXISTENT;
 

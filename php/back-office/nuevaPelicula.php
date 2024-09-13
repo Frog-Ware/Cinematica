@@ -75,7 +75,7 @@ function comprobar($datos, $datosArr, $img)
 
     // Devuelve un código de error si una variable esta vacía.
     foreach (array_merge($datos, $datosArr, $img) as $x)
-        if (empty($x))
+        if (blank($x))
             return err::EMPTY;
 
     // Devuelve un código de error si algun campo no pasa la validación.
@@ -83,7 +83,7 @@ function comprobar($datos, $datosArr, $img)
         return err::VALIDATION;
 
     // Devuelve un código de error si hay una película ingresada con el mismo nombre.
-    $peliculaDB = traerPeliculaNombre($datos['nombrePelicula'], 'nombrePelicula');
+    $peliculaDB = traerPeliculaNombre($datos['nombrePelicula']);
     if (!empty($peliculaDB))
         return err::EXISTENT;
 
@@ -106,7 +106,7 @@ function generarID()
 {
     do
         $id = mt_rand(100000000, 999999999);
-    while (traerFunc($id, 'idFuncion') != null);
+    while (!is_null(traerFunc($id)));
     return $id;
 }
 

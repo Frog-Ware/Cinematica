@@ -3,6 +3,7 @@
 // Este script inserta en la base de datos los datos del usuario que necesitan de permanencia.
 
 require_once "conn.php";
+require_once "../utilities/validacion.php";
 
 // Funciones de manipulación de datos de usuario.
 
@@ -90,7 +91,7 @@ function nuevaPelicula($datos, $valores)
 function actPelicula($datos, $datosArr, $idProducto)
 {
     // Si debe, actualiza los datos de las películas.
-    if (!empty($datos)) {
+    if (!blank($datos)) {
         $set = implode(" = ?, ", array_keys($datos)) . " = ?";
         $datos['idProducto'] = $idProducto;
         $lineaSql = "UPDATE Pelicula SET $set WHERE idProducto = ?";
@@ -102,7 +103,7 @@ function actPelicula($datos, $datosArr, $idProducto)
     foreach ($tablas as $t) {
         $insertSql = "INSERT INTO Tiene$t VALUES (?, ?)";
         $deleteSql = "DELETE FROM Tiene$t WHERE idProducto = ?";
-        if (!empty($datosArr[$t])) {
+        if (!blank($datosArr[$t])) {
             if (!insertar([$idProducto], $deleteSql))
                 return false;
             foreach ($datosArr[$t] as $x)

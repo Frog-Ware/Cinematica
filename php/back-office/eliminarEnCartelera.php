@@ -60,7 +60,7 @@ function comprobar()
     }
 
     // Devuelve un código de error si el ID esta vacío.
-    if (empty($idProducto))
+    if (blank($idProducto))
         return err::EMPTY;
 
     // Devuelve un código de error si el ID no pasa la validación.
@@ -72,7 +72,7 @@ function comprobar()
         return err::NONEXISTENT;
         
     // Devuelve un código de error si la pelicula tiene funciones programadas.
-    if (traerFuncFuturasEsp($idProducto, 'idFuncion'))
+    if (traerFuncFuturasEsp($idProducto))
         return err::PROG_FUNC;
 
     // Intenta eliminar la película de la cartelera, devolviendo su correspondiente código de error.

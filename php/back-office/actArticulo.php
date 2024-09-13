@@ -68,7 +68,7 @@ function comprobar($datos, $img, $idProducto)
     }
 
     // Devuelve un código de error si el ID o todos los otros campos estan vacios.
-    if (empty($idProducto) || (empty($datos) && !isset($img)))
+    if (blank($idProducto) || (blank($datos) && blank($img)))
         return err::EMPTY;
 
     // Devuelve un código de error si algun campo no pasa la validación.
@@ -76,13 +76,13 @@ function comprobar($datos, $img, $idProducto)
         return err::VALIDATION;
 
     // Devuelve un código de error si no existe el artículo a actualizar.
-    $articuloDB = traerArticulo($idProducto, 'nombreArticulo, imagen');
+    $articuloDB = traerArticulo($idProducto);
     if (empty($articuloDB))
         return err::NONEXISTENT;
 
     // Actualiza la imagen o su nombre de ser necesario.
     if (isset($datos['nombreArticulo'])) {
-        $datos['imagen'] = str_replace(" ", "_", $datos['nombreArticulo'] . ".webp");
+        $datos['imagen'] = str_replace(" ", "_", $datos['nombreArticulo'] . "_imagen.webp");
         $ok = isset($img) ?
             actImg($img, $datos['imagen'], $articuloDB['imagen'], 'articulos') :
             actNombreImg($datos['imagen'], $articuloDB['imagen'], 'articulos');
@@ -93,7 +93,7 @@ function comprobar($datos, $img, $idProducto)
             return err::IMG_ERR;
 
     // Intenta ingresar el artículo en la base de datos y devuelve su correspondiente código de error.
-    if (!empty($datos))
+    if (!blank($datos))
         return (actArticulo($datos, $idProducto)) ?
             err::SUCCESS : err::NO_SUCCESS;
     else
@@ -105,7 +105,7 @@ function filtrar($claves, $arr)
 {
     $arrF = [];
     foreach ($claves as $k)
-        if (!empty($arr[$k]))
+        if (!blank($arr[$k]))
             $arrF[$k] = $arr[$k];
     return $arrF;
 }

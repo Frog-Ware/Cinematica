@@ -71,7 +71,7 @@ function comprobar($datos, $datosArr, $img)
     }
     
     // Devuelve un código de error si el ID o todos los otros campos estan vacios.
-    if (empty($idProducto) || (empty($datos) && empty($datosArr) && empty($img)))
+    if (blank($idProducto) || (blank($datos) && blank($datosArr) && blank($img)))
         return err::EMPTY;
 
     // Devuelve un código de error si algun campo no pasa la validación.
@@ -79,7 +79,7 @@ function comprobar($datos, $datosArr, $img)
         return err::VALIDATION;
 
     // Devuelve un código de error si no existe la pelicula a actualizar.
-    $peliculaDB = traerPelicula($idProducto, 'nombrePelicula, poster, cabecera');
+    $peliculaDB = traerPelicula($idProducto);
     if ($peliculaDB == null)
         return err::NONEXISTENT;
 
@@ -93,7 +93,7 @@ function comprobar($datos, $datosArr, $img)
             if (!$ok)
                 return err::IMG_ERR;
         }
-    } else if (!empty($img)) {
+    } else if (!blank($img)) {
         foreach (['poster', 'cabecera'] as $x)
             if (isset($img[$x]) && !actImg($img[$x], $peliculaDB[$x], $peliculaDB[$x], 'peliculas'))
                 return err::IMG_ERR;
@@ -109,10 +109,10 @@ function filtrar($claves, $arr, $explode)
 {
     $arrF = [];
     foreach ($claves as $k)
-        if (!empty($arr[$k]))
+        if (!blank($arr[$k]))
             $arrF[$k] = $explode ?
                 explode(', ', $arr[$k]) : $arr[$k];
-    return !empty($arrF) ?
+    return !blank($arrF) ?
         $arrF : null;
 }
 
@@ -142,7 +142,7 @@ function validacion($datos, $datosArr, $img, $idProducto)
 
     // Valida el tamaño y el tipo de las imágenes.
     foreach ($img as $x)
-        if (isset($x) && !validarImg($x, 'webp', 200))
+        if (!blank($x) && !validarImg($x, 'webp', 200))
             return false;
 
     // Valida los datos múltiples, verificando que existan.

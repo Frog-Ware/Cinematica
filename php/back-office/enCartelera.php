@@ -55,7 +55,7 @@ function comprobar()
     }
 
     // Devuelve un código de error si el ID esta vacío.
-    if (empty($idProducto))
+    if (blank($idProducto))
         return err::EMPTY;
 
     // Devuelve un código de error si el ID no pasa la validación.
@@ -67,7 +67,7 @@ function comprobar()
         return err::EXISTENT;
 
     // Verifica que la película exista e intenta ingresar la película en la cartelera, devolviendo su correspondiente código de error.
-    return (!empty(traerPelicula($idProducto, 'idProducto')) && nuevaEnCartelera($idProducto)) ?
+    return (!is_null(traerPelicula($idProducto)) && nuevaEnCartelera($idProducto)) ?
         err::SUCCESS : err::NO_SUCCESS;
 }
 

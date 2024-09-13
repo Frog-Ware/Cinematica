@@ -73,9 +73,9 @@ function comprobar($datos, $img)
 
     // Devuelve un código de error si una variable esta vacía.
     foreach ($datos as $x)
-        if (empty($x))
+        if (blank($x))
             return err::EMPTY;
-    if (empty($img))
+    if (blank($img))
         return err::EMPTY;
 
     // Devuelve un código de error si algun campo no pasa la validación.
@@ -83,11 +83,11 @@ function comprobar($datos, $img)
         return err::VALIDATION;
 
     // Devuelve un código de error si hay un artículo con el mismo nombre.
-    if (!empty(traerArticuloNombre($datos['nombreArticulo'], '*')))
+    if (!empty(traerArticuloNombre($datos['nombreArticulo'])))
         return err::EXISTENT;
 
     // Guarda el nombre de la imagen en datos.
-    $datos['imagen'] = str_replace(" ", "_", $datos['nombreArticulo'] . "_imagen" . '.webp');
+    $datos['imagen'] = str_replace(" ", "_", $datos['nombreArticulo'] . "_imagen.webp");
 
     // Intenta subir la imagen a la carpeta.
     if (!subirImg($img, $datos['imagen'], 'articulos'))
@@ -103,7 +103,7 @@ function generarID()
 {
     do
         $id = mt_rand(100000000, 999999999);
-    while (traerArticulo($id, 'idProducto') != null);
+    while (!is_null(traerArticulo($id)));
     return $id;
 }
 

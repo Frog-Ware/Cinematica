@@ -1,6 +1,6 @@
 <?php
 
-// Este script devuelve las listas de los valores desplegables.
+// Este script devuelve una lista con los administradores.
 
 header("Content-Type: application/json; charset=utf-8");
 require_once "../db/traer.php";
@@ -16,16 +16,14 @@ enum err: int
     {
         return match ($this) {
             self::SUCCESS => "Procedimiento realizado con éxito.",
-            self::NO_SUCCESS => "No hay desplegables disponibles."
+            self::NO_SUCCESS => "Hubo un error o la lista de clientes esta vacía."
         };
     }
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Asigna los datos extraidos de la base de datos a su correspondiente posición en el array.
-    $datos['nombreCategoria'] = array_column(traerCategorias(), 'nombreCategoria');
-    $datos['dimension'] = array_column(traerDimensiones(), 'dimension');
-    $datos['idioma'] = array_column(traerIdiomas(), 'idioma');
+    // Asigna los datos extraidos de la base de datos a una variable llamada datos.
+    $datos = traerEmpleados(1);
 
     // Envia los datos mediante JSON.
     $response = (!is_null($datos)) ?

@@ -44,7 +44,9 @@ if (!empty($datos['passwd']))
 
 // Verifica los datos e inicia sesión si se ha realizado exitosamente el registro, además de guardar los datos correspondientes como respuesta.
 $error = comprobarError();
-$response = ['error' => $error, 'errMsg' => $error->getMsg()];
+$response = in_array($error, [0, 5, 6]) ? 
+    ['error' => $error, 'errMsg' => $error->getMsg(), 'datos' => traerUsuario($datos['email'])] :
+    ['error' => $error, 'errMsg' => $error->getMsg()];
 echo json_encode($response);
 
 // Mata la ejecución.

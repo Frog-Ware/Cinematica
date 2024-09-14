@@ -58,9 +58,24 @@ function traerClientes()
     } else {
         return null;
     }
-    // foreach ($ids as $x)
-    //     $datos[] = traerUsuario($x);
-    return $ids;
+    foreach ($ids as $x)
+        $datos[] = traerUsuario($x);
+    return $datos;
+}
+
+// Devuelve una lista de los empleados.
+function traerEmpleados($rol)
+{
+    $consultaSql = "SELECT email FROM Empleado WHERE esAdmin = ?";
+    if (!is_null(consultaClave($consultaSql, [$rol]))) {
+        foreach (consultaClave($consultaSql, [$rol]) as $x)
+            $ids[] = $x['email'];
+    } else {
+        return null;
+    }
+    foreach ($ids as $x)
+        $datos[] = traerUsuario($x);
+    return $datos;
 }
 
 

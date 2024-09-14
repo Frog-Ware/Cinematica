@@ -46,7 +46,7 @@ $error = comprobarError();
 $response = ['error' => $error, 'errMsg' => $error->getMsg()];
 if ($error == err::SUCCESS) {
     //inicioSesion($datos['email']);
-    $response['datosUsuario'] = traerUsuario($datos['email']);
+    $response['datos'] = traerUsuario($datos['email']);
     $response['token'] = $token;
 }
 

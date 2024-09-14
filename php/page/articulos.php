@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Devuelve los datos de los artículos si no hay errores y un código de error si no hay resultados.
     $datos = traerArticulos();
     $response = ($datos != null) ?
-        ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'articulos' => $datos] :
+        ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'datos' => $datos] :
         ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
     echo json_encode($response);
 } else {

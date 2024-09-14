@@ -51,15 +51,16 @@ function traerToken($email)
 // Devuelve una lista de los clientes con cuenta.
 function traerClientes()
 {
-    //$consultaSql = "SELECT email FROM Cliente";
-    $consultaSql = "SELECT idCompra FROM Compra";
-    foreach (consulta($consultaSql) as $x)
-        $ids[] = $x['email'];
-    if (is_null($ids))
+    $consultaSql = "SELECT email FROM Cliente";
+    if (!is_null(consulta($consultaSql))) {
+        foreach (consulta($consultaSql) as $x)
+            $ids[] = $x['email'];
+    } else {
         return null;
-    foreach ($ids as $x)
-        $datos[] = traerPelicula($x);
-    return $datos;
+    }
+    // foreach ($ids as $x)
+    //     $datos[] = traerUsuario($x);
+    return $ids;
 }
 
 

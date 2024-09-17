@@ -23,11 +23,16 @@ enum err: int
 }
 
 // Devuelve los datos de las películas si no hay errores y un código de error si no hay resultados.
-$datos = traerCartelera();
-$response = ($datos != null) ?
-    ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'datos' => $datos] :
-    ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
-echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $datos = traerCartelera();
+    $response = ($datos != null) ?
+        ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'datos' => $datos] :
+        ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
+    echo json_encode($response);
+} else {
+    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
+    header('HTTP/1.0 405 Method Not Allowed');
+}
 
 // Mata la ejecución.
 die();

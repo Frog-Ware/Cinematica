@@ -86,7 +86,7 @@ function comprobar($datos, $img)
         return err::EXISTENT;
 
     // Guarda el nombre de la imagen en datos.
-    $datos['imagen'] = str_replace(" ", "_", $datos['nombreArticulo'] . "_imagen.webp");
+    $datos['imagen'] = str_replace(" ", "_", $datos['nombreArticulo'] . ".webp");
 
     // Intenta subir la imagen a la carpeta.
     if (!subirImg($img, $datos['imagen'], 'articulos'))

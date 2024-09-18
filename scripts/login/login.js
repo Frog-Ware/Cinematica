@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const backofficeLink = document.createElement("a");
       const backofficeButton = document.createElement("button");
 
-      backofficeLink.href = "backoffice.html";
+      backofficeLink.href = "menuBackoffice.html";
       backofficeButton.className = "sideBar_btn btn_link";
       backofficeButton.textContent = "BACKOFFICE";
 

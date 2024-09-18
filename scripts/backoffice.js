@@ -123,20 +123,20 @@ document.getElementById('enviar').addEventListener('click', function() {
     
 });
 
-function previewImage(event, previewId) {
-    const preview = document.getElementById(previewId);
-    const file = event.target.files[0];
-    const reader = new FileReader();
+    function previewImage(event, previewId) {
+        const preview = document.getElementById(previewId);
+        const file = event.target.files[0];
+        const reader = new FileReader();
 
-    reader.onload = function(e) {
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        preview.innerHTML = '';
-        preview.appendChild(img);
-    };
+        reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            preview.innerHTML = '';
+            preview.appendChild(img);
+        };
 
-    reader.readAsDataURL(file);
-}
+        reader.readAsDataURL(file);
+    }
 
 function limpiarCampos() {
     document.getElementById('Poster').value = '';

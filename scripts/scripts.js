@@ -64,12 +64,10 @@ document.addEventListener("DOMContentLoaded", () => {
   //Cartelera
 
   //este fetch trae lso datos de la cartelera, luego con estos datos crea las peliculas e inicia el carrusel
-  fetch("assets/php/page/cartelera.php", {
-    method: "POST",
-  })
+  fetch("assets/php/page/cartelera.php")
     .then((response) => response.json())
     .then((data) => {
-      let peliculas = data.cartelera;
+      let peliculas = data.datos;
       console.log(data.cartelera);
 
       if (!peliculas || peliculas.length === 0) {
@@ -81,7 +79,13 @@ document.addEventListener("DOMContentLoaded", () => {
       peliculas.forEach((movie) => {
         const pelicula = document.createElement("img");
         pelicula.src = "assets/img/peliculas/" + movie.poster;
+        pelicula.id = movie.idProducto;
         contenedorPeliculas.appendChild(pelicula);
+
+        pelicula.addEventListener("click",()=>{
+          localStorage.setItem("peliculas", JSON.stringify(movie));
+          window.location.href = "peliculas.html";
+        })
       });
 
       iniciarCarrucel();

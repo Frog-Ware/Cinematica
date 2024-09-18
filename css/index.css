@@ -1,6 +1,6 @@
 /* Global rules */
 html {
-  scroll-snap-type: y mandatory;
+  /* scroll-snap-type: y mandatory; */
   scroll-behavior: smooth;
 }
 
@@ -13,7 +13,7 @@ html {
   align-items: center;
   position: relative;
   box-shadow: 0px 15px 33px 1px rgba(0, 0, 0, 0.75);
-  scroll-snap-align: center;
+  /*scroll-snap-align: center;*/
   scroll-snap-stop: normal;
 }
 
@@ -48,8 +48,8 @@ html {
   align-content: center;
   position: relative;
   height: 70vh;
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
+  /*scroll-snap-align: center;*/
+ /* scroll-snap-stop: always;*/
 }
 
 .busqueda h1 {
@@ -110,8 +110,8 @@ html {
   max-width: 97%;
   position: relative;
   padding-left: 1%;
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
+  /*scroll-snap-align: center;*/
+ /* scroll-snap-stop: always;*/
 }
 .cartelera i {
   top: 50%;
@@ -159,7 +159,9 @@ html {
   width: 300px;
   border-radius: 14px;
   transition: 0.4s ease-in-out;
+  overflow: hidden;
 }
+
 .carrusel img:first-child {
   margin-left: 16px;
 }

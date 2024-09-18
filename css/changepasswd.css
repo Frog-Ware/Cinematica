@@ -69,3 +69,14 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+.contenedor{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 20px;  
+}
+.contenedor_dos{
+    position: relative;
+    width: 234px;
+    height: 340px;
+}

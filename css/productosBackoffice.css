@@ -1,0 +1,37 @@
+.contenedor-formulario{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:  250px;
+    height: 250px;
+    background-color: var(--color-principal);
+    border: 2px dashed var(--color-secundario-detalles);
+    border-radius: 4px;
+    overflow: hidden;
+    text-align: center;
+    margin-top: 7%;
+    margin-left: 40%;
+}
+p{
+    font-size: 20px;
+    color: var(--color-secundario-detalles);
+
+}
+.formulario{
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    
+}
+form{
+    font-size: 20px;
+    color: var(--color-secundario-detalles);
+    margin-bottom: 50%;
+    
+}
+main > boton{
+    background-color: var(--color-principal-detalles);
+        
+}

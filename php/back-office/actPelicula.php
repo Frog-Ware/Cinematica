@@ -39,12 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $datos = filtrar(['actores', 'sinopsis', 'duracion', 'nombrePelicula', 'pegi', 'trailer', 'director'], $_POST, false);
     $datosArr = filtrar(['categorias', 'dimensiones', 'idiomas'], $_POST, true);
 
-    // Verifica que las imagenes esten correctamente subidas.
-    $img = [];
-    foreach (['poster', 'cabecera'] as $x)
-        (isset($_FILES[$x]) && $_FILES[$x]['error'] == UPLOAD_ERR_OK) ?
-            $img[$x] = $_FILES[$x] : null;
-
     // Devuelve el código de error correspondiente mediante JSON.
     $error = comprobar($datos, $datosArr, $img);
     $response = ['error' => $error, 'errMsg' => $error->getMsg()];
@@ -69,6 +63,12 @@ function comprobar($datos, $datosArr, $img)
     } else {
         return err::ID_NOT_SET;
     }
+
+    // Verifica que las imagenes esten correctamente subidas.
+    $img = [];
+    foreach (['poster', 'cabecera'] as $x)
+        (isset($_FILES[$x]) && $_FILES[$x]['error'] == UPLOAD_ERR_OK) ?
+            $img[$x] = $_FILES[$x] : null;
     
     // Devuelve un código de error si el ID o todos los otros campos estan vacios.
     if (blank($idProducto) || (blank($datos) && blank($datosArr) && blank($img)))

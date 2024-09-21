@@ -215,10 +215,10 @@ function traerBusqueda($busqueda)
 }
 
 // Trae los registros de compra asociados a ese producto.
-function traerRegistro($idProducto)
+function traerRegistro($idFuncion)
 {
-    $consultaSql = "SELECT * FROM Compra WHERE idProducto = ?";
-    $datos = consultaClave($consultaSql, [$idProducto]);
+    $consultaSql = "SELECT * FROM Compra WHERE idFuncion = ?";
+    $datos = consultaClave($consultaSql, [$idFuncion]);
     return (!is_null($datos)) ?
         $datos : null;
 }
@@ -238,7 +238,15 @@ function traerCarrito($email)
 function traerFunc($idFuncion)
 {
     $consultaSql = "SELECT * FROM Funciones WHERE idFuncion = ?";
-    $datos = consultaClave($consultaSql, [$idFuncion]);
+    $datos = consultaUnica($consultaSql, [$idFuncion]);
+    return (!is_null($datos)) ?
+        $datos : null;
+}
+
+function traerFuncEsp($idProducto)
+{
+    $consultaSql = "SELECT * FROM Funciones WHERE idProducto = ?";
+    $datos = consultaClave($consultaSql, [$idProducto]);
     return (!is_null($datos)) ?
         $datos : null;
 }
@@ -255,7 +263,7 @@ function traerFuncFecha($fecha)
 function traerFuncFuturas()
 {
     $fecha = new DateTime('now', new DateTimeZone('America/Montevideo'));
-    $consultaSql = "SELECT * FROM Funciones WHERE fechaPelicula >= ?";
+    $consultaSql = "SELECT * FROM Funciones WHERE fechaPelicula >= ? ORDER BY fechaPelicula, horaPelicula ASC";
     $datos = consultaClave($consultaSql, [$fecha->format('Y-m-d')]);
     return (!is_null($datos)) ?
         $datos : null;
@@ -286,13 +294,22 @@ function traerCines()
     $datos = consulta($consultaSql);
     if (is_null($datos))
         return null;
-    $consultaSql = "SELECT * FROM Sala WHERE nombreCine = ?";
+    $consultaSql = "SELECT numeroSala, capacidad FROM Sala WHERE nombreCine = ?";
     foreach ($datos as $k => $v)
-        $datos[$k]['salas'] = array_column(consultaClave($consultaSql, [$v['nombreCine']]), 'numeroSala');
+        $datos[$k]['salas'] = consultaClave($consultaSql, [$v['nombreCine']]);
     return $datos;
 }
 
-
+function traerCine($nombreCine)
+{
+    $consultaSql = "SELECT * FROM Cine WHERE nombreCine = ?";
+    $datos = consultaUnica($consultaSql, [$nombreCine]);
+    if (is_null($datos))
+        return null;
+    $consultaSql = "SELECT numeroSala, capacidad FROM Sala WHERE nombreCine = ?";
+    $datos['salas'] = consultaClave($consultaSql, [$datos['nombreCine']]);
+    return $datos;
+}
 
 // Funciones de acceso a la base de datos.
 

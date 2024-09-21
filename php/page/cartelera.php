@@ -22,8 +22,8 @@ enum err: int
     }
 }
 
-// Devuelve los datos de las películas si no hay errores y un código de error si no hay resultados.
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Devuelve los datos de las películas si no hay errores y un código de error si no hay resultados.
     $datos = traerCartelera();
     $response = ($datos != null) ?
         ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'datos' => $datos] :

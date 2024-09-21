@@ -1,11 +1,10 @@
 <?php
 
-// Este script evuelve el carrito asociado con el usuario.
+// Este script devuelve las funciones a proyectar a futuro.
 
 header("Content-Type: application/json; charset=utf-8");
-if (session_status() == PHP_SESSION_NONE)
-    session_start();
 require_once "../db/traer.php";
+require_once "../utilities/validacion.php";
 
 // Asigna un código de error según el caso.
 enum err: int
@@ -18,18 +17,17 @@ enum err: int
     {
         return match ($this) {
             self::SUCCESS => "Procedimiento realizado con éxito.",
-            self::NO_SUCCESS => "No hay datos disponibles."
+            self::NO_SUCCESS => "No se encontraron funciones."
         };
     }
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Devuelve los valores del carrito y un mensaje de error por JSON.
-    $datos = isset($_SESSION['user']) ?
-    traerCarrito($_SESSION['user']) : null;
-    $response = (is_null($datos)) ?
-    ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'carrito' => $datos] :
-    ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
+    // Devuelve los datos de las funciones futuras si no hay errores y un código de error si no hay resultados.
+    $datos = traerFuncFuturas();
+    $response = (!is_null($datos)) ?
+        ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'datos' => $datos] :
+        ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
     echo json_encode($response);
 } else {
     // Restringe el acceso si no se utiliza el método de solicitud adecuado.

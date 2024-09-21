@@ -6,6 +6,7 @@ header("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE)
     session_start();
 require_once "../db/traer.php";
+require_once "../utilities/validacion.php";
 
 // Asigna un código de error según el caso.
 enum err: int
@@ -13,10 +14,11 @@ enum err: int
     case MATCH = 0;
     case NO_MATCH = 1;
     case NO_ACCOUNT = 2;
-    case EMPTY = 3;
-    case NOT_SET = 4;
-    case ADMIN = 5;
-    case SESSION_ACT = 6;
+    case VALIDATION = 3;
+    case EMPTY = 4;
+    case NOT_SET = 5;
+    case ADMIN = 6;
+    case SESSION_ACT = 7;
 
     // Devuelve el mensaje asociado con el código de error.
     function getMsg()
@@ -25,6 +27,7 @@ enum err: int
             self::MATCH => "Los valores ingresados coinciden.",
             self::NO_MATCH => "La dirección de correo y contraseña ingresada no coinciden.",
             self::NO_ACCOUNT => "La dirección de correo ingresada no se encuentra registrada.",
+            self::VALIDATION => "El input no pasó la validación.",
             self::EMPTY => "Al menos un campo está vacio.",
             self::NOT_SET => "Al menos un campo no está asignado.",
             self::ADMIN => "Los valores ingresados coinciden y el usuario tiene permisos de Administrador.",
@@ -33,21 +36,23 @@ enum err: int
     }
 }
 
-// Guarda las variables sanitizadas en un array llamado datos.
-$campos = ['email', 'passwd'];
-foreach ($campos as $x)
-    $datos[$x] = filter_input(INPUT_POST, $x);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Guarda las variables en un array llamado datos.
+    $datos = [];
+    foreach (['email', 'passwd'] as $x)
+        if (isset($_POST[$x]))
+            $datos[$x] = $_POST[$x];
 
-// Cifra la contraseña en md5.
-if (!empty($datos['passwd']))
-    $datos['passwd'] = md5($datos['passwd']);
-
-// Verifica los datos e inicia sesión si se ha realizado exitosamente el registro, además de guardar los datos correspondientes como respuesta.
-$error = comprobarError();
-$response = in_array($error->value, [0, 5, 6]) ? 
-    ['error' => $error, 'errMsg' => $error->getMsg(), 'datos' => traerUsuario($datos['email'])] :
-    ['error' => $error, 'errMsg' => $error->getMsg()];
-echo json_encode($response);
+    // Inicia sesión, además de guardar los datos del usuario correspondiente como respuesta. Devuelve el código de error correspondiente por JSON.
+    $error = comprobar($datos);
+    $response = in_array($error->value, [0, 5, 6]) ? 
+        ['error' => $error, 'errMsg' => $error->getMsg(), 'datos' => traerUsuario($datos['email'])] :
+        ['error' => $error, 'errMsg' => $error->getMsg()];
+    echo json_encode($response);
+} else {
+    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
+    header('HTTP/1.0 405 Method Not Allowed');
+}
 
 // Mata la ejecución.
 die();
@@ -56,26 +61,29 @@ die();
 
 // Funciones
 
-function comprobarError()
+function comprobar($datos)
 {
-    global $campos, $datos;
-
     // Devuelve un código de error si una variable no esta seteada.
-    foreach ($campos as $x)
+    foreach (['email', 'passwd'] as $x)
         if (!isset($datos[$x]))
             return err::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
-    foreach ($campos as $x)
-        if (empty($datos[$x]))
+    foreach ($datos as $x)
+        if (blank($x))
             return err::EMPTY;
 
+    // Devuelve un código de error si algun campo no pasa la validación.
+    if (!validacion($datos))
+        return err::VALIDATION;
+
     // Devuelve un código de error si la dirección de correo no está registrada.
-    if (traerPasswd($datos['email']) == null)
+    $passwd = traerPasswd($datos['email']);
+    if (is_null($passwd))
         return err::NO_ACCOUNT;
 
     // Devuelve un codigo de error si la contraseña no coincide.
-    if ($datos['passwd'] != traerPasswd($datos['email']))
+    if (md5($datos['passwd']) != $passwd)
         return err::NO_MATCH;
 
     // Devuelve un código de error si la sesión está iniciada.
@@ -84,7 +92,7 @@ function comprobarError()
 
     // Inicia sesión y devuelve un código de error dependiendo si la cuenta es de rol Cliente o Administrador.
     inicioSesion($datos['email']);
-    return (traerRol($datos['email'])) ?
+    return (traerRol($datos['email']) != 0) ?
         err::ADMIN : err::MATCH;
 }
 
@@ -93,4 +101,18 @@ function inicioSesion($email)
 {
     $_SESSION['user'] = $email;
     session_regenerate_id(true);
+}
+
+function validacion($datos)
+{
+    // Valida la contraseña, verificando que solo contenga caracteres permitidos y su longitud este en el rango permitido.
+    if (!validarStr($datos['passwd'], 12))
+        return false;
+
+    // Valida el email ingresado, verificando que este en el formato permitido y su longitud este en el rango permitido.
+    if (!validarEmail($datos['email'], 50))
+        return false;
+
+    // Si todos los campos estan bien, retorna true.
+    return true;
 }

@@ -23,11 +23,16 @@ enum err: int
     }
 }
 
-// Si hay una sesión iniciada, envía los datos del usuario en cuestión como respuesta, además de sus respectivos mensajes de error.
-$response = isset($_SESSION['user']) ?
-    ['error' => err::EXISTS, 'errMsg' => err::EXISTS->getMsg(), 'datos' => traerUsuario($_SESSION['user'])] :
-    ['error' => err::NO_SESSION, 'errMsg' => err::NO_SESSION->getMsg()];
-echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Si hay una sesión iniciada, envía los datos del usuario en cuestión como respuesta. Devuelve el código de error correspondiente por JSON.
+    $response = isset($_SESSION['user']) ?
+        ['error' => err::EXISTS, 'errMsg' => err::EXISTS->getMsg(), 'datos' => traerUsuario($_SESSION['user'])] :
+        ['error' => err::NO_SESSION, 'errMsg' => err::NO_SESSION->getMsg()];
+    echo json_encode($response);
+} else {
+    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
+    header('HTTP/1.0 405 Method Not Allowed');
+}
 
 // Mata la ejecución.
 die();

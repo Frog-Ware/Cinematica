@@ -39,14 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Guarda las variables en un array llamado datos.
     foreach (['nombreArticulo', 'descripcion', 'precio'] as $x)
-        $datos[$x] = $_POST[$x];
-
-    // Verifica que la imagen este correctamente subida.
-    $img = $_FILES['imagen']['error'] == UPLOAD_ERR_OK ?
-        $_FILES['imagen'] : null;
+        if (isset($_POST[$x]))
+            $datos[$x] = $_POST[$x];
 
     // Devuelve el código de error correspondiente.
-    $error = comprobar($datos, $img);
+    $error = comprobar($datos);
     $response = ['error' => $error, 'errMsg' => $error->getMsg()];
     echo json_encode($response);
 } else {
@@ -61,14 +58,17 @@ die();
 
 // Funciones
 
-function comprobar($datos, $img)
+function comprobar($datos)
 {
     // Devuelve un código de error si una variable no esta seteada.
     foreach ($datos as $x)
         if (!isset($x))
             return err::NOT_SET;
-    if (!isset($img))
+    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == UPLOAD_ERR_OK) {
+        $img = $_FILES['imagen'];
+    } else {
         return err::NOT_SET;
+    }
 
     // Devuelve un código de error si una variable esta vacía.
     foreach ($datos as $x)

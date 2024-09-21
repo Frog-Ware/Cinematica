@@ -26,15 +26,20 @@ enum err: int
     }
 }
 
-// Responde con un mensaje indicando el tipo de rol del usuario en cuestión.
-$response = isset($_SESSION['user']) ?
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Responde con un mensaje indicando el tipo de rol del usuario en cuestión.
+    $response = isset($_SESSION['user']) ?
     match (traerRol($_SESSION['user'])) {
         0 => ['error' => err::CUSTOMER, 'errMsg' => err::CUSTOMER->getMsg()],
         1 => ['error' => err::SALES, 'errMsg' => err::SALES->getMsg()],
         2 => ['error' => err::ADMIN, 'errMsg' => err::ADMIN->getMsg()],
         null => ['error' => err::NO_SESSION, 'errMsg' => err::NO_SESSION->getMsg()]
     }      : ['error' => err::NO_SESSION, 'errMsg' => err::NO_SESSION->getMsg()];
-echo json_encode($response);
+    echo json_encode($response);
+} else {
+    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
+    header('HTTP/1.0 405 Method Not Allowed');
+}
 
 // Mata la ejecución.
 die();

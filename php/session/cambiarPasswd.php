@@ -7,6 +7,7 @@ if (session_status() == PHP_SESSION_NONE)
     session_start();
 require_once "../db/traer.php";
 require_once "../db/insertar.php";
+require_once "../utilities/validacion.php";
 
 // Asigna un código de error según el caso.
 enum err: int
@@ -14,8 +15,9 @@ enum err: int
     case SUCCESS = 0;
     case NO_SUCCESS = 1;
     case EXISTENT = 2;
-    case EMPTY = 3;
-    case NOT_SET = 4;
+    case VALIDATION = 3;
+    case EMPTY = 4;
+    case NOT_SET = 5;
 
     // Devuelve el mensaje asociado con el código de error.
     function getMsg()
@@ -24,25 +26,28 @@ enum err: int
             self::SUCCESS => "Procedimiento realizado con éxito.",
             self::NO_SUCCESS => "Al menos un dato ingresado no corresponde con el resto.",
             self::EXISTENT => "La nueva contraseña es idéntica a la anterior.",
+            self::VALIDATION => "El input no pasó la validación.",
             self::EMPTY => "Al menos un campo está vacio.",
             self::NOT_SET => "Al menos un campo no está asignado."
         };
     }
 }
 
-// Guarda las variables sanitizadas en un array llamado datos.
-$campos = ['email', 'token', 'passwd'];
-foreach ($campos as $x)
-    $datos[$x] = filter_input(INPUT_POST, $x);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Guarda las variables en un array llamado datos.
+    $datos = [];
+    foreach (['email', 'token', 'passwd'] as $x)
+        if (isset($_POST[$x]))
+            $datos[$x] = $_POST[$x];
 
-// Cifra la nueva contraseña y el token en md5.
-if (!empty($datos['passwd']))
-    $datos['passwd'] = md5($datos['passwd']);
-
-// Devuelve el código de error correspondiente.
-$error = comprobarError();
-$response = ['error' => $error, 'errMsg' => $error->getMsg()];
-echo json_encode($response);
+    // Devuelve el código de error correspondiente por JSON.
+    $error = comprobar($datos);
+    $response = ['error' => $error, 'errMsg' => $error->getMsg()];
+    echo json_encode($response);
+} else {
+    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
+    header('HTTP/1.0 405 Method Not Allowed');
+}
 
 // Mata la ejecución.
 die();
@@ -51,25 +56,41 @@ die();
 
 // Funciones
 
-function comprobarError()
+function comprobar($datos)
 {
-    global $campos, $datos;
-
     // Devuelve un código de error si una variable no esta seteada.
-    foreach ($campos as $x)
+    foreach (['email', 'token', 'passwd'] as $x)
         if (!isset($datos[$x]))
             return err::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
-    foreach ($campos as $x)
-        if (empty($datos[$x]))
+    foreach ($datos as $x)
+        if (blank($x))
             return err::EMPTY;
 
+    // Devuelve un código de error si algun campo no pasa la validación.
+    if (!validacion($datos))
+        return err::VALIDATION;
+
     // Devuelve un código de error si la nueva contraseña es la ya existente.
-    if ($datos['passwd'] == traerPasswd($datos['email']))
+    if (md5($datos['passwd']) == traerPasswd($datos['email']))
         return err::EXISTENT;
 
     // Intenta actualizar la contraseña en la base de datos y devuelve su correspondiente código de error.
-    return ((traerToken($datos['email']) == md5($datos['token'])) && actPasswd($datos)) ?
+    return ((traerToken($datos['email']) == md5($datos['token'])) && actPasswd([md5($datos['passwd']), $datos['email']])) ?
         err::SUCCESS : err::NO_SUCCESS;
+}
+
+function validacion($datos)
+{
+    // Valida ciertos datos, verificando que solo contengan caracteres permitidos y su longitud este en el rango permitido.
+    if (!validarStr($datos['passwd'], 12) || !validarStr($datos['token'], 6))
+        return false;
+
+    // Valida el email ingresado, verificando que este en el formato permitido y su longitud este en el rango permitido.
+    if (!validarEmail($datos['email'], 50))
+        return false;
+
+    // Si todos los campos estan bien, retorna true.
+    return true;
 }

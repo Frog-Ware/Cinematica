@@ -28,12 +28,16 @@ enum err: int
     }
 }
 
-// Devuelve el código de error correspondiente.
-$error = comprobarError();
-$response = ['error' => $error, 'errMsg' => $error->getMsg()];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Devuelve el código de error correspondiente mediante JSON.
+    $error = comprobar();
+    $response = ['error' => $error, 'errMsg' => $error->getMsg()];
+    echo json_encode($response);
+} else {
+    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
+    header('HTTP/1.0 405 Method Not Allowed');
+}
 
-// Envía los datos mediante JSON.
-echo json_encode($response);
 
 // Mata la ejecución.
 die();
@@ -42,7 +46,7 @@ die();
 
 // Funciones
 
-function comprobarError()
+function comprobar()
 {
     // Devuelve un código de error si la sesión no está iniciada.
     if (isset($_SESSION['user']))
@@ -52,7 +56,7 @@ function comprobarError()
 
     // Devuelve un código de error si no existe el artículo a eliminar.
     $carritoDB = traerCarrito($email);
-    if ($carritoDB == null)
+    if (is_null($carritoDB))
         return err::NONEXISTENT;
 
     // Guarda los asientos eliminados en una variable.

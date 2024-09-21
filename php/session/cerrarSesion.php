@@ -22,14 +22,19 @@ enum err: int
     }
 }
 
-// Si hay una sesión iniciada, la cierra. Notifica de su exito.
-if (isset($_SESSION['user'])) {
-    session_destroy();
-    $response = ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg()];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Si hay una sesión iniciada, la cierra. Devuelve el código de error correspondiente por JSON.
+    if (isset($_SESSION['user'])) {
+        session_destroy();
+        $response = ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg()];
+    } else {
+        $response = ['error' => err::NO_SESSION, 'errMsg' => err::NO_SESSION->getMsg()];
+    }
+    echo json_encode($response);
 } else {
-    $response = ['error' => err::NO_SESSION, 'errMsg' => err::NO_SESSION->getMsg()];
+    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
+    header('HTTP/1.0 405 Method Not Allowed');
 }
-echo json_encode($response);
 
 // Mata la ejecución.
 die();

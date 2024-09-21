@@ -40,18 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Guarda las variables en un array llamado datos y las variables múltiples en un array bidimensional llamado datosArr.
     foreach (['actores', 'sinopsis', 'duracion', 'nombrePelicula', 'pegi', 'trailer', 'director'] as $x)
-        $datos[$x] = $_POST[$x];
+        if (isset($_POST[$x]))
+            $datos[$x] = $_POST[$x];
     foreach (['categorias', 'dimensiones', 'idiomas'] as $x)
-        $datosArr[$x] = explode(', ',$_POST[$x]);
-
-    // Verifica que las imagenes esten correctamente subidas.
-    $img = [];
-    foreach (['poster', 'cabecera'] as $x)
-        (isset($_FILES[$x]) && $_FILES[$x]['error'] == UPLOAD_ERR_OK) ?
-            $img[$x] = $_FILES[$x] : null;
+        if (isset($_POST[$x]))
+            $datosArr[$x] = explode(', ',$_POST[$x]);
 
     // Devuelve el código de error correspondiente mediante JSON.
-    $error = comprobar($datos, $datosArr, $img);
+    $error = comprobar($datos, $datosArr);
     $response = ['error' => $error, 'errMsg' => $error->getMsg()];
     echo json_encode($response);
 } else {
@@ -66,12 +62,22 @@ die();
 
 // Funciones
 
-function comprobar($datos, $datosArr, $img)
+function comprobar($datos, $datosArr)
 {
     // Devuelve un código de error si una variable no esta seteada.
-    foreach (array_merge($datos, $datosArr, $img) as $x)
-        if (!isset($x))
+    foreach (['actores', 'sinopsis', 'duracion', 'nombrePelicula', 'pegi', 'trailer', 'director'] as $x)
+        if (!isset($datos[$x]))
             return err::NOT_SET;
+    foreach (['categorias', 'dimensiones', 'idiomas'] as $x)
+        if (!isset($datosArr[$x]))
+            return err::NOT_SET;
+    foreach (['poster', 'cabecera'] as $x) {
+        if (isset($_FILES[$x]) && $_FILES[$x]['error'] == UPLOAD_ERR_OK) {
+            $img[$x] = $_FILES[$x];
+        } else {
+            return err::NOT_SET;
+        }
+    }
 
     // Devuelve un código de error si una variable esta vacía.
     foreach (array_merge($datos, $datosArr, $img) as $x)

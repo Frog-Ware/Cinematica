@@ -10,14 +10,14 @@ require_once "../utilities/validacion.php";
 // Registra un usuario en la base de datos.
 function nuevoUsuario($datos)
 {
-    $lineaSql = "INSERT INTO Usuario(email, nombre, apellido, imagenPerfil, passwd, numeroCelular, token) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $lineaSql = "INSERT INTO Usuario (email, nombre, apellido, imagenPerfil, passwd, numeroCelular, token) VALUES (?, ?, ?, ?, ?, ?, ?)";
     return insertar($datos, $lineaSql);
 }
 
 // Registra un usuario del tipo cliente en la base de datos.
 function nuevoCliente($datos)
 {
-    $lineaSql = "INSERT INTO Cliente(email) VALUES (?)";
+    $lineaSql = "INSERT INTO Cliente (email) VALUES (?)";
     return (nuevoUsuario($datos)) ?
         insertar([$datos['email']], $lineaSql) : false;
 }
@@ -26,7 +26,7 @@ function nuevoCliente($datos)
 function actPasswd($datos)
 {
     $lineaSql = "UPDATE Usuario SET passwd = ? WHERE email = ?";
-    return insertar([$datos['passwd'], $datos['email']], $lineaSql);
+    return insertar([$datos], $lineaSql);
 }
 
 // Actualiza la imagen del usuario.
@@ -119,7 +119,7 @@ function actPelicula($datos, $datosArr, $idProducto)
 // Elimina un producto de tipo película en la base de datos.
 function eliminarPelicula($idProducto)
 {
-    $tablas = ['Funciones', 'TieneCategorias', 'TieneDimensiones', 'TieneIdiomas', 'Cartelera', 'Pelicula', 'Producto'];
+    $tablas = ['TieneCategorias', 'TieneDimensiones', 'TieneIdiomas', 'Cartelera', 'Pelicula', 'Producto'];
     foreach ($tablas as $x) {
         $lineaSql = "DELETE FROM $x WHERE idProducto = ?";
         if (!insertar([$idProducto], $lineaSql))
@@ -131,7 +131,7 @@ function eliminarPelicula($idProducto)
 // Ingresa un producto de tipo artículo en la base de datos.
 function nuevoArticulo($datos)
 {
-    $lineaSql = "INSERT INTO articulo VALUES (?, ?, ?, ?, ?)";
+    $lineaSql = "INSERT INTO Articulo VALUES (?, ?, ?, ?, ?)";
     return nuevoProducto($datos['idProducto']) ?
         insertar($datos, $lineaSql) : false;
 }
@@ -148,7 +148,7 @@ function actArticulo($datos, $idProducto)
 // Elimina un producto de tipo artículo en la base de datos.
 function eliminarArticulo($idProducto)
 {
-    $tablas = ['articulo', 'producto'];
+    $tablas = ['carritoArticulo', 'articulo', 'producto'];
     foreach ($tablas as $x) {
         $lineaSql = "DELETE FROM $x WHERE idProducto = ?";
         if (!insertar([$idProducto], $lineaSql))
@@ -174,8 +174,8 @@ function eliminarEnCartelera($idProducto)
 function actCarrito($datos, $nuevo)
 {
     $lineaSql = $nuevo ?
-        "INSERT INTO carrito (idFuncion, asientos, email) VALUES (?, ?, ?)" :
-        "UPDATE carrito SET idFuncion = ?, asientos = ? WHERE email = ?";
+        "INSERT INTO Carrito (idFuncion, asientos, email) VALUES (?, ?, ?)" :
+        "UPDATE Carrito SET idFuncion = ?, asientos = ? WHERE email = ?";
     return insertar($datos, $lineaSql);
 }
 
@@ -204,12 +204,18 @@ function eliminarCarrito($email)
 // Agrega una nueva función.
 function nuevaFunc($datos)
 {
-
+    $lineaSql = "INSERT INTO Funciones (idFuncion, idProducto, nombreCine, numeroSala, fechaPelicula, horaPelicula, dimension) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    return insertar($datos, $lineaSql);
 }
 
 function eliminarFunc($idFuncion)
 {
-
+    foreach (['carrito', 'funciones'] as $x) {
+        $lineaSql = "DELETE FROM $x WHERE idFuncion = ?";
+        if (!insertar([$idFuncion], $lineaSql))
+            return false;
+    }
+    return true;
 }
 
 // Elimina la función según id de las películas implicadas.

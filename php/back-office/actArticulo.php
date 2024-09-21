@@ -38,12 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Guarda las variables en un array llamado datos.
     $datos = filtrar(['nombreArticulo', 'descripcion', 'precio'], $_POST);
 
-    // Verifica que la imagen este correctamente subida.
-    $img = $_FILES['imagen']['error'] == UPLOAD_ERR_OK ?
-        $_FILES['imagen'] : null;
-
     // Devuelve el código de error correspondiente mediante JSON.
-    $error = comprobar($datos, $img, $idProducto);
+    $error = comprobar($datos, $idProducto);
     $response = ['error' => $error, 'errMsg' => $error->getMsg()];
     echo json_encode($response);
 } else {
@@ -58,7 +54,7 @@ die();
 
 // Funciones
 
-function comprobar($datos, $img, $idProducto)
+function comprobar($datos, $idProducto)
 {
     // Devuelve un código de error si el ID no esta seteado.
     if (isset($_POST['idProducto'])) {
@@ -66,6 +62,10 @@ function comprobar($datos, $img, $idProducto)
     } else {
         return err::ID_NOT_SET;
     }
+
+    // Verifica que la imagen este correctamente subida.
+    $img = isset($_FILES['imagen']) && $_FILES['imagen']['error'] == UPLOAD_ERR_OK ?
+        $_FILES['imagen'] : null;
 
     // Devuelve un código de error si el ID o todos los otros campos estan vacios.
     if (blank($idProducto) || (blank($datos) && blank($img)))

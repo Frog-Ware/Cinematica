@@ -1,6 +1,6 @@
 <?php
 
-// Este script devuelve un array con todos los datos de las películas que coincidan con lo buscado.
+// Este script devuelve un array con todos los datos de las películas que coincidan con lo ingresado.
 
 header("Content-Type: application/json; charset=utf-8");
 require_once "../db/traer.php";

@@ -36,7 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Guarda las variables en un array llamado datos.
     foreach (['idProducto', 'nombreCine', 'numeroSala', 'fechaPelicula', 'horaPelicula', 'dimension'] as $x)
-        $datos[$x] = $_POST[$x];
+        if (isset($_POST[$x]))
+            $datos[$x] = $_POST[$x];
 
     // Devuelve el código de error correspondiente mediante JSON.
     $error = comprobar($datos);
@@ -57,8 +58,8 @@ die();
 function comprobar($datos)
 {
     // Devuelve un código de error si una variable no esta seteada.
-    foreach ($datos as $x)
-        if (!isset($x))
+    foreach (['idProducto', 'nombreCine', 'numeroSala', 'fechaPelicula', 'horaPelicula', 'dimension'] as $x)
+        if (!isset($datos[$x]))
             return err::NOT_SET;
 
     // Devuelve un código de error si una variable esta vacía.
@@ -99,12 +100,11 @@ function validacion($datos)
     foreach (['idProducto', 'numeroSala'] as $x)
         if (!validarInt($datos[$x]))
             return false;
-
     // Valida el nombre del cine, verificando que solo contenga carácteres alfabéticos y que exista.
     if (!validarAl($datos['nombreCine'], 20))
         return false;
     $pos = array_search($datos['nombreCine'], array_column(traerCines(), 'nombreCine'));
-    if (is_null($pos) || !in_array($datos['numeroSala'], traerCines()[$pos]['salas']))
+    if (is_null($pos) || !in_array($datos['numeroSala'], array_column(traerCines()[$pos]['salas'], 'numeroSala')))
         return false;
 
     // Valida la fecha, verificando que este en el formato permitido.
@@ -113,7 +113,7 @@ function validacion($datos)
 
     // Verifica que sea una fecha posterior a hoy.
     $hoy = new DateTime('now', new DateTimeZone('America/Montevideo'));
-    if ($datos['fechaPelicula'] < $hoy)
+    if (new DateTime($datos['fechaPelicula'], new DateTimeZone('America/Montevideo'))< $hoy)
         return false;
 
     // Valida la hora, verificando que este en el formato permitido.

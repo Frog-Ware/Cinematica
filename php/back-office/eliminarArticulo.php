@@ -1,6 +1,6 @@
 <?php
 
-// Este script devuelve un array con todos los datos de los artículos que coincidan con lo buscado.
+// Este script elimina un artículo según el ID ingresado.
 
 header("Content-Type: application/json; charset=utf-8");
 require_once "../db/insertar.php";
@@ -12,7 +12,7 @@ require_once "../utilities/validacion.php";
 enum err: int
 {
     case SUCCESS = 0;
-    case NO_SUCCESS = 1;
+    case DB_ERR = 1;
     case NONEXISTENT = 2;
     case VALIDATION = 3;
     case EMPTY = 4;
@@ -24,7 +24,7 @@ enum err: int
     {
         return match ($this) {
             self::SUCCESS => "Procedimiento realizado con éxito.",
-            self::NO_SUCCESS => "Hubo un error en la remoción en la base de datos.",
+            self::DB_ERR => "Hubo un error en la remoción en la base de datos.",
             self::NONEXISTENT => "El artículo a eliminar no existe.",
             self::VALIDATION => "El ID no pasó la prueba de validación.",
             self::EMPTY => "El ID esta vacío.",
@@ -36,7 +36,7 @@ enum err: int
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Devuelve el código de error correspondiente por JSON.
-    $error = comprobar($_POST['idProducto']);
+    $error = comprobar();
     $response = ['error' => $error, 'errMsg' => $error->getMsg()];
     echo json_encode($response);
 } else {
@@ -70,7 +70,7 @@ function comprobar()
 
     // Devuelve un código de error si no existe el artículo a eliminar.
     $articuloDB = traerArticulo($idProducto);
-    if ($articuloDB == null)
+    if (is_null($articuloDB))
         return err::NONEXISTENT;
 
     // Intenta borrar la imagen de la carpeta.
@@ -79,7 +79,7 @@ function comprobar()
 
     // Intenta eliminar el artículo de la base de datos y devuelve su correspondiente código de error.
     return (eliminarArticulo($idProducto)) ?
-        err::SUCCESS : err::NO_SUCCESS;
+        err::SUCCESS : err::DB_ERR;
 }
 
 function validacion($idProducto)

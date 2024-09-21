@@ -15,7 +15,7 @@ enum err: int
     case EXISTENT = 2;
     case VALIDATION = 3;
     case EMPTY = 4;
-    case NOT_SET = 5;
+    case ID_NOT_SET = 5;
 
     // Devuelve el mensaje asociado con el código de error.
     function getMsg()
@@ -26,7 +26,7 @@ enum err: int
             self::EXISTENT => "La película a añadir ya está en la cartelera.",
             self::VALIDATION => "El ID no pasó la prueba de validación.",
             self::EMPTY => "El ID está vacío.",
-            self::NOT_SET => "El ID no está seteado."
+            self::ID_NOT_SET => "El ID no está seteado."
         };
     }
 }

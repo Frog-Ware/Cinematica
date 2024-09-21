@@ -1,6 +1,6 @@
 <?php
 
-// Este script cambia el rol de un cliente a un vendedor.
+// Este script cambia el rol de un cliente a un vendedor o administrador.
 
 header("Content-Type: application/json; charset=utf-8");
 require_once "../db/insertar.php";
@@ -15,7 +15,7 @@ enum err: int
     case NONEXISTENT = 2;
     case VALIDATION = 3;
     case EMPTY = 4;
-    case ID_NOT_SET = 5;
+    case NOT_SET = 5;
 
     // Devuelve el mensaje asociado con el código de error.
     function getMsg()
@@ -26,14 +26,20 @@ enum err: int
             self::NONEXISTENT => "El usuario asociado a ese email no existe",
             self::VALIDATION => "El email no pasó la prueba de validación.",
             self::EMPTY => "El email está vacío.",
-            self::ID_NOT_SET => "El email no está seteado."
+            self::NOT_SET => "El email no está seteado."
         };
     }
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Guarda las variables en un array llamado datos.
+    $datos = [];
+    foreach (['email', 'rol'] as $x)
+        if (isset($_POST[$x]))
+            $datos[$x] = $_POST[$x];
+
     // Devuelve el código de error correspondiente mediante JSON.
-    $error = comprobar();
+    $error = comprobar($datos);
     $response = ['error' => $error, 'errMsg' => $error->getMsg()];
     echo json_encode($response);
 } else {
@@ -45,34 +51,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // Funciones
 
-function comprobar()
+function comprobar($datos)
 {
-    // Devuelve un código de error si el email no esta seteado.
-    if (isset($_POST['email'])) {
-        $email = $_POST['email'];
-    } else {
-        return err::ID_NOT_SET;
-    }
+    // Devuelve un código de error si una variable no esta seteada.
+    foreach (['email', 'rol'] as $x)
+        if (!isset($datos[$x]))
+            return err::NOT_SET;
 
-    // Devuelve un código de error si el email esta vacío.
-    if (blank($email))
-        return err::EMPTY;
+    // Devuelve un código de error si una variable esta vacía.
+    foreach ($datos as $x)
+        if (blank($x))
+            return err::EMPTY;
 
     // Devuelve un código de error si el email no pasa la validación.
-    if (!validacion($email))
+    if (!validacion($datos))
         return err::VALIDATION;
 
     // Devuelve un código de error si el usuario no existe o si tiene un rol diferente a cliente.
-    if (is_null(traerUsuario($email)) || traerRol($email))
+    if (is_null(traerUsuario($datos['email'])) || traerRol($datos['email']))
         return err::NONEXISTENT;
 
     // Intenta cambiar el rol al usuario.
-    return (cambiarRol($email)) ?
+    return (cambiarRol($datos)) ?
         err::SUCCESS : err::NO_SUCCESS;
 }
 
-function validacion($email)
+function validacion($datos)
 {
     // Valida el email, verificando que solo contenga carácteres permitidos.
-    return validarEmail($email, 50);
+    if (!validarEmail($datos['email'], 50))
+        return false;
+
+    // Valida el rol, verificando que sea un 0 u 1.
+    return $datos['rol'] === 1 || $datos['rol'] === 2;
 }

@@ -205,7 +205,7 @@ function traerArticulos()
 
 function traerBusqueda($busqueda)
 {
-    $consultaSql = "SELECT idProducto FROM Pelicula WHERE nombrePelicula LIKE ?";
+    $consultaSql = "SELECT idProducto FROM Cartelera WHERE nombrePelicula LIKE ?";
     $id = consultaClave($consultaSql, [$busqueda]);
     if (is_null($id))
         return null;

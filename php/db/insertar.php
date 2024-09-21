@@ -45,16 +45,16 @@ function actUsuario($datos, $email)
     return insertar($datos, $lineaSql);
 }
 
-function cambiarRol($email)
+function cambiarRol($datos)
 {
     $tablas = ['CarritoArticulo', 'Carrito', 'Cliente'];
     foreach ($tablas as $x) {
         $lineaSql = "DELETE FROM $x WHERE email = ?";
-        if (!insertar([$email], $lineaSql))
+        if (!insertar([$datos['email']], $lineaSql))
             return false;
     }
     $lineaSql = "INSERT INTO Empleado (email, esAdmin) VALUES (?, ?)";
-    return insertar([$email, 0], $lineaSql);
+    return insertar($datos, $lineaSql);
 }
 
 

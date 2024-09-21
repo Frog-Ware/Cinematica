@@ -45,6 +45,18 @@ function actUsuario($datos, $email)
     return insertar($datos, $lineaSql);
 }
 
+function cambiarRol($email)
+{
+    $tablas = ['CarritoArticulo', 'Carrito', 'Cliente'];
+    foreach ($tablas as $x) {
+        $lineaSql = "DELETE FROM $x WHERE email = ?";
+        if (!insertar([$email], $lineaSql))
+            return false;
+    }
+    $lineaSql = "INSERT INTO Empleado (email, esAdmin) VALUES (?, ?)";
+    return insertar([$email, 0], $lineaSql);
+}
+
 
 
 // Funciones de manipulación de datos de productos.

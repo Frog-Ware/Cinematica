@@ -90,7 +90,7 @@ function comprobar($datos, $datosArr)
 
     // Devuelve un código de error si hay una película ingresada con el mismo nombre.
     $peliculaDB = traerPeliculaNombre($datos['nombrePelicula']);
-    if (!empty($peliculaDB))
+    if (!is_null($peliculaDB))
         return err::EXISTENT;
 
     // Guarda el nombre de las imagenes en datos.
@@ -129,6 +129,7 @@ function validacion($datos, $datosArr, $img)
             return false;
 
     // Valida la duracion, verificando que este en el formato permitido.
+    $datos['duracion'] .= ":00";
     if (!validarHora($datos['duracion']))
         return false;
    

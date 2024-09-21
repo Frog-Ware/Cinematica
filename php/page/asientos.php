@@ -1,6 +1,6 @@
 <?php
 
-// Este script devuelve un array con todas las funciones programadas de una película a futuro.
+// Este script devuelve un array con todos los asientos ocupados de una funcion específica.
 
 header("Content-Type: application/json; charset=utf-8");
 require_once "../db/traer.php";
@@ -10,7 +10,7 @@ require_once "../utilities/validacion.php";
 enum err: int
 {
     case SUCCESS = 0;
-    case NO_FUNC = 1;
+    case NO_SEATS = 1;
     case NONEXISTENT = 2;
     case VALIDATION = 3;
     case EMPTY = 4;
@@ -21,8 +21,8 @@ enum err: int
     {
         return match ($this) {
             self::SUCCESS => "Procedimiento realizado con éxito.",
-            self::NO_FUNC => "No hay funciones programadas sobre esa película.",
-            self::NONEXISTENT => "No existe una película con ese ID.",
+            self::NO_SEATS => "Ningun asiento está ocupado.",
+            self::NONEXISTENT => "La función no existe.",
             self::VALIDATION => "Un campo o mas no pasaron la prueba de validación.",
             self::EMPTY => "La ID esta vacía.",
             self::ID_NOT_SET => "La ID no está asignada."
@@ -31,7 +31,7 @@ enum err: int
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Devuelve el código de error correspondiente.
+    // Devuelve los asientos ocupados si no hay errores y un código de error de haberlos.
     $response = comprobar();
     echo json_encode($response);
 } else {
@@ -49,33 +49,33 @@ die();
 function comprobar() 
 {
     // Devuelve un código de error si la ID no está seteada.
-    if (isset($_POST['idProducto'])) {
-        $idProducto = $_POST['idProducto'];
+    if (isset($_POST['idFuncion'])) {
+        $idFuncion = $_POST['idFuncion'];
     } else {
         return ['error' => err::ID_NOT_SET, 'errMsg' => err::ID_NOT_SET->getMsg()];
     }
 
     // Devuleve un código de error si la ID está vacia.
-    if (blank($idProducto))
+    if (blank($idFuncion))
         return ['error' => err::EMPTY, 'errMsg' => err::EMPTY->getMsg()];
 
     // Devuelve un código de error si la ID no pasa la validación.
-    if (!validacion($idProducto))
+    if (!validacion($idFuncion))
         return ['error' => err::VALIDATION, 'errMsg' => err::VALIDATION->getMsg()];
-    
-    // Devuelve un código de error si la función no existe.
-    if (is_null(traerFuncFuturasEsp($idProducto)))
-        return ['error' => err::NONEXISTENT, 'errMsg' => err::NONEXISTENT->getMsg()];
 
-    // Intenta traer las funciones de la película y devuelve el correspondiente mensaje de error.
-    $datos = traerFunc($idProducto);
+    // Devuelve un código de error si la función no existe.
+    if (is_null(traerFunc($idFuncion)))
+        return ['error' => err::NONEXISTENT, 'errMsg' => err::NONEXISTENT->getMsg()];
+    
+    // Intenta traer los asientos de la función y devuelve error si no lo logra.
+    $datos = explode(', ', traerAsientos($idFuncion));
     return is_null($datos) ?
-        ['error' => err::NO_FUNC, 'errMsg' => err::NO_FUNC->getMsg()] :
+        ['error' => err::NO_SEATS, 'errMsg' => err::NO_SEATS->getMsg()] :
         ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'datos' => $datos];
 }
 
-function validacion($idProducto)
+function validacion($idFuncion)
 {
     // Valida el ID, verificando que solo contenga digitos.
-    return validarInt($idProducto);
+    return validarInt($idFuncion);
 }

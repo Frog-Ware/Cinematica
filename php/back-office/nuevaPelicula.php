@@ -119,7 +119,7 @@ function generarID()
 function validacion($datos, $datosArr, $img)
 {
     // Valida ciertos datos, verificando que solo contengan caracteres permitidos y su longitud este en el rango permitido.
-    foreach (['sinopsis' => 250, 'nombrePelicula' => 50, 'pegi' => 10] as $k => $v)
+    foreach (['sinopsis' => 750, 'nombrePelicula' => 50, 'pegi' => 10] as $k => $v)
         if (!validarStr($datos[$k], $v))
             return false;
 

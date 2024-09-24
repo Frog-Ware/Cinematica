@@ -39,14 +39,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Guarda las variables en un array llamado datos.
     $datos = [];
     foreach (['email', 'nombre', 'apellido', 'imagenPerfil', 'passwd', 'numeroCelular'] as $x)
-        if (isset($_POST))
+        if (isset($_POST[$x]))
             $datos[$x] = $_POST[$x];
 
     // Verifica los datos y registra a un nuevo usuario. Devuelve el código de error correspondiente por JSON.
-    $error = comprobar($datos);
+    $token = generarToken();
+    $error = comprobar($datos, $token);
     $response = ($error == err::SUCCESS) ?
         ['error' => $error, 'errMsg' => $error->getMsg(), 'datos' => traerUsuario($datos['email']), 'token' => $token] :
-        ['error' => $error, 'errMsg' => $error->getMsg(), 'datos' => traerUsuario($datos['email']), 'token' => $token];
+        ['error' => $error, 'errMsg' => $error->getMsg()];
     echo json_encode($response);
 } else {
     // Restringe el acceso si no se utiliza el método de solicitud adecuado.
@@ -60,7 +61,7 @@ die();
 
 // Funciones
 
-function comprobar($datos)
+function comprobar($datos, $token)
 {
     // Devuelve un código de error si una variable no esta seteada.
     foreach (['email', 'nombre', 'apellido', 'imagenPerfil', 'passwd', 'numeroCelular'] as $x)
@@ -69,7 +70,7 @@ function comprobar($datos)
 
     // Devuelve un código de error si una variable esta vacía.
     foreach ($datos as $x)
-        if (blank($datos[$x]))
+        if (blank($x))
             return err::EMPTY;
 
     // Devuelve un código de error si algun campo no pasa la validación.
@@ -77,7 +78,7 @@ function comprobar($datos)
         return err::VALIDATION;
 
     // Devuelve un código de error si la imagen no existe.
-    if (!file_exists("../../assets/img/perfil" . $datos['imagenPerfil']))
+    if (!file_exists("../../assets/img/perfil/" . $datos['imagenPerfil']))
         return err::IMG_ERR;
 
     // Devuelve un código de error si el usuario ya esta registrado.
@@ -87,7 +88,6 @@ function comprobar($datos)
     // Cifra la contraseña y el token generado en md5.
     if (isset($datos['passwd']))
         $datos['passwd'] = md5($datos['passwd']);
-    $token = generarToken();
     $datos['token'] = md5($token);
 
     // Intenta registrar al usuario en la base de datos y devuelve su correspondiente código de error.

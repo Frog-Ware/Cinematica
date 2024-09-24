@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $datosArr = filtrar(['categorias', 'dimensiones', 'idiomas'], $_POST, true);
 
     // Devuelve el código de error correspondiente mediante JSON.
-    $error = comprobar($datos, $datosArr, $img);
+    $error = comprobar($datos, $datosArr);
     $response = ['error' => $error, 'errMsg' => $error->getMsg()];
     echo json_encode($response);
 } else {
@@ -55,7 +55,7 @@ die();
 
 // Funciones
 
-function comprobar($datos, $datosArr, $img)
+function comprobar($datos, $datosArr)
 {
     // Devuelve un código de error si el ID no esta seteado.
     if (isset($_POST['idProducto'])) {

@@ -23,7 +23,7 @@ enum err: int
         return match ($this) {
             self::SUCCESS => "Procedimiento realizado con éxito.",
             self::NO_SUCCESS => "Hubo un error en la inserción en la base de datos.",
-            self::NONEXISTENT => "El usuario asociado a ese email no existe",
+            self::NONEXISTENT => "El usuario asociado a ese email no es válido para un cambio de rol.",
             self::VALIDATION => "El email no pasó la prueba de validación.",
             self::EMPTY => "El email está vacío.",
             self::NOT_SET => "El email no está seteado."
@@ -78,10 +78,11 @@ function comprobar($datos)
 
 function validacion($datos)
 {
+
     // Valida el email, verificando que solo contenga carácteres permitidos.
     if (!validarEmail($datos['email'], 50))
         return false;
 
     // Valida el rol, verificando que sea un 0 u 1.
-    return $datos['rol'] === 1 || $datos['rol'] === 2;
+    return ($datos['rol'] == 0 || $datos['rol'] == 1);
 }

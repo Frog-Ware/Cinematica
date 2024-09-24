@@ -1,0 +1,238 @@
+main
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.lista
+{
+    margin: 10% 0;
+    height: 80vh;
+    width: 80%;
+    background-color: var(--color-secundario);
+}
+
+.cuadro_usuario
+{
+    margin: 5px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 2;
+}
+
+.select_user
+{
+    position:absolute;
+    height: 10vh;
+    width: 10%;
+    background-color: var(--color-secundario);
+    top: 15.9%;
+    z-index: 1;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    cursor: default;
+
+    user-select: none;
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none;
+}
+
+.select_user:nth-of-type(2)
+{
+    left: 20.5%;
+}
+.select_user:nth-of-type(3)
+{
+    left: 31%;
+}
+
+.selected_user
+{
+    background-color: var(--color-principal-detalles);
+}
+
+.usuario
+{
+    background-color: var(--color-terciario);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 70px;
+    font-size: 16px;
+    color: white;
+    font-weight: 700;
+
+    user-select: none;
+    -webkit-user-select: none; 
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.icono
+{
+    color: var(--color-secundario-detalles);
+    width: 2%;
+}
+
+.usuario_nombre
+{
+    width: 5%;
+}
+
+.usuario_correo
+{
+    width: 10%;
+}
+
+.usuario_tel
+{
+    width: 10%;
+}
+
+
+
+.usuario_img
+{
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+
+    user-select: none;
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none;
+}
+
+.usuario_img img
+{
+    border-radius: 50%;
+    height: 100%;
+    width: 100%;
+
+    user-select: none;
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none;
+}
+
+@media only screen and (max-width: 1441px) and (min-width: 1026px) {
+
+    .lista
+{
+    margin: 14% 0;
+    height: 80vh;
+    width: 80%;
+    background-color: var(--color-secundario);
+}
+
+
+}
+@media only screen and (max-width: 1025px) {
+
+    .lista{
+        margin: 12.4% 0;
+      }
+      .select_user
+  {
+      height: 5vh;
+      top: 15.9%;
+      font-size: 12px;
+      font-weight: 700;
+  
+  }
+  .select_user:nth-of-type(2)
+  {
+      left: 20.5%;
+  }
+  .select_user:nth-of-type(3)
+  {
+      left: 31%;
+  }
+  .usuario
+  {
+      font-size: 14px;
+      font-weight: 700;
+  
+    }
+    .usuario_correo
+  {
+      width: 25%;
+  }
+
+
+
+}
+@media only screen and (max-width: 769px) {
+
+    .lista{
+        margin: 16.3% 0;
+      }
+      .select_user
+  {
+      height: 5vh;
+      top: 15.9%;
+      font-size: 9px;
+      font-weight: 700;
+  
+  }
+  .select_user:nth-of-type(2)
+  {
+      left: 20.5%;
+  }
+  .select_user:nth-of-type(3)
+  {
+      left: 31%;
+  }
+  .usuario
+  {
+      font-size: 12px;
+      font-weight: 700;
+  
+    }
+    .usuario_correo
+  {
+      width: 25%;
+  }
+
+
+
+}
+@media screen and (max-width: 479px) {
+    .lista{
+      margin: 30% 0;
+    }
+    .select_user
+{
+    height: 5vh;
+    top: 15.9%;
+    font-size: 9px;
+    font-weight: 700;
+
+}
+.select_user:nth-of-type(2)
+{
+    left: 20.5%;
+}
+.select_user:nth-of-type(3)
+{
+    left: 31%;
+}
+.usuario
+{
+    font-size: 7px;
+    font-weight: 700;
+
+  }
+  .usuario_correo
+{
+    width: 25%;
+}
+}

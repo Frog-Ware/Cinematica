@@ -1,5 +1,16 @@
 <?php
 
+require_once "../db/traer.php";
+
+// Genera un ID de 9 numeros aleatorios.
+function generarID($func)
+{
+    do
+        $id = mt_rand(100000000, 999999999);
+    while (!is_null($func($id)));
+    return $id;
+}
+
 // Verifica que una variable sea vacía (string vacío, nula, solo espacios en blanco o un array vacío).
 function blank($var) {
     return is_array($var) ?

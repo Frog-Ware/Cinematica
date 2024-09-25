@@ -83,10 +83,10 @@ function traerEmpleados($rol)
 // Funciones de datos referidos a los productos
 
 // Devuelve la pelicula asociada al ID ingresado.
-function traerPelicula($id)
+function traerPelicula($idProducto)
 {
     $consultaSql = "SELECT * FROM Pelicula WHERE idProducto = ?";
-    $datos = consultaUnica($consultaSql, [$id]);
+    $datos = consultaUnica($consultaSql, [$idProducto]);
     if (is_null($datos))
         return null;
     $consultas = [
@@ -95,7 +95,7 @@ function traerPelicula($id)
         'idioma' => "SELECT idioma FROM tieneIdiomas WHERE idProducto = ?"
     ];
     foreach ($consultas as $k => $v)
-        $datos[$k] = array_column(consultaClave($v, [$id]), $k);
+        $datos[$k] = array_column(consultaClave($v, [$idProducto]), $k);
     return $datos;
 }
 
@@ -167,6 +167,15 @@ function traerDimensiones()
         $datos : null;
 }
 
+// Devuelve el precio de la dimensión solicitada.
+function traerPrecioD($dim)
+{
+    $consultaSql = "SELECT precio FROM Dimensiones WHERE dimension = ?";
+    $datos = consultaUnica($consultaSql, [$dim]);
+    return (!is_null($datos)) ?
+        $datos['precio'] : null;
+}
+
 // Devuelve los idiomas disponibles.
 function traerIdiomas()
 {
@@ -179,7 +188,7 @@ function traerIdiomas()
 // Devuelve el artículo asociada al ID ingresado.
 function traerArticulo($idProducto)
 {
-    $consultaSql = "SELECT '*' FROM Articulo WHERE idProducto = ?";
+    $consultaSql = "SELECT * FROM Articulo WHERE idProducto = ?";
     $datos = consultaUnica($consultaSql, [$idProducto]);
     return (!is_null($datos)) ?
         $datos : null;
@@ -188,7 +197,7 @@ function traerArticulo($idProducto)
 // Devuelve el artículo asociada al nombre ingresado.
 function traerArticuloNombre($n)
 {
-    $consultaSql = "SELECT '*' FROM Articulo WHERE nombreArticulo = ?";
+    $consultaSql = "SELECT * FROM Articulo WHERE nombreArticulo = ?";
     $datos = consultaUnica($consultaSql, [$n]);
     return (!is_null($datos)) ?
         $datos : null;
@@ -214,11 +223,20 @@ function traerBusqueda($busqueda)
     return $datos;
 }
 
-// Trae los registros de compra asociados a ese producto.
+// Trae los registros de compra asociados a esa función.
 function traerRegistro($idFuncion)
 {
     $consultaSql = "SELECT * FROM Compra WHERE idFuncion = ?";
     $datos = consultaClave($consultaSql, [$idFuncion]);
+    return (!is_null($datos)) ?
+        $datos : null;
+}
+
+// Trae los registros de compra asociados a ese ID.
+function traerCompra($idCompra)
+{
+    $consultaSql = "SELECT * FROM Compra WHERE idCompra = ?";
+    $datos = consultaUnica($consultaSql, [$idCompra]);
     return (!is_null($datos)) ?
         $datos : null;
 }
@@ -231,7 +249,9 @@ function traerCarrito($email)
     if (is_null($datos))
         return null;
     $consultaSql = "SELECT idProducto, cantidad FROM CarritoArticulo WHERE email = ?";
-    $datos['articulos'] = consultaClave($consultaSql, [$email]);
+    $art = consultaClave($consultaSql, [$email]);
+    if (!is_null($art))
+        $datos['articulos'] = $art;
     return $datos;
 }
 

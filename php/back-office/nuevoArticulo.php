@@ -35,7 +35,7 @@ enum err: int
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Genera una ID para el producto.
-    $datos['idProducto'] = generarID();
+    $datos['idProducto'] = generarID('traerArticulo');
 
     // Guarda las variables en un array llamado datos.
     foreach (['nombreArticulo', 'descripcion', 'precio'] as $x)
@@ -95,15 +95,6 @@ function comprobar($datos)
     // Intenta ingresar el artículo en la base de datos y devuelve su correspondiente código de error.
     return (nuevoArticulo($datos)) ?
         err::SUCCESS : err::NO_SUCCESS;
-}
-
-// Genera un ID de 9 numeros aleatorios.
-function generarID()
-{
-    do
-        $id = mt_rand(100000000, 999999999);
-    while (!is_null(traerArticulo($id)));
-    return $id;
 }
 
 function validacion($datos, $img) {

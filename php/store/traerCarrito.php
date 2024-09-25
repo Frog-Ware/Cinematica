@@ -26,10 +26,10 @@ enum err: int
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Devuelve los valores del carrito y un mensaje de error por JSON.
     $datos = isset($_SESSION['user']) ?
-    traerCarrito($_SESSION['user']) : null;
-    $response = (is_null($datos)) ?
-    ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'carrito' => $datos] :
-    ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
+        traerCarrito($_SESSION['user']) : null;
+    $response = (!is_null($datos)) ?
+        ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'carrito' => $datos] :
+        ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
     echo json_encode($response);
 } else {
     // Restringe el acceso si no se utiliza el método de solicitud adecuado.

@@ -26,7 +26,7 @@ function nuevoCliente($datos)
 function actPasswd($datos)
 {
     $lineaSql = "UPDATE Usuario SET passwd = ? WHERE email = ?";
-    return insertar([$datos], $lineaSql);
+    return insertar($datos, $lineaSql);
 }
 
 // Actualiza la imagen del usuario.
@@ -211,6 +211,13 @@ function eliminarCarrito($email)
             return false;
     }
     return true;
+}
+
+// Registra una nueva compra.
+function nuevaCompra($datos)
+{
+    $lineaSql = "INSERT INTO Compra VALUES (?, ?, ?, ?, ?, ?)";
+    return insertar($datos, $lineaSql);
 }
 
 // Agrega una nueva función.

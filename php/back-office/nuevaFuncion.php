@@ -32,7 +32,7 @@ enum err: int
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Genera una ID para la función.
-    $datos['idFuncion'] = generarID();
+    $datos['idFuncion'] = generarID('traerFunc');
 
     // Guarda las variables en un array llamado datos.
     foreach (['idProducto', 'nombreCine', 'numeroSala', 'fechaPelicula', 'horaPelicula', 'dimension'] as $x)
@@ -83,15 +83,6 @@ function comprobar($datos)
     // Intenta ingresar la película en la base de datos y devuelve su correspondiente código de error.
     return (nuevaFunc($datos)) ?
         err::SUCCESS : err::NO_SUCCESS;
-}
-
-// Genera un ID de 9 numeros aleatorios.
-function generarID()
-{
-    do
-        $id = mt_rand(100000000, 999999999);
-    while (!is_null(traerPelicula($id)));
-    return $id;
 }
 
 function validacion($datos)

@@ -68,7 +68,7 @@ function comprobar()
         return ['error' => err::NONEXISTENT, 'errMsg' => err::NONEXISTENT->getMsg()];
 
     // Intenta traer las funciones de la película y devuelve el correspondiente mensaje de error.
-    $datos = traerFunc($idProducto);
+    $datos = traerFuncFuturasEsp($idProducto);
     return is_null($datos) ?
         ['error' => err::NO_FUNC, 'errMsg' => err::NO_FUNC->getMsg()] :
         ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'datos' => $datos];

@@ -81,7 +81,7 @@ function obtenerTotal($carritoDB)
     $precioArt = 0;
     if (isset($carritoDB['articulos']))
         foreach ($carritoDB['articulos'] as $x)
-            $precioArt += (traerArticulo($x['idProducto'])['precio'] * $x['cantidad']);
+            $precioArt += traerArticulo($x['idProducto'])['precio'] * $x['cantidad'];
 
     return $pelicula + $precioArt;
 }

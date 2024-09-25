@@ -127,14 +127,14 @@ main
 
     .lista
 {
-    margin: 10.4% 0;
+    margin: 7.7% 0;
     height: 80vh;
     width: 80%;
     background-color: var(--color-secundario);
 }
 .select_user
 {
-    height: 4vh;
+    height: 7vh;
     top: 15.9%;
     font-size: 12px;
     font-weight: 700;
@@ -142,41 +142,13 @@ main
 }
 
 }
-@media only screen and (max-width: 1025px) {
+@media only screen and (max-width: 1441px) and (min-width: 1200px){
 
     .lista{
-        margin: 12.4% 0;
-      }
-      .select_user
-  {
-      height: 5vh;
-      top: 15.9%;
-      font-size: 12px;
-      font-weight: 700;
-  
-  }
-  .select_user:nth-of-type(2)
-  {
-      left: 20.5%;
-  }
-  .select_user:nth-of-type(3)
-  {
-      left: 31%;
-  }
-  .usuario
-  {
-      font-size: 14px;
-      font-weight: 700;
-  
+        margin: 7.8% 0;
     }
-    .usuario_correo
-  {
-      width: 25%;
-  }
-
-
-
 }
+
 @media only screen and (max-width: 1199px) and (min-width: 768px),
   only screen and (max-width: 767px) and (min-width: 480px) and (orientation: landscape) {
 

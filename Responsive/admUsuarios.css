@@ -127,12 +127,19 @@ main
 
     .lista
 {
-    margin: 14% 0;
+    margin: 10.4% 0;
     height: 80vh;
     width: 80%;
     background-color: var(--color-secundario);
 }
+.select_user
+{
+    height: 4vh;
+    top: 15.9%;
+    font-size: 12px;
+    font-weight: 700;
 
+}
 
 }
 @media only screen and (max-width: 1025px) {
@@ -170,10 +177,11 @@ main
 
 
 }
-@media only screen and (max-width: 769px) {
+@media only screen and (max-width: 1199px) and (min-width: 768px),
+  only screen and (max-width: 767px) and (min-width: 480px) and (orientation: landscape) {
 
     .lista{
-        margin: 16.3% 0;
+        margin: 10.3% 0;
       }
       .select_user
   {
@@ -207,7 +215,7 @@ main
 }
 @media screen and (max-width: 479px) {
     .lista{
-      margin: 30% 0;
+      margin: 18% 0;
     }
     .select_user
 {

@@ -91,6 +91,11 @@ function validacion($datos)
     foreach (['idProducto', 'numeroSala'] as $x)
         if (!validarInt($datos[$x]))
             return false;
+
+    // Valida que la película esté en cartelera.
+    if (!in_array($datos['idProducto'], array_column(traerIdCartelera(), 'idProducto')))
+        return false;
+
     // Valida el nombre del cine, verificando que solo contenga carácteres alfabéticos y que exista.
     if (!validarAl($datos['nombreCine'], 20))
         return false;

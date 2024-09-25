@@ -133,7 +133,6 @@ function validacion($datos, $datosArr, $img, $idProducto)
             return false;
 
     // Valida la duracion, verificando que este en el formato permitido.
-    $datos['duracion'] .= ":00";
     if (isset($datos['duracion']) && !validarHora($datos['duracion']))
         return false;
 

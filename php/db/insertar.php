@@ -115,7 +115,7 @@ function actPelicula($datos, $datosArr, $idProducto)
     foreach ($tablas as $t) {
         $insertSql = "INSERT INTO Tiene$t VALUES (?, ?)";
         $deleteSql = "DELETE FROM Tiene$t WHERE idProducto = ?";
-        if (!blank($datosArr[$t])) {
+        if (isset($datosArr[$t]) && !blank($datosArr[$t])) {
             if (!insertar([$idProducto], $deleteSql))
                 return false;
             foreach ($datosArr[$t] as $x)

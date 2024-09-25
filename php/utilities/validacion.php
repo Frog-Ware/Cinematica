@@ -42,7 +42,7 @@ function validarAl($var, $len)
 function validarURL($var, $len)
 {
     $regex = '/^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/\S*)?$/';
-    return preg_match($regex, $var) && strlen($var) <= $len;
+    return preg_match($regex, subject: $var) && strlen($var) <= $len;
 }
 
 function validarEmail($var, $len)

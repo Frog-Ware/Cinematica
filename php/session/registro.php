@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Verifica los datos y registra a un nuevo usuario. Devuelve el código de error correspondiente por JSON.
     $token = generarToken();
     $error = comprobar($datos, $token);
-    $response = ($error == err::SUCCESS) ?
+    $response = ($error->value == 0) ?
         ['error' => $error, 'errMsg' => $error->getMsg(), 'datos' => traerUsuario($datos['email']), 'token' => $token] :
         ['error' => $error, 'errMsg' => $error->getMsg()];
     echo json_encode($response);

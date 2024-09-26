@@ -81,8 +81,14 @@ function comprobar($datos)
         return err::VALIDATION;
 
     // Guarda los nuevos asientos ocupados en una variable.
-    $actAsientos = is_null(traerAsientos($datos['idFuncion'])) ?
-        $datos['asientos'] : traerAsientos($datos['idFuncion']) . ', ' . $datos['asientos']; 
+    if (traerCarrito($datos['email'])) {
+        $asientos = explode(', ', traerAsientos($datos['idFuncion']));
+        $aEliminar = explode(', ', traerCarrito($datos['email'])['asientos']);
+        $actAsientos = implode(', ', array_diff($asientos, $aEliminar)) . ', ' . $datos['asientos'];
+    } else {
+        $actAsientos = is_null(traerAsientos($datos['idFuncion'])) ?
+            $datos['asientos'] : traerAsientos($datos['idFuncion']) . ', ' . $datos['asientos']; 
+    }
 
     // Intenta persistir el carrito en la base de datos.
     return (actCarrito($datos, is_null(traerCarrito($datos['email'])))) &&
@@ -115,8 +121,9 @@ function validacion($datos)
                 return false;
 
     // Verifica que los asientos a reservar no esten ya reservados.
+    $ocupados = array_diff(explode(', ', traerAsientos($datos['idFuncion'])), explode(', ', traerCarrito($datos['email'])['asientos']));
     foreach ($asientos as $x)
-        if (str_contains(traerAsientos($datos['idFuncion']), implode('-', $x)))
+        if (in_array(implode('-', $x), $ocupados))
             return false;
 
     // Si todos los campos estan bien, retorna true.

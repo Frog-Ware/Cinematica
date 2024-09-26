@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $datos = filtrar(['nombreArticulo', 'descripcion', 'precio'], $_POST);
 
     // Devuelve el código de error correspondiente mediante JSON.
-    $error = comprobar($datos, $idProducto);
+    $error = comprobar($datos);
     $response = ['error' => $error, 'errMsg' => $error->getMsg()];
     echo json_encode($response);
 } else {
@@ -54,7 +54,7 @@ die();
 
 // Funciones
 
-function comprobar($datos, $idProducto)
+function comprobar($datos)
 {
     // Devuelve un código de error si el ID no esta seteado.
     if (isset($_POST['idProducto'])) {
@@ -82,7 +82,7 @@ function comprobar($datos, $idProducto)
 
     // Actualiza la imagen o su nombre de ser necesario.
     if (isset($datos['nombreArticulo'])) {
-        $datos['imagen'] = str_replace(" ", "_", $datos['nombreArticulo'] . "_imagen.webp");
+        $datos['imagen'] = str_replace(" ", "_", $datos['nombreArticulo'] . ".webp");
         $ok = isset($img) ?
             actImg($img, $datos['imagen'], $articuloDB['imagen'], 'articulos') :
             actNombreImg($datos['imagen'], $articuloDB['imagen'], 'articulos');

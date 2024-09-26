@@ -133,8 +133,12 @@ function validacion($datos, $datosArr, $img, $idProducto)
             return false;
 
     // Valida la duracion, verificando que este en el formato permitido.
-    if (isset($datos['duracion']) && !validarHora($datos['duracion']))
-        return false;
+    print ($datos['duracion']);
+    if (isset($datos['duracion'])) {
+        $datos['duracion'] .= ":00";
+        if (!validarHora($datos['duracion']))
+            return false;
+    }
 
     // Valida la URL del trailer.
     if (isset($datos['trailer']) && !validarURL($datos['trailer'], 250))

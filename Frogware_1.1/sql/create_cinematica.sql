@@ -64,7 +64,7 @@ DROP TABLE IF EXISTS Pelicula;
 CREATE TABLE Pelicula (
     idProducto int,
     actores varchar(250),
-    sinopsis varchar(250),
+    sinopsis varchar(750),
     duracion time,
     nombrePelicula varchar(50),
     pegi varchar(10),

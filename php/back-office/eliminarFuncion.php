@@ -35,15 +35,12 @@ enum err: int
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Devuelve el código de error correspondiente mediante JSON.
-    $error = comprobar();
-    $response = ['error' => $error, 'errMsg' => $error->getMsg()];
-    echo json_encode($response);
+    isset($_SESSION['user']) && traerRol($_SESSION['user']) != 0 ?
+        main() : header('HTTP/1.1 401 Unauthorized', true, 401);
 } else {
     // Restringe el acceso si no se utiliza el método de solicitud adecuado.
-    header('HTTP/1.0 405 Method Not Allowed');
+    header('HTTP/1.0 405 Method Not Allowed', true, 405);
 }
-
 
 // Mata la ejecución.
 die();
@@ -51,6 +48,14 @@ die();
 
 
 // Funciones
+
+function main()
+{
+    // Devuelve el código de error correspondiente mediante JSON.
+    $error = comprobar();
+    $response = ['error' => $error, 'errMsg' => $error->getMsg()];
+    echo json_encode($response);
+}
 
 function comprobar()
 {

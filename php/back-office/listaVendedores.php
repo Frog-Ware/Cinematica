@@ -22,6 +22,21 @@ enum err: int
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    isset($_SESSION['user']) && traerRol($_SESSION['user']) != 0 ?
+        main() : header('HTTP/1.1 401 Unauthorized', true, 401);
+} else {
+    header('HTTP/1.0 405 Method Not Allowed', true, 405);
+}
+
+// Mata la ejecución.
+die();
+
+
+
+// Funciones
+
+function main()
+{
     // Asigna los datos extraidos de la base de datos a una variable llamada datos.
     $datos = traerEmpleados(0);
 
@@ -30,9 +45,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'datos' => $datos] :
         ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
     echo json_encode($response);
-} else {
-    header('HTTP/1.0 405 Method Not Allowed');
 }
-
-// Mata la ejecución.
-die();

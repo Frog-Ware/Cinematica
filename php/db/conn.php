@@ -8,6 +8,13 @@ $dbname = "Cinematica";
 $username = "root";
 $password = "";
 
+/*
+$host = "sql309.infinityfree.com";
+$dbname = "if0_37383888_frogware";
+$username = "if0_37383888";
+$password = "ProyectoHosting";
+*/
+
 // Setea las opciones de PDO
 $opc = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

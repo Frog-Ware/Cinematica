@@ -26,7 +26,7 @@ enum err: int
             self::SUCCESS => "Procedimiento realizado con éxito.",
             self::NO_SUCCESS => "Hubo un error en la inserción en la base de datos.",
             self::NO_SESSION => "La sesión no estaba iniciada.",
-            self::VALIDATION => "La funcion o los asientos no están disponibles.",
+            self::VALIDATION => "La funcion o los asientos no pasaron la validación.",
             self::EMPTY => "Al menos un campo está vacio.",
             self::NOT_SET => "Al menos un campo no está asignado."
         };
@@ -80,19 +80,9 @@ function comprobar($datos)
     if (!validacion($datos))
         return err::VALIDATION;
 
-    // Guarda los nuevos asientos ocupados en una variable.
-    if (traerCarrito($datos['email'])) {
-        $asientos = explode(', ', traerAsientos($datos['idFuncion']));
-        $aEliminar = explode(', ', traerCarrito($datos['email'])['asientos']);
-        $actAsientos = implode(', ', array_diff($asientos, $aEliminar)) . ', ' . $datos['asientos'];
-    } else {
-        $actAsientos = is_null(traerAsientos($datos['idFuncion'])) ?
-            $datos['asientos'] : traerAsientos($datos['idFuncion']) . ', ' . $datos['asientos']; 
-    }
-
     // Intenta persistir el carrito en la base de datos.
     return (actCarrito($datos, is_null(traerCarrito($datos['email'])))) &&
-        actAsientos($datos['idFuncion'], $actAsientos) ?
+        reservarAsiento($datos) ?
             err::SUCCESS : err::NO_SUCCESS;
 }
 
@@ -102,29 +92,19 @@ function validacion($datos)
     if ((!validarInt($datos['idFuncion'])) || is_null(traerFunc($datos['idFuncion'])))
         return false;
 
-    // Organiza los datos de los asientos.
-    foreach (explode(', ', $datos['asientos']) as $x) {
-        if (count(explode('-', $x)) == 2) {
-            [$fila, $columna] = explode('-', $x);
-            $asientos[] = ['fila' => $fila, 'columna' => $columna];
-        } else {
-            return false;
-        }
-    }
-
     // Valida la posición de los asientos con respecto a la capacidad de la sala.
-    $func = traerFunc($datos['idFuncion']);
-    [$dimSala['fila'], $dimSala['columna']] = explode('x', traerCine($func['nombreCine'])['salas'][$func['numeroSala']-1]['capacidad']);
-    foreach ($asientos as $x)
-        foreach (['fila', 'columna'] as $y)
-            if (!validarInt($x[$y]) || $x[$y] > $dimSala[$y])
-                return false;
+
+    $sala = traerSala(traerFunc($datos['idFuncion'])['nombreCine'], traerFunc($datos['idFuncion'])['numeroSala']);
+    foreach (explode(", ", $datos['asientos']) as $i)
+        list($x, $y) = explode("-", $i);
+        if ($x > $sala['ancho'] || $x <= 0 || $y > $sala['largo'] || $y <= 0)
+            return false;
 
     // Verifica que los asientos a reservar no esten ya reservados.
-    $ocupados = array_diff(explode(', ', traerAsientos($datos['idFuncion'])), explode(', ', traerCarrito($datos['email'])['asientos']));
-    foreach ($asientos as $x)
-        if (in_array(implode('-', $x), $ocupados))
-            return false;
+    if (traerAsientos($datos['idFuncion']))
+        foreach (traerAsientos($datos['idFuncion']) as $x)
+            if (in_array(implode('-', $x), explode(", ", $datos['asientos'])))
+                return false;
 
     // Si todos los campos estan bien, retorna true.
     return true;

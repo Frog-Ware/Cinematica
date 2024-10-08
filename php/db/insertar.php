@@ -245,20 +245,32 @@ function eliminarFuncEsp($idProducto)
 }
 
 // Agrega asientos ocupados en una función.
-function actAsientos($id, $asientos)
+function reservarAsiento($datos)
 {
-    $lineaSql = "UPDATE funciones SET asientosOcupados = ? WHERE idFuncion = ?";
-    return insertar([$asientos, $id], $lineaSql);
+    $lineaSql = "INSERT INTO Asientos (fila, columna, idFuncion) VALUES (?, ?, ?)";
+    if (str_contains($datos['asientos'], ", ")) {
+        foreach (explode(", ", $datos['asientos']) as $x)
+            if (!insertar(array_merge(explode("-", $x), [$datos['idFuncion']]), $lineaSql))
+                return false;
+        return true;
+    } else {
+        return insertar(array_merge(explode("-", $datos['asientos']), [$datos['idFuncion']]), $lineaSql);
+    }  
 }
 
 // Elimina asientos ocupados en una función.
-function eliminarAsientos($id, $asientos)
+function eliminarAsientos($datos)
 {
-    $lineaSql = "UPDATE funciones SET asientosOcupados = ? WHERE idFuncion = ?";
-    return insertar([$asientos, $id], $lineaSql);
+    $lineaSql = "DELETE FROM Asientos WHERE fila = ? AND columna = ? AND idFuncion = ?";
+    if (str_contains($datos['asientos'], ", ")) {
+        foreach (explode(", ", $datos['asientos']) as $x)
+            if (!insertar(array_merge(explode("-", $x), [$datos['idFuncion']]), $lineaSql))
+                return false;
+        return true;
+    } else {
+        return insertar(array_merge(explode("-", $datos['asientos']), [$datos['idFuncion']]), $lineaSql);
+    }  
 }
-
-
 
 // Funciones de acceso a la base de datos.
 

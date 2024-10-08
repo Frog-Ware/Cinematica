@@ -32,24 +32,29 @@ enum err: int
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Guarda las variables en un array llamado datos.
-    $datos = [];
-    foreach (['email', 'rol'] as $x)
-        if (isset($_POST[$x]))
-            $datos[$x] = $_POST[$x];
-
-    // Devuelve el código de error correspondiente mediante JSON.
-    $error = comprobar($datos);
-    $response = ['error' => $error, 'errMsg' => $error->getMsg()];
-    echo json_encode($response);
+    isset($_SESSION['user']) && traerRol($_SESSION['user']) != 0 ?
+        main() : header('HTTP/1.1 401 Unauthorized', true, 401);
 } else {
     // Restringe el acceso si no se utiliza el método de solicitud adecuado.
-    header('HTTP/1.0 405 Method Not Allowed');
+    header('HTTP/1.0 405 Method Not Allowed', true, 405);
 }
 
 
 
 // Funciones
+
+function main()
+{
+    // Guarda las variables en un array llamado datos.
+    foreach (['email', 'rol'] as $x)
+    if (isset($_POST[$x]))
+        $datos[$x] = $_POST[$x];
+
+    // Devuelve el código de error correspondiente mediante JSON.
+    $error = comprobar($datos);
+    $response = ['error' => $error, 'errMsg' => $error->getMsg()];
+    echo json_encode($response);
+}
 
 function comprobar($datos)
 {

@@ -35,6 +35,22 @@ enum err: int
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    isset($_SESSION['user']) && traerRol($_SESSION['user']) != 0 ?
+        main() : header('HTTP/1.1 401 Unauthorized', true, 401);
+} else {
+    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
+    header('HTTP/1.0 405 Method Not Allowed');
+}
+
+// Mata la ejecución.
+die();
+
+
+
+// Funciones
+
+function main()
+{
     // Genera una ID para el producto.
     $datos['idProducto'] = generarID('traerPelicula');
 
@@ -50,17 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $error = comprobar($datos, $datosArr);
     $response = ['error' => $error, 'errMsg' => $error->getMsg()];
     echo json_encode($response);
-} else {
-    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
-    header('HTTP/1.0 405 Method Not Allowed');
 }
-
-// Mata la ejecución.
-die();
-
-
-
-// Funciones
 
 function comprobar($datos, $datosArr)
 {

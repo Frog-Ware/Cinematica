@@ -49,22 +49,18 @@ die();
 function comprobar()
 {
     // Devuelve un código de error si la sesión no está iniciada.
-    if (isset($_SESSION['user']))
+    if (isset($_SESSION['user'])) {
         $email = $_SESSION['user'];
-    else
+    } else {
         return err::NO_SESSION;
+    }
 
     // Devuelve un código de error si no existe el artículo a eliminar.
     $carritoDB = traerCarrito($email);
     if (is_null($carritoDB))
         return err::NONEXISTENT;
 
-    // Guarda los asientos eliminados en una variable.
-    $asientos = explode(', ', traerAsientos($carritoDB['idFuncion']));
-    $aEliminar = explode(', ', $carritoDB['asientos']);
-    $actAsientos = implode(', ', array_diff($asientos, $aEliminar));
-
     // Intenta ingresar la película en la base de datos y devuelve su correspondiente código de error.
-    return (eliminarAsientos($carritoDB['idFuncion'], $actAsientos) && eliminarCarrito($email)) ?
+    return (eliminarAsientos(array_intersect_key($carritoDB, array_flip(['idFuncion', 'asientos'])))) && eliminarCarrito($email) ?
         err::SUCCESS : err::NO_SUCCESS;
 }

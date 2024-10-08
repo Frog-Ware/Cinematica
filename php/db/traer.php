@@ -302,10 +302,10 @@ function traerFuncFuturasEsp($idProducto)
 // Devuelve los asientos ocupados en una funcion.
 function traerAsientos($idFuncion)
 {
-    $consultaSql = "SELECT asientosOcupados FROM Funciones WHERE idFuncion = ?";
-    $datos = consultaUnica($consultaSql, [$idFuncion]);
+    $consultaSql = "SELECT fila, columna FROM Asientos WHERE idFuncion = ?";
+    $datos = consultaClave($consultaSql, [$idFuncion]);
     return (!is_null($datos)) ?
-        $datos['asientosOcupados'] : null;
+        $datos : null;
 }
 
 function traerCines()
@@ -326,10 +326,18 @@ function traerCine($nombreCine)
     $datos = consultaUnica($consultaSql, [$nombreCine]);
     if (is_null($datos))
         return null;
-    $consultaSql = "SELECT numeroSala, capacidad FROM Sala WHERE nombreCine = ?";
+    $consultaSql = "SELECT numeroSala, largo, ancho FROM Sala WHERE nombreCine = ?";
     $datos['salas'] = consultaClave($consultaSql, [$datos['nombreCine']]);
     return $datos;
 }
+
+function traerSala($nombreCine, $numeroSala)
+{
+    $consultaSql = "SELECT largo, ancho FROM Sala WHERE nombreCine = ? AND numeroSala = ?";
+    $datos = consultaUnica($consultaSql, [$nombreCine, $numeroSala]);
+    return $datos;
+}
+
 
 // Funciones de acceso a la base de datos.
 
@@ -355,7 +363,7 @@ function consultaClave($consultaSql, $clave)
     global $con;
     try {
         $statement = $con->prepare($consultaSql);
-        $statement->execute($clave);
+        $statement->execute(array_values($clave));
         while ($fila = $statement->fetch(PDO::FETCH_ASSOC))
             $datos[] = $fila;
     } catch (PDOException $pe) {
@@ -371,7 +379,7 @@ function consultaUnica($consultaSql, $clave)
     global $con;
     try {
         $statement = $con->prepare($consultaSql);
-        $statement->execute($clave);
+        $statement->execute(array_values($clave));
         while ($fila = $statement->fetch(PDO::FETCH_ASSOC))
             $datos[] = $fila;
     } catch (PDOException $pe) {

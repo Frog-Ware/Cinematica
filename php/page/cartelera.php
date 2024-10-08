@@ -22,7 +22,7 @@ enum err: int
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if (true) {
     // Devuelve los datos de las películas si no hay errores y un código de error si no hay resultados.
     $datos = traerCartelera();
     $response = ($datos != null) ?

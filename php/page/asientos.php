@@ -68,10 +68,9 @@ function comprobar()
         return ['error' => err::NONEXISTENT, 'errMsg' => err::NONEXISTENT->getMsg()];
     
     // Intenta traer los asientos de la función y devuelve error si no lo logra.
-    $datos = explode(', ', traerAsientos($idFuncion));
-    return is_null($datos) ?
+    return is_null(traerAsientos($idFuncion)) ?
         ['error' => err::NO_SEATS, 'errMsg' => err::NO_SEATS->getMsg()] :
-        ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'datos' => $datos];
+        ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'datos' => traerAsientos($idFuncion)];
 }
 
 function validacion($idFuncion)

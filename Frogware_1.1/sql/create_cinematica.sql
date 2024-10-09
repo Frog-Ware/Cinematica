@@ -24,6 +24,27 @@ CREATE TABLE redesSociales (
     PRIMARY KEY (nombreEmpresa, redSocial)
 );
 
+DROP TABLE IF EXISTS Cine;
+CREATE TABLE Cine (
+    nombreCine varchar(50),
+    calle varchar(50),
+    numeroPuerta varchar(10),
+    localidad varchar(50),
+    nombreEmpresa varchar(50),
+    FOREIGN KEY (nombreEmpresa) REFERENCES Empresa(nombreEmpresa),
+    PRIMARY KEY (nombreCine)
+);
+
+DROP TABLE IF EXISTS Sala;
+CREATE TABLE Sala (
+    nombreCine varchar(50),
+    numeroSala int,
+    largo int,
+    ancho int,
+    FOREIGN KEY (nombreCine) REFERENCES Cine(nombreCine),
+    PRIMARY KEY (nombreCine, numeroSala)
+);
+
 DROP TABLE IF EXISTS Usuario;
 CREATE TABLE Usuario (
     email varchar(50),
@@ -60,6 +81,17 @@ CREATE TABLE Producto (
     PRIMARY KEY (idProducto)
 );
 
+DROP TABLE IF EXISTS Articulo;
+CREATE TABLE Articulo (
+    idProducto int,
+    nombreArticulo varchar(50),
+    descripcion varchar(250),
+    precio int,
+    imagen varchar(60),
+    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto),
+    PRIMARY KEY (idProducto)
+);
+
 DROP TABLE IF EXISTS Pelicula;
 CREATE TABLE Pelicula (
     idProducto int,
@@ -76,100 +108,11 @@ CREATE TABLE Pelicula (
     PRIMARY KEY (idProducto)
 );
 
-DROP TABLE IF EXISTS Articulo;
-CREATE TABLE Articulo (
+DROP TABLE IF EXISTS Cartelera;
+CREATE TABLE Cartelera (
     idProducto int,
-    nombreArticulo varchar(50),
-    descripcion varchar(250),
-    precio int,
-    imagen varchar(60),
     FOREIGN KEY (idProducto) REFERENCES Producto(idProducto),
     PRIMARY KEY (idProducto)
-);
-
-DROP TABLE IF EXISTS Cine;
-CREATE TABLE Cine (
-    nombreCine varchar(20),
-    calle varchar(50),
-    numeroPuerta varchar(10),
-    localidad varchar(50),
-    nombreEmpresa varchar(50),
-    FOREIGN KEY (nombreEmpresa) REFERENCES Empresa(nombreEmpresa),
-    PRIMARY KEY (nombreCine)
-);
-
-DROP TABLE IF EXISTS Sala;
-CREATE TABLE Sala (
-    nombreCine varchar(20),
-    numeroSala int,
-    capacidad varchar(10),
-    FOREIGN KEY (nombreCine) REFERENCES Cine(nombreCine),
-    PRIMARY KEY (nombreCine, numeroSala)
-);
-
-DROP TABLE IF EXISTS Dimensiones;
-CREATE TABLE Dimensiones (
-    dimension varchar(2),
-    precio int,
-    PRIMARY KEY (dimension)
-);
-
-DROP TABLE IF EXISTS Funciones;
-CREATE TABLE Funciones (
-    idFuncion int,
-    idProducto int,
-    nombreCine varchar(20),
-    numeroSala int,
-    fechaPelicula date,
-    horaPelicula time,
-    dimension varchar(2),
-    asientosOcupados varchar(250),
-    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto),
-    FOREIGN KEY (nombreCine, numeroSala) REFERENCES Sala(nombreCine, numeroSala),
-    FOREIGN KEY (dimension) REFERENCES Dimensiones(dimension),
-    PRIMARY KEY (idFuncion)
-);
-
-DROP TABLE IF EXISTS Compra;
-CREATE TABLE Compra (
-    idCompra int,
-    email varchar(50),
-    idFuncion int,
-    fechaCompra date,
-    asientos varchar(50),
-    precio int,
-    FOREIGN KEY (email) REFERENCES Usuario(email),
-    FOREIGN KEY (idFuncion) REFERENCES Funciones(idFuncion),
-    PRIMARY KEY (idCompra)
-);
-
-DROP TABLE IF EXISTS CompraArticulo;
-CREATE TABLE CompraArticulo (
-    idCompra int,
-    idProducto int,
-    cantidad int,
-    FOREIGN KEY (idCompra) REFERENCES Compra(idCompra),
-    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto),
-    PRIMARY KEY (idCompra, idProducto)
-);
-
-DROP TABLE IF EXISTS Carrito;
-CREATE TABLE Carrito (
-    email varchar(50),
-    idFuncion int,
-    asientos varchar(50),
-    FOREIGN KEY (email) REFERENCES Usuario(email),
-    FOREIGN KEY (idFuncion) REFERENCES Funciones(idFuncion),
-    PRIMARY KEY (email)
-);
-
-DROP TABLE IF EXISTS CarritoArticulo;
-CREATE TABLE CarritoArticulo (
-    email varchar(50),
-    idProducto int,
-    cantidad int,
-    FOREIGN KEY (email) REFERENCES Usuario(email),
-    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto)
 );
 
 DROP TABLE IF EXISTS Idiomas;
@@ -182,6 +125,13 @@ DROP TABLE IF EXISTS Categorias;
 CREATE TABLE Categorias (
     nombreCategoria varchar(20),
     PRIMARY KEY (nombreCategoria)
+);
+
+DROP TABLE IF EXISTS Dimensiones;
+CREATE TABLE Dimensiones (
+    dimension varchar(2),
+    precio int,
+    PRIMARY KEY (dimension)
 );
 
 DROP TABLE IF EXISTS TieneIdiomas;
@@ -211,9 +161,68 @@ CREATE TABLE TieneDimensiones (
     PRIMARY KEY (dimension, idProducto)
 );
 
-DROP TABLE IF EXISTS Cartelera;
-CREATE TABLE Cartelera (
+DROP TABLE IF EXISTS Funciones;
+CREATE TABLE Funciones (
+    idFuncion int,
     idProducto int,
+    nombreCine varchar(50),
+    numeroSala int,
+    fechaPelicula date,
+    horaPelicula time,
+    dimension varchar(2),
+    asientosOcupados varchar(250),
     FOREIGN KEY (idProducto) REFERENCES Producto(idProducto),
-    PRIMARY KEY (idProducto)
+    FOREIGN KEY (nombreCine, numeroSala) REFERENCES Sala(nombreCine, numeroSala),
+    FOREIGN KEY (dimension) REFERENCES Dimensiones(dimension),
+    PRIMARY KEY (idFuncion)
+);
+
+DROP TABLE IF EXISTS Asientos;
+CREATE TABLE Asientos (
+    idFuncion int,
+    fila int,
+    columna int,
+    FOREIGN KEY (idFuncion) REFERENCES Funciones(idFuncion)
+);
+
+DROP TABLE IF EXISTS Carrito;
+CREATE TABLE Carrito (
+    email varchar(50),
+    idFuncion int,
+    asientos varchar(50),
+    FOREIGN KEY (email) REFERENCES Usuario(email),
+    FOREIGN KEY (idFuncion) REFERENCES Funciones(idFuncion),
+    PRIMARY KEY (email)
+);
+
+DROP TABLE IF EXISTS CarritoArticulo;
+CREATE TABLE CarritoArticulo (
+    email varchar(50),
+    idProducto int,
+    cantidad int,
+    FOREIGN KEY (email) REFERENCES Usuario(email),
+    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto)
+);
+
+DROP TABLE IF EXISTS Compra;
+CREATE TABLE Compra (
+    idCompra int,
+    email varchar(50),
+    idFuncion int,
+    fechaCompra date,
+    asientos varchar(50),
+    precio int,
+    FOREIGN KEY (email) REFERENCES Usuario(email),
+    FOREIGN KEY (idFuncion) REFERENCES Funciones(idFuncion),
+    PRIMARY KEY (idCompra)
+);
+
+DROP TABLE IF EXISTS CompraArticulo;
+CREATE TABLE CompraArticulo (
+    idCompra int,
+    idProducto int,
+    cantidad int,
+    FOREIGN KEY (idCompra) REFERENCES Compra(idCompra),
+    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto),
+    PRIMARY KEY (idCompra, idProducto)
 );

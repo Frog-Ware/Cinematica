@@ -3,12 +3,26 @@
 INSERT INTO Empresa (nombreEmpresa, email, numeroTelefono, calle, numeroPuerta, localidad)
 VALUES ('Cinematica', 'contacto@cinematica.com', '26960056', 'Calle 1', '123', 'Montevideo');
 
--- Insertar redes sociales
+-- Insertar redes sociales de la empresa
 INSERT INTO redesSociales (nombreEmpresa, redSocial, urlRS, logo)
 VALUES ('Cinematica', 'Facebook', 'https://facebook.com/cinematica', 'logo_facebook.png'),
        ('Cinematica', 'Twitter', 'https://twitter.com/cinematica', 'logo_twitter.png');
 
--- Insertar Usuarios (token: token1)
+-- Insertar cines
+INSERT INTO Cine (nombreCine, calle, numeroPuerta, localidad, nombreEmpresa)
+VALUES ('Costa Urbana', 'Av. Giannatassio', 'Km. 21', 'Ciudad de la Costa', 'Cinematica'),
+       ('Tres Cruces', 'Bvar. Artigas', '1825', 'Montevideo', 'Cinematica'),
+       ('Portones Shopping', 'Av. Italia', '5775', 'Montevideo', 'Cinematica'),
+       ('Punta Carretas Shopping', 'José Ellauri', '350', 'Montevideo', 'Cinematica');
+
+-- Insertar salas de cada cine
+INSERT INTO Sala (nombreCine, numeroSala, largo, ancho)
+VALUES ('Costa Urbana', 1, 17, 13), ('Costa Urbana', 2, 12, 8),
+       ('Tres Cruces', 1, 17, 13), ('Tres Cruces', 2, 12, 8),
+       ('Portones Shopping', 1, 20, 16), ('Portones Shopping', 2, 17, 13),
+       ('Punta Carretas Shopping', 1, 17, 13), ('Punta Carretas Shopping', 2, 17, 13);
+
+-- Insertar usuarios (token: token1)
 INSERT INTO Usuario (email, nombre, apellido, imagenPerfil, passwd, token, numeroCelular)
 VALUES ('wchocho@gmail.com','Washington','Chocho','imagen1.webp','343121f36388c204d0249a8285ee3f00','78b1e6d775cec5260001af137a79dbd5','091234567'), -- passwd: wchocho123
        ('mtorres@gmail.com','Marcelo','Torres','imagen4.webp','2045ef6212256f3f9acf3f07ce136006','78b1e6d775cec5260001af137a79dbd5','098901234'), -- passwd: mtorres123
@@ -16,32 +30,20 @@ VALUES ('wchocho@gmail.com','Washington','Chocho','imagen1.webp','343121f36388c2
        ('dcauto@outlook.com','Delis','Cauto','imagen2.webp','a000ee16202ce758c681432b5508d649','78b1e6d775cec5260001af137a79dbd5','092345678'), -- passwd: dcauto123
        ('jartigas@gmail.com','José','Artigas','imagen6.webp','151b3593f0d334ae3e56deb7291de891','78b1e6d775cec5260001af137a79dbd5','092345678'); -- passwd: jartigas123
 
+-- Insertar empleados
 INSERT INTO Empleado (email, esAdmin, nombreEmpresa)
 VALUES ('wchocho@gmail.com',FALSE,'Cinematica'),
        ('mtorres@gmail.com',TRUE,'Cinematica'),
        ('cmenendez@gmail.com',FALSE,'Cinematica');
 
+-- Insertar clientes
 INSERT INTO Cliente (email, numeroTarjeta)
 VALUES ('dcauto@outlook.com','111122223333'),
        ('jartigas@gmail.com','111133332222');
 
--- Insertar productos (Películas y Artículos)
+-- Insertar productos (películas y artículos)
 INSERT INTO Producto (idProducto)
 VALUES (100000001), (100000002), (100000003), (100000004), (100000005), (100000006), (100000007), (100000008), (100000009), (100000010), (100000011), (200000001), (200000002), (200000003), (200000004), (200000005), (200000006), (200000007), (200000008), (200000009), (200000010), (200000011), (200000012), (200000013), (200000014), (200000015), (200000016), (200000017), (200000018);
-
--- Insertar películas
-INSERT INTO pelicula (idProducto, actores, sinopsis, duracion, nombrePelicula, pegi, trailer, director, poster, cabecera) VALUES
-(100000001, 'Gerard Butler, Lena Headey, David Wenham', 'Rey Leonidas de Esparta y un ejército de 300 hombres luchan contra el Imperio persa.', '01:57:00', '300', 'R', 'https://www.youtube.com/watch?v=UrIbxk7idYA', 'Zack Snyder', '300_poster.webp', '300_cabecera.webp'),
-(100000002, 'Cate Blanchett, Kevin Hart, Jamie Lee Curtis', 'Cazadores de bóvedas enfrentan criaturas salvajes y un villano tiránico en un planeta alienígena.', '02:00:00', 'Borderlands', 'PG-13', 'https://www.youtube.com/watch?v=link-borderlands', 'Eli Roth', 'borderlands_poster.webp', 'borderlands_cabecera.webp'),
-(100000003, 'Ryan Reynolds, Hugh Jackman, Morena Baccarin', 'Deadpool y Wolverine unen fuerzas para enfrentarse a nuevas amenazas en esta aventura llena de acción y humor irreverente.', '02:15:00', 'Deadpool y Wolverine', 'R', 'https://www.youtube.com/watch?v=link-deadpool-wolverine', 'Shawn Levy', 'deadpool_y_wolverine_poster.webp', 'deadpool_y_wolverine_cabecera.webp'),
-(100000004, 'Colin Farrell, Cristin Milioti, Michael Zegen', 'Serie sobre el ascenso del infame villano de Gotham, el Pingüino.', '00:45:00', 'El Pingüino', 'TV-MA', 'https://www.youtube.com/watch?v=link-pinguino', 'Craig Zobel', 'el_pinguino_poster.webp', 'el_pinguino_cabecera.webp'),
-(100000005, 'Andy Serkis, Woody Harrelson, Steve Zahn', 'Humanos y simios están en guerra por la supervivencia de sus especies.', '02:20:00', 'El Planeta de los Simios', 'PG-13', 'https://www.youtube.com/watch?v=qxjPjPzQ1iU', 'Matt Reeves', 'el_planeta_de_los_simios_poster.webp', 'el_planeta_de_los_simios_cabecera.webp'),
-(100000006, 'Bill Murray, Chris Pratt, Samuel L. Jackson', 'Garfield, el gato sarcástico, se enfrenta a nuevas aventuras.', '01:20:00', 'Garfield', 'PG', 'https://www.youtube.com/watch?v=link-garfield', 'Peter Hewitt', 'garfield_poster.webp', 'garfield_cabecera.webp'),
-(100000007, 'David Harbour, Orlando Bloom, Archie Madekwe', 'Un joven piloto de autos de carrera tiene la oportunidad de competir profesionalmente.', '02:15:00', 'Gran Turismo', 'PG-13', 'https://www.youtube.com/watch?v=link-granturismo', 'Neill Blomkamp', 'gran_turismo_poster.webp', 'gran_turismo_cabecera.webp'),
-(100000008, 'Joaquin Phoenix, Robert De Niro, Zazie Beetz', 'En Gotham, un comediante con problemas mentales se convierte en el icónico Joker.', '02:02:00', 'Joker', 'R', 'https://www.youtube.com/watch?v=zAGVQLHvwOY', 'Todd Phillips', 'joker_poster.webp', 'joker_cabecera.webp'),
-(100000009, 'Shia LaBeouf, Megan Fox, Josh Duhamel', 'Robots alienígenas se enfrentan en la Tierra para protegerla o destruirla.', '02:24:00', 'Transformers', 'PG-13', 'https://www.youtube.com/watch?v=link-transformers', 'Michael Bay', 'transformers_poster.webp', 'transformers_cabecera.webp'),
-(100000010, 'Daisy Edgar-Jones, Glen Powell, David Strathairn', 'Un grupo de cazadores de tormentas se enfrenta a tornados devastadores.', '01:55:00', 'Twisters', 'PG-13', 'https://www.youtube.com/watch?v=link-twisters', 'Lee Isaac Chung', 'twisters_poster.webp', 'twisters_cabecera.webp'),
-(100000011, 'Joey King, Liza Koshy, Chase Stokes', 'En un mundo distópico, la sociedad está dividida en bellos y feos.', '01:38:00', 'Uglies', 'PG-13', 'https://www.youtube.com/watch?v=link-uglies', 'McG', 'uglies_poster.webp', 'uglies_cabecera.webp');
 
 -- Insertar artículos
 INSERT INTO Articulo (idProducto, nombreArticulo, descripcion, precio, imagen)
@@ -64,6 +66,23 @@ VALUES (200000001, 'Agua', '500ml', 110, 'agua.webp'),
        (200000017, 'Pop XL', 'Pop de 500g', 420, 'pop_xl.webp'),
        (200000018, 'Pop Giga', 'Pop de 750g', 590, 'pop_giga.webp');
 
+-- Insertar películas
+INSERT INTO Pelicula (idProducto, actores, sinopsis, duracion, nombrePelicula, pegi, trailer, director, poster, cabecera) VALUES
+(100000001, 'Gerard Butler, Lena Headey, David Wenham', 'Rey Leonidas de Esparta y un ejército de 300 hombres luchan contra el Imperio persa.', '01:57:00', '300', 'R', 'https://www.youtube.com/watch?v=UrIbxk7idYA', 'Zack Snyder', '300_poster.webp', '300_cabecera.webp'),
+(100000002, 'Cate Blanchett, Kevin Hart, Jamie Lee Curtis', 'Cazadores de bóvedas enfrentan criaturas salvajes y un villano tiránico en un planeta alienígena.', '02:00:00', 'Borderlands', 'PG-13', 'https://www.youtube.com/watch?v=link-borderlands', 'Eli Roth', 'borderlands_poster.webp', 'borderlands_cabecera.webp'),
+(100000003, 'Ryan Reynolds, Hugh Jackman, Morena Baccarin', 'Deadpool y Wolverine unen fuerzas para enfrentarse a nuevas amenazas en esta aventura llena de acción y humor irreverente.', '02:15:00', 'Deadpool y Wolverine', 'R', 'https://www.youtube.com/watch?v=link-deadpool-wolverine', 'Shawn Levy', 'deadpool_y_wolverine_poster.webp', 'deadpool_y_wolverine_cabecera.webp'),
+(100000004, 'Colin Farrell, Cristin Milioti, Michael Zegen', 'Serie sobre el ascenso del infame villano de Gotham, el Pingüino.', '00:45:00', 'El Pingüino', 'TV-MA', 'https://www.youtube.com/watch?v=link-pinguino', 'Craig Zobel', 'el_pinguino_poster.webp', 'el_pinguino_cabecera.webp'),
+(100000005, 'Andy Serkis, Woody Harrelson, Steve Zahn', 'Humanos y simios están en guerra por la supervivencia de sus especies.', '02:20:00', 'El Planeta de los Simios', 'PG-13', 'https://www.youtube.com/watch?v=qxjPjPzQ1iU', 'Matt Reeves', 'el_planeta_de_los_simios_poster.webp', 'el_planeta_de_los_simios_cabecera.webp'),
+(100000006, 'Bill Murray, Chris Pratt, Samuel L. Jackson', 'Garfield, el gato sarcástico, se enfrenta a nuevas aventuras.', '01:20:00', 'Garfield', 'PG', 'https://www.youtube.com/watch?v=link-garfield', 'Peter Hewitt', 'garfield_poster.webp', 'garfield_cabecera.webp'),
+(100000007, 'David Harbour, Orlando Bloom, Archie Madekwe', 'Un joven piloto de autos de carrera tiene la oportunidad de competir profesionalmente.', '02:15:00', 'Gran Turismo', 'PG-13', 'https://www.youtube.com/watch?v=link-granturismo', 'Neill Blomkamp', 'gran_turismo_poster.webp', 'gran_turismo_cabecera.webp'),
+(100000008, 'Joaquin Phoenix, Robert De Niro, Zazie Beetz', 'En Gotham, un comediante con problemas mentales se convierte en el icónico Joker.', '02:02:00', 'Joker', 'R', 'https://www.youtube.com/watch?v=zAGVQLHvwOY', 'Todd Phillips', 'joker_poster.webp', 'joker_cabecera.webp'),
+(100000009, 'Shia LaBeouf, Megan Fox, Josh Duhamel', 'Robots alienígenas se enfrentan en la Tierra para protegerla o destruirla.', '02:24:00', 'Transformers', 'PG-13', 'https://www.youtube.com/watch?v=link-transformers', 'Michael Bay', 'transformers_poster.webp', 'transformers_cabecera.webp'),
+(100000010, 'Daisy Edgar-Jones, Glen Powell, David Strathairn', 'Un grupo de cazadores de tormentas se enfrenta a tornados devastadores.', '01:55:00', 'Twisters', 'PG-13', 'https://www.youtube.com/watch?v=link-twisters', 'Lee Isaac Chung', 'twisters_poster.webp', 'twisters_cabecera.webp'),
+(100000011, 'Joey King, Liza Koshy, Chase Stokes', 'En un mundo distópico, la sociedad está dividida en bellos y feos.', '01:38:00', 'Uglies', 'PG-13', 'https://www.youtube.com/watch?v=link-uglies', 'McG', 'uglies_poster.webp', 'uglies_cabecera.webp');
+
+-- Insertar cartelera
+INSERT INTO Cartelera (idProducto)
+VALUES (100000001), (100000002), (100000003), (100000004), (100000005), (100000006), (100000007), (100000008);
 
 -- Insertar idiomas
 INSERT INTO Idiomas (idioma)
@@ -105,7 +124,6 @@ INSERT INTO TieneCategorias (nombreCategoria, idProducto) VALUES
 ('Acción', 100000010), ('Thriller', 100000010), -- Twisters
 ('Ciencia ficción', 100000011), ('Drama', 100000011); -- Uglies
 
-
 -- Relacionar productos con dimensiones
 INSERT INTO TieneDimensiones (dimension, idProducto) VALUES
 ('2D', 100000001), ('3D', 100000001),
@@ -120,34 +138,18 @@ INSERT INTO TieneDimensiones (dimension, idProducto) VALUES
 ('2D', 100000010), ('3D', 100000010),
 ('2D', 100000011);
 
--- Insertar cartelera
-INSERT INTO Cartelera (idProducto)
-VALUES (100000001), (100000002), (100000003), (100000004), (100000005), (100000006), (100000007), (100000008);
-
-INSERT INTO Cine (nombreCine, calle, numeroPuerta, localidad, nombreEmpresa)
-VALUES ('Costa Urbana', 'Av. Giannatassio', 'Km. 21', 'Ciudad de la Costa', 'Cinematica'),
-       ('Tres Cruces', 'Bvar. Artigas', '1825', 'Montevideo', 'Cinematica'),
-       ('Portones Shopping', 'Av. Italia', '5775', 'Montevideo', 'Cinematica'),
-       ('Punta Carretas Shopping', 'José Ellauri', '350', 'Montevideo', 'Cinematica');
-
-INSERT INTO Sala (nombreCine, numeroSala, capacidad)
-VALUES ('Costa Urbana', 1, '17x13'), ('Costa Urbana', 2, '12x8'),
-       ('Tres Cruces', 1, '17x13'), ('Tres Cruces', 2, '12x8'),
-       ('Portones Shopping', 1, '17x13'), ('Portones Shopping', 2, '12x8'),
-       ('Punta Carretas Shopping', 1, '17x13'), ('Punta Carretas Shopping', 2, '12x8');
-
 INSERT INTO Funciones (idFuncion, idProducto, nombreCine, numeroSala, fechaPelicula, horaPelicula, dimension)
-VALUES (900000001, 100000001, 'Costa Urbana', 1, '2024-09-29', '19:10:00', '3D'),
-       (900000002, 100000006, 'Costa Urbana', 2, '2024-09-29', '18:00:00', '3D'),
-       (900000003, 100000003, 'Tres Cruces', 2, '2024-09-29', '17:50:00', '2D'),
-       (900000004, 100000008, 'Costa Urbana', 1, '2024-09-29', '21:45:00', '3D'),
-       (900000005, 100000005, 'Costa Urbana', 2, '2024-09-29', '20:40:00', '2D'),
-       (900000006, 100000004, 'Tres Cruces', 1, '2024-09-29', '19:40:00', '3D'),
-       (900000007, 100000002, 'Tres Cruces', 2, '2024-09-29', '20:30:00', '2D'),
-       (900000008, 100000007, 'Costa Urbana', 1, '2024-10-01', '18:00:00', '2D'),
-       (900000009, 100000003, 'Costa Urbana', 2, '2024-10-01', '18:30:00', '3D'),
-       (900000010, 100000008, 'Tres Cruces', 2, '2024-10-01', '17:50:00', '2D'),
-       (900000011, 100000002, 'Costa Urbana', 1, '2024-10-01', '20:45:00', '3D'),
-       (900000012, 100000004, 'Costa Urbana', 2, '2024-10-01', '21:40:00', '2D'),
-       (900000013, 100000005, 'Tres Cruces', 1, '2024-10-01', '19:30:00', '2D'),
-       (900000014, 100000006, 'Tres Cruces', 2, '2024-10-01', '20:30:00', '3D');
+VALUES (900000001, 100000001, 'Costa Urbana', 1, '2024-11-22', '19:10:00', '3D'),
+       (900000002, 100000006, 'Costa Urbana', 2, '2024-11-22', '18:00:00', '3D'),
+       (900000003, 100000003, 'Tres Cruces', 2, '2024-11-22', '17:50:00', '2D'),
+       (900000004, 100000008, 'Costa Urbana', 1, '2024-11-22', '21:45:00', '3D'),
+       (900000005, 100000005, 'Costa Urbana', 2, '2024-11-22', '20:40:00', '2D'),
+       (900000006, 100000004, 'Tres Cruces', 1, '2024-11-22', '19:40:00', '3D'),
+       (900000007, 100000002, 'Tres Cruces', 2, '2024-11-22', '20:30:00', '2D'),
+       (900000008, 100000007, 'Costa Urbana', 1, '2024-11-23', '18:00:00', '2D'),
+       (900000009, 100000003, 'Costa Urbana', 2, '2024-11-23', '18:30:00', '3D'),
+       (900000010, 100000008, 'Tres Cruces', 2, '2024-11-23', '17:50:00', '2D'),
+       (900000011, 100000002, 'Costa Urbana', 1, '2024-11-23', '20:45:00', '3D'),
+       (900000012, 100000004, 'Costa Urbana', 2, '2024-11-23', '21:40:00', '2D'),
+       (900000013, 100000005, 'Tres Cruces', 1, '2024-11-23', '19:30:00', '2D'),
+       (900000014, 100000006, 'Tres Cruces', 2, '2024-11-23', '20:30:00', '3D');

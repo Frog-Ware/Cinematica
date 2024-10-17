@@ -17,7 +17,7 @@ enum err: int
     {
         return match ($this) {
             self::SUCCESS => "Procedimiento realizado con éxito.",
-            self::NO_SUCCESS => "No hay cine disponibles."
+            self::NO_SUCCESS => "No hay cines disponibles."
         };
     }
 }

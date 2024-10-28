@@ -85,8 +85,8 @@ function dispAsientos($idFuncion)
     foreach ($asientosBD as $x)
         $ocup[] = implode("-", $x);
     list($ancho, $largo) = array_values(traerSala(traerFunc($idFuncion)['nombreCine'], traerFunc($idFuncion)['numeroSala']));
-    for ($x = 1; $x <= $ancho; $x++) {
-        for ($y = 1; $y <= $largo; $y++) {
+    for ($x = 1; $x <= $largo; $x++) {
+        for ($y = 1; $y <= $ancho; $y++) {
             $pos = "$x-$y";
             $asientos[] = in_array($pos, $ocup) ?
                 ['posicion' => $pos, 'disponible' => false] :

@@ -40,9 +40,9 @@ die();
 function main()
 {
     // Asigna los datos extraidos de la base de datos a su correspondiente posición en el array.
-    $datos['nombreCategoria'] = array_column(traerCategorias(), 'nombreCategoria');
-    $datos['dimension'] = array_column(traerDimensiones(), 'dimension');
-    $datos['idioma'] = array_column(traerIdiomas(), 'idioma');
+    $datos['categorias'] = traerCategorias();
+    $datos['dimensiones'] = traerDimensiones();
+    $datos['idiomas'] = traerIdiomas();
 
     // Envia los datos mediante JSON.
     $response = (!is_null($datos)) ?

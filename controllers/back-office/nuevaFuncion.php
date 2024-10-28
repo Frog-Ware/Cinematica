@@ -126,7 +126,7 @@ function validacion($datos)
         return false;
 
     // Valida que la dimension en que está la película esté en la BD.
-    if (!in_array($datos['dimension'], array_column(traerDimensiones(), 'dimension')))
+    if (!in_array($datos['dimension'], traerDimensiones()))
         return false;
 
     // Si todos los campos estan bien, retorna true.

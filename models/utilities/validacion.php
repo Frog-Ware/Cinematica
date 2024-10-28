@@ -42,7 +42,7 @@ function validarStr($var, $len)
 // Valida una variable alfabética, verificando que solo contenga carácteres alfabéticos y su longitud sea la permitida.
 function validarAl($var, $len)
 {
-    $regex = '/^(?!\s*$)[a-zA-ZáéíóúÁÉÍÓÚñÑüÜçÇ ,-.]+$/';
+    $regex = '/^(?!\s*$)[a-zA-ZáéíóúÁÉÍÓÚñÑüÜçÇ ,-._]+$/';
     return preg_match($regex, $var) && strlen($var) <= $len;
 }
 

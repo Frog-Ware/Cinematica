@@ -36,3 +36,9 @@ function actNombreImg($nombreNuevo, $nombreViejo, $carpeta)
     $dirNueva = "../../views/assets/img/$carpeta/$nombreNuevo";
     return rename($dirVieja, $dirNueva);
 }
+
+function checkImg($nombre, $carpeta)
+{
+    $dir = "../../views/assets/img/$carpeta/$nombre";
+    return file_exists($dir) && is_writable($dir);
+}

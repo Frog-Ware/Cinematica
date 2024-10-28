@@ -13,12 +13,11 @@ enum err: int
 {
     case MATCH = 0;
     case NO_MATCH = 1;
-    case NO_ACCOUNT = 2;
+    case UNAUTHORIZED = 2;
     case VALIDATION = 3;
     case EMPTY = 4;
     case NOT_SET = 5;
-    case ADMIN = 6;
-    case SESSION_ACT = 7;
+    case SESSION_ACT = 6;
 
     // Devuelve el mensaje asociado con el código de error.
     function getMsg()
@@ -26,11 +25,10 @@ enum err: int
         return match ($this) {
             self::MATCH => "Los valores ingresados coinciden.",
             self::NO_MATCH => "La dirección de correo y contraseña ingresada no coinciden.",
-            self::NO_ACCOUNT => "La dirección de correo ingresada no se encuentra registrada.",
+            self::UNAUTHORIZED => "La dirección de correo ingresada no tiene permisos para acceder.",
             self::VALIDATION => "El input no pasó la validación.",
             self::EMPTY => "Al menos un campo está vacio.",
             self::NOT_SET => "Al menos un campo no está asignado.",
-            self::ADMIN => "Los valores ingresados coinciden y el usuario tiene permisos de Administrador.",
             self::SESSION_ACT => "La sesión ya está iniciada."
         };
     }
@@ -45,9 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Inicia sesión, además de guardar los datos del usuario correspondiente como respuesta. Devuelve el código de error correspondiente por JSON.
     $error = comprobar($datos);
-    if ($error->value == 0) { 
+    if ($error == err::MATCH) { 
         $response = ['error' => $error, 'errMsg' => $error->getMsg(), 'datos' => traerUsuario($datos['email'])];
         inicioSesion($datos['email']);
+    } else if ($error == err::UNAUTHORIZED) {
+        header('HTTP/1.1 401 Unauthorized', true, 401);
+        die();
     } else {
         $response = ['error' => $error, 'errMsg' => $error->getMsg()];
     }
@@ -80,22 +81,18 @@ function comprobar($datos)
     if (!validacion($datos))
         return err::VALIDATION;
 
-    // Devuelve un código de error si la dirección de correo no está registrada.
+    // Devuelve un código de error si la dirección de correo no está registrada como administrador.
     $passwd = traerPasswd($datos['email']);
-    if (is_null($passwd))
-        return err::NO_ACCOUNT;
-
-    // Devuelve un codigo de error si la contraseña no coincide.
-    if (md5($datos['passwd']) != $passwd)
-        return err::NO_MATCH;
+    if (is_null($passwd) || traerRol($datos['email']) == 0)
+        return err::UNAUTHORIZED;
 
     // Devuelve un código de error si la sesión está iniciada.
     if (isset($_SESSION['user']))
         return err::SESSION_ACT;
 
-    // Devuelve un código de error dependiendo si la cuenta es de rol Cliente o Administrador.
-    return (traerRol($datos['email']) != 0) ?
-        err::ADMIN : err::MATCH;
+    // Inicia sesión y devuelve un código de error si la contraseña coincide y es de tipo Admin.
+    return (md5($datos['passwd']) == $passwd) ?
+        err::MATCH : err::NO_MATCH;
 }
 
 // Inicia la sesión por 1 día.

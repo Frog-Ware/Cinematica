@@ -36,6 +36,30 @@ function actImagenPerfil($datos)
     return insertar($datos, $lineaSql);
 }
 
+// Agrega otra opcion como imagen de perfil.
+function nuevaPFP($nmb)
+{
+    $lineaSql = "INSERT INTO ImagenPerfil (imagenPerfil) VALUES (?)";
+    return insertar([$nmb], $lineaSql);
+}
+
+function eliminarPFP($nmb)
+{
+    $lineaSql = "DELETE FROM ImagenPerfil WHERE imagenPerfil = ?";
+    return insertar([$nmb], $lineaSql);
+}
+
+function nuevoSlider($nmb)
+{
+    $lineaSql = "INSERT INTO ImagenSlider (imagenSlider) VALUES (?)";
+    return insertar([$nmb], $lineaSql);
+}
+
+function eliminarSlider($nmb)
+{
+    $lineaSql = "DELETE FROM ImagenSlider WHERE imagenSlider = ?";
+    return insertar([$nmb], $lineaSql);
+}
 
 // Actualiza los datos del usuario.
 function actUsuario($datos, $email)
@@ -166,6 +190,13 @@ function eliminarPelicula($idProducto)
             return false;
     }
     return true;
+}
+
+// Cambia el precio de las peliculas de una dimension en esp.
+function cambiarPrecio($dim, $precio)
+{
+    $lineaSql = "UPDATE Dimensiones SET precio = ? WHERE dimension = ?";
+    return insertar([$precio, $dim], $lineaSql);
 }
 
 // Ingresa un producto de tipo artículo en la base de datos.

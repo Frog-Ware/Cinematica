@@ -25,7 +25,7 @@ enum err: int
         return match ($this) {
             self::SUCCESS => "Procedimiento realizado con éxito.",
             self::NO_SUCCESS => "Hubo un error en la inserción en la base de datos.",
-            self::NONEXISTENT => "El carrito no existe o la sesión no está iniciada.",
+            self::NO_SESSION => "La sesión no está iniciada.",
             self::VALIDATION => "Uno de los campos no paso la prueba de validación.",
             self::EMPTY => "Al menos un campo está vacio.",
             self::NOT_SET => "Al menos un campo no está asignado."
@@ -64,11 +64,11 @@ die();
 
 function comprobar($datos)
 {
-    // Devuelve un código de error si la sesión no está iniciada o si el carrito no existe.
-    if (isset($_SESSION['user']) && traerCarrito($_SESSION['user'])) {
+    // Devuelve un código de error si la sesión no está iniciada.
+    if (isset($_SESSION['user'])) {
         $email = $_SESSION['user'];
     } else {
-        return err::NONEXISTENT;
+        return err::NO_SESSION;
     }
 
     // Devuelve un código de error si una variable no esta seteada.

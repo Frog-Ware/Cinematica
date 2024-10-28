@@ -92,14 +92,19 @@ function validacion($datos)
     if ((!validarInt($datos['idFuncion'])) || is_null(traerFunc($datos['idFuncion'])))
         return false;
 
-    // Valida el formato y la posición de los asientos con respecto a la capacidad de la sala.
+    // Valida el formato de los asientos.
     if (!validarAsientos($datos['asientos']))
         return false;
     $sala = traerSala(traerFunc($datos['idFuncion'])['nombreCine'], traerFunc($datos['idFuncion'])['numeroSala']);
-    foreach (explode(", ", $datos['asientos']) as $i)
+    foreach ($arr = explode(", ", $datos['asientos']) as $i) {
+        // Verifica que los asientos no estén repetidos.
+        if (array_count_values($arr)[$i] > 1)
+            return false;
+        // Valida la posición de los asientos con respecto a la capacidad de la sala.
         list($x, $y) = explode("-", $i);
         if ($x > $sala['ancho'] || $x <= 0 || $y > $sala['largo'] || $y <= 0)
             return false;
+    }
 
     // Verifica que los asientos a reservar no esten ya reservados.
     if (traerAsientosReservados($datos['idFuncion']))

@@ -78,6 +78,24 @@ function traerEmpleados($rol)
     return $datos;
 }
 
+// Devuelve una lista de imagenes de perfil.
+function traerPFP()
+{
+    $consultaSql = "SELECT * FROM ImagenPerfil";
+    $datos = consulta($consultaSql);
+    return (!is_null($datos)) ?
+        array_column($datos, 'imagenPerfil') : null;
+}
+
+// Devuelve una lista de imagenes del slider.
+function traerSlider()
+{
+    $consultaSql = "SELECT * FROM ImagenSlider";
+    $datos = consulta($consultaSql);
+    return (!is_null($datos)) ?
+        array_column($datos, 'imagenSlider') : null;
+}
+
 
 
 // Funciones de datos referidos a los productos
@@ -157,6 +175,17 @@ function traerCategorias()
     $consultaSql = "SELECT * FROM Categorias";
     $datos = consulta($consultaSql);
     return (!is_null($datos)) ?
+        array_column($datos, 'nombreCategoria') : null;
+}
+
+function traerPorCategoria($categoria)
+{
+    $consultaSql = "SELECT idProducto FROM tieneCategorias WHERE nombreCategoria = ?";
+    if (!is_null($arr = consultaClave($consultaSql, [$categoria])))
+        foreach ($arr as $x)
+            if (in_array($x['idProducto'], array_column(traerIdCartelera(), 'idProducto')))
+                $datos[] = traerPelicula($x['idProducto']);
+    return isset($datos) ?
         $datos : null;
 }
 
@@ -166,7 +195,7 @@ function traerDimensiones()
     $consultaSql = "SELECT dimension FROM Dimensiones";
     $datos = consulta($consultaSql);
     return (!is_null($datos)) ?
-        $datos : null;
+        array_column($datos, 'dimension') : null;
 }
 
 // Devuelve el precio de la dimensión solicitada.
@@ -184,7 +213,7 @@ function traerIdiomas()
     $consultaSql = "SELECT * FROM Idiomas";
     $datos = consulta($consultaSql);
     return (!is_null($datos)) ?
-        $datos : null;
+        array_column($datos, 'idioma') : null;
 }
 
 // Devuelve el artículo asociada al ID ingresado.
@@ -250,13 +279,12 @@ function traerCarrito($email)
 {
     $consultaSql = "SELECT * FROM Carrito WHERE email = ?";
     $datos = consultaUnica($consultaSql, [$email]);
-    if (is_null($datos))
-        return null;
     $consultaSql = "SELECT idProducto, cantidad FROM CarritoArticulo WHERE email = ?";
     $art = consultaClave($consultaSql, [$email]);
     if (!is_null($art))
         $datos['articulos'] = $art;
-    return $datos;
+    return !is_null($datos) ?
+        $datos : null;
 }
 
 function traerFunc($idFuncion)

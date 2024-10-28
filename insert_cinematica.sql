@@ -21,29 +21,45 @@ VALUES ('Costa Urbana', 'Av. Giannatassio', 'Km. 21', 'Ciudad de la Costa', 'Cin
 INSERT INTO Sala (nombreCine, numeroSala, ancho, largo)
 VALUES ('Costa Urbana', 1, 17, 13), ('Costa Urbana', 2, 14, 10),
        ('Tres Cruces', 1, 17, 13), ('Tres Cruces', 2, 14, 10),
-       ('Portones Shopping', 1, 20, 16), ('Portones Shopping', 2, 17, 13),
+       ('Portones Shopping', 1, 17, 13), ('Portones Shopping', 2, 17, 13),
        ('Punta Carretas Shopping', 1, 17, 13), ('Punta Carretas Shopping', 2, 17, 13),
-       ('Cine Chaplin', 1, 8, 6), ('Cine Chaplin', 2, 8, 6),
-       ('Cine Miramar', 1, 10, 7), ('Cine Miramar', 2, 8, 6);
+       ('Cine Chaplin', 1, 14, 10), ('Cine Chaplin', 2, 12, 8),
+       ('Cine Miramar', 1, 12, 8), ('Cine Miramar', 2, 12, 8);
+       
+INSERT INTO ImagenPerfil (imagenPerfil) 
+VALUES ('venom.webp'), ('iron_man.webp'), ('morgan.webp'), ('robin.webp'), ('T-800.webp'), ('xenomorfo.webp'), ('rambo.webp'), ('will.webp'), ('doc_emmeth_brown.webp'), ('imagen1.webp'), ('imagen8.webp'), ('default.webp');
+
+INSERT INTO ImagenSlider (imagenSlider)
+VALUES ('300-slider.webp'), ('ForrestGump.webp'), ('GT-slider.webp'), ('movieTime.webp');
 
 -- Insertar usuarios (token: token1)
 INSERT INTO Usuario (email, nombre, apellido, imagenPerfil, passwd, token, numeroCelular)
-VALUES ('wchocho@gmail.com','Washington','Chocho','imagen1.webp','343121f36388c204d0249a8285ee3f00','78b1e6d775cec5260001af137a79dbd5','091234567'), -- passwd: wchocho123
-       ('mtorres@gmail.com','Marcelo','Torres','imagen4.webp','2045ef6212256f3f9acf3f07ce136006','78b1e6d775cec5260001af137a79dbd5','098901234'), -- passwd: mtorres123
-       ('cmenendez@gmail.com','Christian','Menendez','imagen3.webp','b6ecabcb73a2f334a9260e344af62e1d','78b1e6d775cec5260001af137a79dbd5','095678901'), -- passwd: cmenendez123
-       ('dcauto@outlook.com','Delis','Cauto','imagen2.webp','a000ee16202ce758c681432b5508d649','78b1e6d775cec5260001af137a79dbd5','092345678'), -- passwd: dcauto123
-       ('jartigas@gmail.com','José','Artigas','imagen6.webp','151b3593f0d334ae3e56deb7291de891','78b1e6d775cec5260001af137a79dbd5','092345678'); -- passwd: jartigas123
+VALUES ('wchocho@gmail.com','Washington','Chocho','default.webp','343121f36388c204d0249a8285ee3f00','78b1e6d775cec5260001af137a79dbd5','091234567'), -- passwd: wchocho123
+       ('mtorres@gmail.com','Marcelo','Torres','default.webp','2045ef6212256f3f9acf3f07ce136006','78b1e6d775cec5260001af137a79dbd5','098901234'), -- passwd: mtorres123
+       ('cmenendez@gmail.com','Christian','Menendez','default.webp','b6ecabcb73a2f334a9260e344af62e1d','78b1e6d775cec5260001af137a79dbd5','095678901'), -- passwd: cmenendez123
+       ('dcauto@outlook.com','Delis','Cauto','default.webp','a000ee16202ce758c681432b5508d649','78b1e6d775cec5260001af137a79dbd5','092345678'), -- passwd: dcauto123
+       ('nfernandez@gmail.com','Nicolás','Fernandez','default.webp','0911e4b4dd93ff9da3431d46f444e2bf','78b1e6d775cec5260001af137a79dbd5','091234568'), -- passwd: nfernandez123
+       ('gmadruga@gmail.com','Giselle','Madruga','default.webp','0e544a574a3b4389d8ba473be7be86f1','78b1e6d775cec5260001af137a79dbd5','095245659'), -- passwd: gmadruga123
+       ('mbritos@outlook.com','Maria','Britos','default.webp','b2d51d1818747410708c5b68e7e2f4af','78b1e6d775cec5260001af137a79dbd5','096202358'), -- passwd: mbritos123
+       ('kgancio@gmail.com','Karen','Gancio','default.webp','677b695fdb95b9f2b8cf2e2f7e3abfb8','78b1e6d775cec5260001af137a79dbd5','094593909'), -- passwd: kgancio123
+       ('mdacunha@outlook.com','Maria','Da Cunha','default.webp','cbad96a3206f6749f243617a952ae5bc','78b1e6d775cec5260001af137a79dbd5','097441403'), -- passwd: mdacunha123
+       ('ssoutullo@gmail.com','Sussi','Soutullo','default.webp','6c96c7480ea8a8aab3daa34b2e35b450','78b1e6d775cec5260001af137a79dbd5','092102203'); -- passwd: ssoutullo123
 
 -- Insertar empleados
 INSERT INTO Empleado (email, esAdmin, nombreEmpresa)
 VALUES ('wchocho@gmail.com',FALSE,'Cinematica'),
        ('mtorres@gmail.com',TRUE,'Cinematica'),
+       ('ssoutullo@gmail.com', TRUE, 'Cinematica'),
        ('cmenendez@gmail.com',FALSE,'Cinematica');
 
 -- Insertar clientes
 INSERT INTO Cliente (email, numeroTarjeta)
-VALUES ('dcauto@outlook.com','111122223333'),
-       ('jartigas@gmail.com','111133332222');
+VALUES ('dcauto@outlook.com', '4532015112830366'),
+       ('mbritos@outlook.com', '6011735678420972'),
+       ('mdacunha@outlook.com', '378282246310005'),
+       ('kgancio@gmail.com', '6011111111111117'),
+       ('gmadruga@gmail.com', '4000056655665556'),
+       ('nfernandez@gmail.com', '371449635398431');
 
 -- Insertar productos (películas y artículos)
 INSERT INTO Producto (idProducto)
@@ -72,17 +88,17 @@ VALUES (200000001, 'Agua', '500ml', 110, 'agua.webp'),
 
 -- Insertar películas
 INSERT INTO Pelicula (idProducto, actores, sinopsis, duracion, nombrePelicula, pegi, trailer, director, poster, cabecera) VALUES
-(100000001, 'Gerard Butler, Lena Headey, David Wenham', 'Rey Leonidas de Esparta y un ejército de 300 hombres luchan contra el Imperio persa.', '01:57:00', '300', 'R', 'https://www.youtube.com/watch?v=UrIbxk7idYA', 'Zack Snyder', '300_poster.webp', '300_cabecera.webp'),
-(100000002, 'Cate Blanchett, Kevin Hart, Jamie Lee Curtis', 'Cazadores de bóvedas enfrentan criaturas salvajes y un villano tiránico en un planeta alienígena.', '02:00:00', 'Borderlands', 'PG-13', 'https://www.youtube.com/watch?v=link-borderlands', 'Eli Roth', 'borderlands_poster.webp', 'borderlands_cabecera.webp'),
-(100000003, 'Ryan Reynolds, Hugh Jackman, Morena Baccarin', 'Deadpool y Wolverine unen fuerzas para enfrentarse a nuevas amenazas en esta aventura llena de acción y humor irreverente.', '02:15:00', 'Deadpool y Wolverine', 'R', 'https://www.youtube.com/watch?v=link-deadpool-wolverine', 'Shawn Levy', 'deadpool_y_wolverine_poster.webp', 'deadpool_y_wolverine_cabecera.webp'),
-(100000004, 'Colin Farrell, Cristin Milioti, Michael Zegen', 'Serie sobre el ascenso del infame villano de Gotham, el Pingüino.', '00:45:00', 'El Pingüino', 'TV-MA', 'https://www.youtube.com/watch?v=link-pinguino', 'Craig Zobel', 'el_pinguino_poster.webp', 'el_pinguino_cabecera.webp'),
-(100000005, 'Andy Serkis, Woody Harrelson, Steve Zahn', 'Humanos y simios están en guerra por la supervivencia de sus especies.', '02:20:00', 'El Planeta de los Simios', 'PG-13', 'https://www.youtube.com/watch?v=qxjPjPzQ1iU', 'Matt Reeves', 'el_planeta_de_los_simios_poster.webp', 'el_planeta_de_los_simios_cabecera.webp'),
-(100000006, 'Bill Murray, Chris Pratt, Samuel L. Jackson', 'Garfield, el gato sarcástico, se enfrenta a nuevas aventuras.', '01:20:00', 'Garfield', 'PG', 'https://www.youtube.com/watch?v=link-garfield', 'Peter Hewitt', 'garfield_poster.webp', 'garfield_cabecera.webp'),
-(100000007, 'David Harbour, Orlando Bloom, Archie Madekwe', 'Un joven piloto de autos de carrera tiene la oportunidad de competir profesionalmente.', '02:15:00', 'Gran Turismo', 'PG-13', 'https://www.youtube.com/watch?v=link-granturismo', 'Neill Blomkamp', 'gran_turismo_poster.webp', 'gran_turismo_cabecera.webp'),
-(100000008, 'Joaquin Phoenix, Robert De Niro, Zazie Beetz', 'En Gotham, un comediante con problemas mentales se convierte en el icónico Joker.', '02:02:00', 'Joker', 'R', 'https://www.youtube.com/watch?v=zAGVQLHvwOY', 'Todd Phillips', 'joker_poster.webp', 'joker_cabecera.webp'),
-(100000009, 'Shia LaBeouf, Megan Fox, Josh Duhamel', 'Robots alienígenas se enfrentan en la Tierra para protegerla o destruirla.', '02:24:00', 'Transformers', 'PG-13', 'https://www.youtube.com/watch?v=link-transformers', 'Michael Bay', 'transformers_poster.webp', 'transformers_cabecera.webp'),
-(100000010, 'Daisy Edgar-Jones, Glen Powell, David Strathairn', 'Un grupo de cazadores de tormentas se enfrenta a tornados devastadores.', '01:55:00', 'Twisters', 'PG-13', 'https://www.youtube.com/watch?v=link-twisters', 'Lee Isaac Chung', 'twisters_poster.webp', 'twisters_cabecera.webp'),
-(100000011, 'Joey King, Liza Koshy, Chase Stokes', 'En un mundo distópico, la sociedad está dividida en bellos y feos.', '01:38:00', 'Uglies', 'PG-13', 'https://www.youtube.com/watch?v=link-uglies', 'McG', 'uglies_poster.webp', 'uglies_cabecera.webp');
+       (100000001, 'Gerard Butler, Lena Headey, David Wenham', 'Rey Leonidas de Esparta y un ejército de 300 hombres luchan contra el Imperio persa.', '01:57:00', '300', 'R', 'https://www.youtube.com/watch?v=UrIbxk7idYA', 'Zack Snyder', '300_poster.webp', '300_cabecera.webp'), 
+       (100000002, 'Cate Blanchett, Kevin Hart, Jamie Lee Curtis', 'Cazadores de bóvedas enfrentan criaturas salvajes y un villano tiránico en un planeta alienígena.', '02:00:00', 'Borderlands', 'PG-13', 'https://www.youtube.com/watch?v=link-borderlands', 'Eli Roth', 'borderlands_poster.webp', 'borderlands_cabecera.webp'),
+       (100000003, 'Ryan Reynolds, Hugh Jackman, Morena Baccarin', 'Deadpool y Wolverine unen fuerzas para enfrentarse a nuevas amenazas en esta aventura llena de acción y humor irreverente.', '02:15:00', 'Deadpool y Wolverine', 'R', 'https://www.youtube.com/watch?v=link-deadpool-wolverine', 'Shawn Levy', 'deadpool_y_wolverine_poster.webp', 'deadpool_y_wolverine_cabecera.webp'),
+       (100000004, 'Colin Farrell, Cristin Milioti, Michael Zegen', 'Serie sobre el ascenso del infame villano de Gotham, el Pingüino.', '00:45:00', 'El Pingüino', 'TV-MA', 'https://www.youtube.com/watch?v=link-pinguino', 'Craig Zobel', 'el_pinguino_poster.webp', 'el_pinguino_cabecera.webp'),
+       (100000005, 'Andy Serkis, Woody Harrelson, Steve Zahn', 'Humanos y simios están en guerra por la supervivencia de sus especies.', '02:20:00', 'El Planeta de los Simios', 'PG-13', 'https://www.youtube.com/watch?v=qxjPjPzQ1iU', 'Matt Reeves', 'el_planeta_de_los_simios_poster.webp', 'el_planeta_de_los_simios_cabecera.webp'),
+       (100000006, 'Bill Murray, Chris Pratt, Samuel L. Jackson', 'Garfield, el gato sarcástico, se enfrenta a nuevas aventuras.', '01:20:00', 'Garfield', 'PG', 'https://www.youtube.com/watch?v=link-garfield', 'Peter Hewitt', 'garfield_poster.webp', 'garfield_cabecera.webp'),
+       (100000007, 'David Harbour, Orlando Bloom, Archie Madekwe', 'Un joven piloto de autos de carrera tiene la oportunidad de competir profesionalmente.', '02:15:00', 'Gran Turismo', 'PG-13', 'https://www.youtube.com/watch?v=link-granturismo', 'Neill Blomkamp', 'gran_turismo_poster.webp', 'gran_turismo_cabecera.webp'),
+       (100000008, 'Joaquin Phoenix, Robert De Niro, Zazie Beetz', 'En Gotham, un comediante con problemas mentales se convierte en el icónico Joker.', '02:02:00', 'Joker', 'R', 'https://www.youtube.com/watch?v=zAGVQLHvwOY', 'Todd Phillips', 'joker_poster.webp', 'joker_cabecera.webp'),
+       (100000009, 'Shia LaBeouf, Megan Fox, Josh Duhamel', 'Robots alienígenas se enfrentan en la Tierra para protegerla o destruirla.', '02:24:00', 'Transformers', 'PG-13', 'https://www.youtube.com/watch?v=link-transformers', 'Michael Bay', 'transformers_poster.webp', 'transformers_cabecera.webp'),
+       (100000010, 'Daisy Edgar-Jones, Glen Powell, David Strathairn', 'Un grupo de cazadores de tormentas se enfrenta a tornados devastadores.', '01:55:00', 'Twisters', 'PG-13', 'https://www.youtube.com/watch?v=link-twisters', 'Lee Isaac Chung', 'twisters_poster.webp', 'twisters_cabecera.webp'),
+       (100000011, 'Joey King, Liza Koshy, Chase Stokes', 'En un mundo distópico, la sociedad está dividida en bellos y feos.', '01:38:00', 'Uglies', 'PG-13', 'https://www.youtube.com/watch?v=link-uglies', 'McG', 'uglies_poster.webp', 'uglies_cabecera.webp');
 
 -- Insertar cartelera
 INSERT INTO Cartelera (idProducto)
@@ -94,7 +110,7 @@ VALUES ('Español'), ('Inglés'), ('Italiano');
 
 -- Insertar categorías
 INSERT INTO Categorias (nombreCategoria)
-VALUES ('Acción'), ('Historia'), ('Ciencia Ficción'), ('Aventura'), ('Comedia'), ('Animación'), ('Deportes'), ('Drama'), ('Crimen'), ('Thriller');
+VALUES ('Acción'), ('Historia'), ('Ciencia Ficción'), ('Aventura'), ('Comedia'), ('Animación'), ('Deportes'), ('Drama'), ('Crimen'), ('Thriller'), ('Fantasía'), ('Romance');
 
 -- Insertar dimensiones
 INSERT INTO Dimensiones (dimension, precio)

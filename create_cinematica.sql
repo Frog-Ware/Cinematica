@@ -46,15 +46,28 @@ CREATE TABLE Sala (
     PRIMARY KEY (nombreCine, numeroSala)
 );
 
+DROP TABLE IF EXISTS ImagenPerfil;
+CREATE TABLE ImagenPerfil (
+    imagenPerfil varchar(40),
+    PRIMARY KEY (imagenPerfil)
+);
+
+DROP TABLE IF EXISTS ImagenSlider;
+CREATE TABLE ImagenSlider (
+    imagenSlider varchar(40),
+    PRIMARY KEY (imagenSlider)
+);
+
 DROP TABLE IF EXISTS Usuario;
 CREATE TABLE Usuario (
     email varchar(50),
     nombre varchar(20),
     apellido varchar(20),
-    imagenPerfil varchar(50),
+    imagenPerfil varchar(40),
     passwd varchar(50),
     token varchar(50),
     numeroCelular varchar(9),
+    FOREIGN KEY (imagenPerfil) REFERENCES ImagenPerfil(imagenPerfil),
     PRIMARY KEY (email)
 );
 

@@ -1,0 +1,130 @@
+
+
+main
+{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.vistaPeliculas
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 50px;
+    width: 50%;
+    overflow-y: auto;
+    max-height: 90vh;
+    padding: 10px; 
+}
+.botonesPeliculas
+{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+
+}
+.pelicula
+{
+    height: 600px;
+    width: 300px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.pelicula:hover
+{
+    transform: scale(1.05);
+}
+
+.pelicula > img
+{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.botonesPeliculas > button
+{
+    height: 40px;
+    width: 20%;
+    margin: 0 46%;
+    background-color: white;
+    border: none;
+    font-size: 20px;
+    color: black;
+    font-weight: 600;
+    border-radius: 10px;
+    font-family: "Raleway", sans-serif;
+    transition: 0.3s;
+    margin-bottom: 20%;
+}
+
+.botonesPeliculas > button:hover
+    {
+        transform: scale(1.1);
+        cursor: pointer;
+        background-color: #fccd01;
+    }
+
+.nombrePelicula
+{
+    font-family: "Raleway", sans-serif;
+    height: 50px;
+    font-size: 40px;
+    color: white;
+    font-weight: bold;
+}
+@media only screen and (max-width: 1920px) {
+
+}
+/*tablet rules*/
+@media only screen and (max-width: 1199px) and (min-width: 768px),
+  only screen and (max-width: 767px) and (min-width: 480px) and (orientation: landscape) {
+}
+
+/*tablet verticales rules*/
+@media only screen and (max-width: 767px) and (min-width: 480px) and (orientation: portrait) {
+  .nombrePelicula
+  {
+      font-size: 30px;
+  }
+  .pelicula
+  {
+      height: 400px;
+      width: 200px;
+ }
+ .botonesPeliculas > button
+{
+  width: 40%;
+
+}
+}
+
+/*mobile rules*/
+@media screen and (max-width: 479px) {
+
+  .nombrePelicula
+  {
+      font-size: 20px;
+  }
+  .pelicula
+  {
+      height: 350px;
+      width: 150px;
+ }
+ .botonesPeliculas > button
+{
+  width: 60%;
+
+}
+}

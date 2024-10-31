@@ -1,0 +1,81 @@
+main{
+    margin-bottom: -20%;
+}
+.titulo{
+    font-size: 40px;
+    font-weight: bold;
+    color: var(--blanco);
+    display: flex;
+    justify-content: center;
+    margin-top: 3%;
+    margin-bottom: 4%;
+
+}   
+.seccion1{
+    width: 100%;
+    height: 220px;
+    background-color: var(--color-secundario);
+    border-top: 3px var(--blanco) solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+
+}
+.seccion2{
+    width: 100%;
+    height: 220px;
+    background-color: var(--color-principal);
+    border-top: 3px var(--blanco) solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+    
+}
+.pregunta{
+    font-size: 35px;
+    font-weight: bold;
+    color: var(--color-secundario-detalles);
+    text-align: center;
+
+    
+}
+
+.texto{
+    font-size: 20px;
+    color: var(--blanco);
+    text-align: center;
+}
+@media only screen and (max-width: 1920px) {
+
+}
+/*tablet rules*/
+@media only screen and (max-width: 1199px) and (min-width: 768px),
+  only screen and (max-width: 767px) and (min-width: 480px) and (orientation: landscape) {
+  }
+/*tablet verticales rules*/
+@media only screen and (max-width: 767px) and (min-width: 480px) and (orientation: portrait) {
+    
+    .pregunta{
+        font-size: 25px;
+    }
+    .texto{
+        font-size: 15px;
+    }
+}
+/*mobile rules*/
+@media screen and (max-width: 479px) {
+
+    .titulo{
+        font-size: 30px;
+    }
+    .pregunta{
+        font-size: 20px;
+    }
+    .texto{
+        font-size: 10px;
+    }
+}

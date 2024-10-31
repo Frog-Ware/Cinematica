@@ -1,0 +1,460 @@
+html {
+    font-family: "Raleway", sans-serif;
+}
+
+#abrirLoginSide {
+    display: none;
+}
+
+.contenedor_side_usuario {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    width: 30%;
+    height: 75vh;
+    background-color: #003552;
+    border-radius: 10px 0px 0px 10px;
+    border: 1px #fff;
+    border-style: solid none solid solid;
+    margin-left: 130%;
+    transition: 1.3s ease;
+    z-index: 5;
+}
+
+.div_cambio_fotos {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    width: 30%;
+    height: 75vh;
+    background-color: #003552;
+    border-radius: 10px 0px 0px 10px;
+    border: 1px #fff;
+    border-style: solid none solid solid;
+    margin-left: 130%;
+    transition: 1.3s ease;
+    z-index: 5;
+}
+
+#botonAtrasPerfil {
+    position: absolute;
+    font-size: 40px;
+    color: aqua;
+    cursor: pointer;
+    transition: .3s ease;
+    left: 3%;
+    text-shadow: -1px 0px 18px var(--color-secundario-detalles);
+}
+
+#botonAtrasPerfil:hover {
+    font-size: 45px;
+    color: yellow;
+    text-shadow: -1px 0px 18px var(--blanco);
+}
+
+.boton_cuenta {
+    position: absolute;
+    margin-top: 90%;
+    color: var(--color-principal-detalles);
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.boton_cuenta:hover {
+    font-size: 22px;
+    color: var(--color-secundario-detalles);
+    text-shadow: -1px 0px 18px var(--blanco);
+}
+
+.texto_fotos {
+    position: absolute;
+    bottom: 58%;
+    font-size: 25px;
+    font-weight: bold;
+    text-shadow: -1px 0px 18px var(--blanco);
+    color: #ffffff;
+}
+
+.contenedor_fotos {
+    margin-top: 34vh;
+    display: grid;
+    grid-template-columns: repeat(3, 120px);
+    grid-template-rows: repeat(4, 120px);
+    width: 98%;
+    height: 30vh;
+    background-color: none;
+    justify-content: space-evenly;
+    gap: 10px;
+    border-radius: 10px;
+    overflow: visible;
+    overflow-x: hidden;
+}
+
+.contenedor_fotos::-webkit-scrollbar {
+    background-color: #003552;
+    width: 5px;
+}
+
+.contenedor_fotos::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #00a6ff;
+}
+
+.contenedor_fotos::-webkit-scrollbar-thumb:hover {
+    background-color: #000a1cd0;
+}
+
+.img_perfil {
+    box-sizing: border-box;
+    border: 2px solid #ffff;
+    border-radius: 50%;
+}
+
+#img1 {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+#img2 {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+#img3 {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+#img4 {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+#img5 {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+#img6 {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+#img7 {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+#img8 {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+#img9 {
+    grid-column: 3;
+    grid-row: 3;
+}
+
+#img10 {
+    grid-column: 1;
+    grid-row: auto;
+}
+
+#img11 {
+    grid-column: 2;
+    grid-row: auto;
+}
+
+.agrandar_imagen:hover {
+    transform: scale(1.1);
+    transition: 0.3s ease-out;
+}
+
+#abrirLoginSide {
+    cursor: pointer;
+}
+
+.imagen_perfil {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.cambiar_icono_perfil_hover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    background-color: rgb(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.cerrar_sesion {
+    position: absolute;
+    margin-top: 115%;
+    font-weight: 700;
+    color: var(--color-cuartenario);
+    font-size: 25px;
+    transform-origin: center;
+    transition: .5s ease;
+    cursor: pointer;
+}
+
+.cerrar_sesion:hover {
+    font-size: 30px;
+    text-shadow: 1px 1px 17px #cacaca;
+    color: var(--color-principal-detalles);
+}
+
+.usuario_icono {
+    width: 175px;
+    height: 175px;
+    background-color: rgb(130, 134, 70);
+    border-radius: 50%;
+    border: solid 2px #ffff;
+    overflow: hidden;
+    margin-top: 10%;
+    position: absolute;
+    transition: .3s ease;
+    cursor: pointer;
+}
+
+.icono_usuario {
+    font-size: 10px !important;
+    color: rgb(73, 111, 217) !important;
+}
+
+.icono_usuario:hover {
+    transform: scale(1.0) !important;
+    color: none !important;
+    cursor: default !important;
+}
+
+.div_data {
+    display: flex;
+    margin-top: 50%;
+    width: 98%;
+    height: 20vh;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.div_data>h2 {
+    color: var(--blanco);
+    font-size: 30px;
+    font-weight: bold;
+    text-shadow: -1px 0px 18px var(--color-principal-detalles);
+    cursor: default;
+}
+
+.contenedor_fotos img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.boton_enviar_fotos {
+    position: absolute;
+    width: 200px;
+    height: 30px;
+    margin-top: 110%;
+}
+
+@media only screen and (max-width: 1440px) {
+    .boton_enviar_fotos {
+        margin-top: 135%;
+    }
+
+    .cerrar_sesion {
+        margin-top: 125%;
+    }
+
+    .div_data {
+        margin-top: 52%;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .contenedor_side_usuario {
+        width: 40.1%;
+        height: 60vh;
+        margin-left: 140%;
+    }
+
+    .div_cambio_fotos {
+        width: 40%;
+        height: 60vh;
+        margin-left: 140%;
+    }
+
+    .contenedor_fotos {
+        width: 85%;
+        height: 20vh;
+        gap: 5px;
+        grid-template-columns: repeat(3, 80px);
+        grid-template-rows: repeat(4, 80px);
+    }
+
+    .texto_fotos {
+        bottom: 48%;
+    }
+
+    .boton_enviar_fotos {
+        margin-top: 118%;
+    }
+
+    .cerrar_sesion {
+        margin-top: 110%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .cerrar_sesion {
+        margin-top: 145%;
+        font-size: 25px;
+    }
+
+    .boton_cuenta {
+        margin-top: 105%;
+    }
+
+    .div_data {
+        margin-top: 60%;
+        height: 15vh;
+    }
+
+    .usuario_icono {
+        width: 165px;
+        height: 165px;
+        margin-top: 8%;
+    }
+
+    .texto_fotos {
+        text-align: center;
+    }
+
+    .boton_enviar_fotos {
+        margin-top: 155%;
+    }
+
+    .contenedor_fotos {
+        width: 90%;
+    }
+
+    .div_data>h2 {
+        font-size: 25px;
+    }
+}
+
+@media only screen and (max-width: 425px) {
+    .contenedor_side_usuario {
+        width: 60%;
+        height: 55vh;
+        margin-left: 160%;
+    }
+
+    .div_cambio_fotos {
+        width: 60%;
+        height: 55vh;
+        margin-left: 160%;
+    }
+
+    .cerrar_sesion {
+        margin-top: 165%;
+        font-size: 20px;
+    }
+
+    .usuario_icono {
+        width: 140px;
+        height: 140px;
+        margin-top: 8%;
+    }
+
+    .boton_cuenta {
+        margin-top: 130%;
+    }
+
+    .div_data {
+        margin-top: 70%;
+        height: 15vh;
+        width: 70%;
+    }
+
+    .div_data>h2 {
+        font-size: 18px;
+    }
+
+    .texto_fotos {
+        bottom: 52%;
+    }
+
+    .contenedor_fotos {
+        margin-top: 28vh;
+        grid-template-columns: repeat(3, 60px);
+        grid-template-rows: repeat(4, 60px);
+        height: 15vh;
+        gap: 5px;
+
+    }
+}
+@media only screen and (max-width: 375px) {
+    .cerrar_sesion{
+        margin-top: 178%;
+    }
+    .boton_enviar_fotos {
+        margin-top: 180%;
+        width: 150px;
+    }
+    .div_data>h2 {
+        font-size: 18px;
+    }
+    .contenedor_fotos {
+        margin-top: 30vh;
+        height: 15vh;
+        gap: 8px;
+    }
+
+}
+@media only screen and (max-width: 320px) {
+    .usuario_icono {
+        width: 120px;
+        height: 120px;
+    }
+    .texto_fotos {
+        bottom: 52%;
+    }
+    .cerrar_sesion{
+        margin-top: 150%;
+        font-size: 18px;
+    }
+    #logo > a{
+        font-size: 20px;
+    }
+    .texto_fotos {
+        font-size: 16px;
+        bottom: 48%;
+    }
+    .contenedor_side_usuario{
+        height: 42vh;
+        width: 70%;
+    }
+    .div_cambio_fotos{
+        height: 42vh;
+        width: 70%;
+    }
+    .contenedor_fotos {
+        margin-top: 23vh;
+    }
+    .boton_enviar_fotos {
+        margin-top: 150%;
+        width: 140px;
+        height: 25px;
+    }
+}

@@ -1,0 +1,237 @@
+html {
+  font-family: "Raleway", sans-serif;
+}
+
+.contenedorProductos {
+  height: 80%;
+  width: 80%;
+  display: grid;
+  grid-template-columns: 2fr 0.7fr;
+  margin-top: 5%;
+  margin-left: 20%;
+}
+
+
+.contenedorProductos__productos {
+  max-height: 100%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  overflow: auto;
+  overflow-x: hidden;
+}
+.contenedorProductos__productos::-webkit-scrollbar {
+  width: 10px;
+  background: var(--color-secundario-detalles);
+  border-radius: 10px;
+}
+.contenedorProductos__productos::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+}
+.contenedorProductos__productos > div {
+  margin-bottom: 2%;
+}
+.Producto {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  height: 250px;
+  width: 250px;
+  border-radius: 10px;
+  box-shadow: 10px 10px 5px 2px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+}
+
+.Producto_nombre {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--blanco);
+  text-shadow: -1px 0px 18px rgba(255, 255, 255, 0.91);
+}
+
+.Producto > .Producto_img {
+  height: 80%;
+  object-fit: cover;
+}
+.Producto > .Producto_img img {
+  height: 100%;
+  width: 100%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.Producto > .Producto_precio {
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-secundario-detalles);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  gap: 10px;
+}
+.Producto > .Producto_precio > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.Producto_precio button {
+  height: 30px;
+  width: 30px;
+  border: none;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.6);
+  background-color: var(--color-cuartenario);
+}
+
+.Producto_precio button:hover {
+  background-color: var(--color-principal-detalles);
+}
+.contador {
+  background-color: var(--color-secundario-detalles);
+  margin-bottom: 3px;
+  width: 40px;
+  height: 32px;
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  border-style: none;
+  outline: none;
+}
+
+.contenedor-formulario{
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  width:  250px;
+  height: 250px;
+  background-color: var(--color-principal);
+  border: 2px dashed var(--color-secundario-detalles);
+  border-radius: 4px;
+  overflow: hidden;
+  text-align: center;
+  margin-top: 7%;
+  margin-left: 40%;
+}
+
+p{
+  font-size: 20px;
+  color: var(--color-secundario-detalles);
+
+}
+
+.formulario{
+  margin-top: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+.div-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  width: 700px;
+  margin-top: 50px;
+}
+
+.div-form > div
+{
+  margin-top: 5%;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+input{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+  margin-bottom: 5px;
+  border-radius: 3px;
+  border-style: hidden; 
+  
+}
+label{
+  margin-bottom: 10px;
+  color: var(--blanco);
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.boton{ 
+  border-radius: 4px;
+  border-color: var(--color-secundario-detalles);
+  background-color: var(--color-secundario-detalles);
+  border-style: none;      
+  font-size: 14px;
+  width: 350px;
+  height: 40px;
+  
+}
+
+.imagenFormulario 
+{
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+
+@media only screen and (max-width: 1920px) {
+  
+}
+/*tablet rules*/
+@media only screen and (max-width: 1199px) and (min-width: 768px),
+  only screen and (max-width: 767px) and (min-width: 480px) and (orientation: landscape) {
+    
+}
+
+/*tablet verticales rules*/
+@media only screen and (max-width: 767px) and (min-width: 480px) and (orientation: portrait) {
+  .div-form{
+    width: 450px;
+  }
+  .boton{
+    width: 225px;
+  }
+  .contenedor-formulario{
+    margin-left: 32%;
+  }
+}
+
+/*mobile rules*/
+@media screen and (max-width: 479px) {
+
+  .div-form{
+    width: 300px;
+  }
+  .boton{
+    width: 150px;
+  }
+  .contenedor-formulario{
+    margin-left: 18%;
+  }
+  .contenedorProductos{
+    width: 100%;
+    margin-left: 15%;
+  }
+
+}

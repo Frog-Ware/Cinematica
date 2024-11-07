@@ -2,10 +2,12 @@
 
 // Este script devuelve las listas de los valores desplegables.
 
+ob_start();
 header("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE)
     session_start();
 require_once "../../models/db/traer.php";
+require_once "../../models/utilities/validacion.php";
 
 // Asigna un código de error según el caso.
 enum err: int
@@ -30,8 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header('HTTP/1.0 405 Method Not Allowed', true, 405);
 }
 
-// Mata la ejecución.
-die();
+exit;
 
 
 
@@ -48,5 +49,10 @@ function main()
     $response = (!is_null($datos)) ?
         ['error' => err::SUCCESS, 'errMsg' => err::SUCCESS->getMsg(), 'datos' => $datos] :
         ['error' => err::NO_SUCCESS, 'errMsg' => err::NO_SUCCESS->getMsg()];
+        
+    // Actualiza el log y limpia el buffer.
+    file_put_contents('../../log.txt', crearLog(ob_get_clean(), basename(__FILE__)), FILE_APPEND);
+
+    // Devuelve un JSON con la respuesta.
     echo json_encode($response);
 }

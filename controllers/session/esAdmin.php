@@ -2,10 +2,12 @@
 
 // Este script devuelve los permisos de usuario de estar la sesión activa. Si no es así, devuelve un error.
 
+ob_start();
 header("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE)
     session_start();
 require_once "../../models/db/traer.php";
+require_once "../../models/utilities/validacion.php";
 
 enum err: int
 {
@@ -27,6 +29,20 @@ enum err: int
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    
+} else {
+    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
+    header('HTTP/1.0 405 Method Not Allowed');
+}
+
+exit;
+
+
+
+// Funciones
+
+function main()
+{
     // Responde con un mensaje indicando el tipo de rol del usuario en cuestión.
     $response = isset($_SESSION['user']) ?
     match (traerRol($_SESSION['user'])) {
@@ -35,11 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         2 => ['error' => err::ADMIN, 'errMsg' => err::ADMIN->getMsg()],
         null => ['error' => err::NO_SESSION, 'errMsg' => err::NO_SESSION->getMsg()]
     }      : ['error' => err::NO_SESSION, 'errMsg' => err::NO_SESSION->getMsg()];
-    echo json_encode($response);
-} else {
-    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
-    header('HTTP/1.0 405 Method Not Allowed');
-}
+    
+    // Actualiza el log y limpia el buffer.
+    file_put_contents('../../log.txt', crearLog(ob_get_clean(), basename(__FILE__)), FILE_APPEND);
 
-// Mata la ejecución.
-die();
+    // Devuelve un JSON con la respuesta.
+    echo json_encode($response);
+}

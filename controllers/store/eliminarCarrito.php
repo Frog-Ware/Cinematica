@@ -2,6 +2,7 @@
 
 // Este script elimina el carrito asociado con el email enviado.
 
+ob_start();
 header("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -29,23 +30,27 @@ enum err: int
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Devuelve el código de error correspondiente mediante JSON.
-    $error = comprobar();
-    $response = ['error' => $error, 'errMsg' => $error->getMsg()];
-    echo json_encode($response);
-} else {
-    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
-    header('HTTP/1.0 405 Method Not Allowed');
-}
+// Restringe el acceso si no se utiliza el método de solicitud adecuado.
+$_SERVER['REQUEST_METHOD'] == 'POST' ? 
+    main() : header('HTTP/1.0 405 Method Not Allowed');
 
-
-// Mata la ejecución.
-die();
+exit;
 
 
 
 // Funciones
+
+function main()
+{
+    // Devuelve el código de error correspondiente mediante JSON.
+    $error = comprobar();
+    $response = ['error' => $error, 'errMsg' => $error->getMsg()];
+
+    // Actualiza el log y limpia el buffer.
+    file_put_contents('../../log.txt', crearLog(ob_get_clean(), basename(__FILE__)), FILE_APPEND);
+
+    echo json_encode($response);
+}
 
 function comprobar()
 {
@@ -62,6 +67,11 @@ function comprobar()
         return err::NONEXISTENT;
 
     // Intenta ingresar la película en la base de datos y devuelve su correspondiente código de error.
-    return (eliminarAsientos(array_pick($carritoDB, ['idFuncion', 'asientos']))) && eliminarCarrito($email) ?
-        err::SUCCESS : err::NO_SUCCESS;
+    if (isset($carritoDB['idFuncion'])) {
+        return eliminarAsientos(array_pick($carritoDB, ['idFuncion', 'asientos'])) && eliminarCarrito($email) ?
+            err::SUCCESS : err::NO_SUCCESS;
+    } else {
+        return eliminarCarrito($email) ?
+            err::SUCCESS : err::NO_SUCCESS;
+    }
 }

@@ -2,6 +2,7 @@
 
 // Este script guarda en la base de datos el carrito.
 
+ob_start();
 header("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -28,12 +29,23 @@ enum err: int
             self::NO_SESSION => "La sesión no estaba iniciada.",
             self::VALIDATION => "La funcion o los asientos no pasaron la validación.",
             self::EMPTY => "Al menos un campo está vacio.",
-            self::NOT_SET => "Al menos un campo no está asignado."
+            self::NOT_SET => "Un campo no está asignado."
         };
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+// Verifica que el método utilizado sea POST.
+$_SERVER['REQUEST_METHOD'] == 'POST' ?
+    main() : header('HTTP/1.0 405 Method Not Allowed');
+
+exit;
+
+
+
+// Funciones
+
+function main()
+{
     // Guarda las variables sanitizadas en un array llamado datos.
     $datos = [];
     foreach (['idFuncion', 'asientos'] as $x)
@@ -42,21 +54,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Devuelve el código de error correspondiente mediante JSON.
     $error = comprobar($datos);
+
     $response = ['error' => $error, 'errMsg' => $error->getMsg()];
+
+    // Actualiza el log y limpia el buffer.
+    file_put_contents('../../log.txt', crearLog(ob_get_clean(), basename(__FILE__)), FILE_APPEND);
+
     echo json_encode($response);
-} else {
-    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
-    header('HTTP/1.0 405 Method Not Allowed');
 }
-
-
-
-// Mata la ejecución.
-die();
-
-
-
-// Funciones
 
 function comprobar($datos)
 {
@@ -66,24 +71,29 @@ function comprobar($datos)
     else
         return err::NO_SESSION;
 
-    // Devuelve un código de error si una variable no esta seteada.
-    foreach (['idFuncion', 'asientos'] as $x)
-        if (!isset($datos[$x]))
-            return err::NOT_SET;
-
-    // Devuelve un código de error si una variable esta vacía.
-    foreach (['idFuncion', 'asientos'] as $x)
-        if (blank($datos[$x]))
-            return err::EMPTY;
-
-    // Devuelve un código de error si los asientos son inválidos o estan reservados, o si la función no existe.
-    if (!validacion($datos))
-        return err::VALIDATION;
-
-    // Intenta persistir el carrito en la base de datos.
     $carritoDB = array_pick(traerCarrito($datos['email']), ['idFuncion', 'asientos']);
-    return (reservarAsiento($datos, $carritoDB) && actCarrito($datos, is_null($carritoDB))) ?
+
+    // Devuelve un código de error si una variable no esta seteada.
+    if (!isset($datos['idFuncion']) xor !isset($datos['asientos'])) {
+        return err::NOT_SET;
+    } else if (isset($datos['idFuncion']) && isset($datos['asientos'])) {
+        // Devuelve un código de error si una variable esta vacía.
+        foreach (['idFuncion', 'asientos'] as $x)
+            if (blank($datos[$x]))
+                return err::EMPTY;
+
+        // Devuelve un código de error si los asientos son inválidos o estan reservados, o si la función no existe.
+        if (!validacion($datos))
+            return err::VALIDATION;
+
+        // Intenta persistir el carrito y los asientos en la base de datos.
+        return (reservarAsiento($datos, $carritoDB) && actCarrito($datos, is_null($carritoDB))) ?
             err::SUCCESS : err::NO_SUCCESS;
+    }
+    // Intenta persistir una instancia del carrito en la base de datos.
+    return (actCarrito($datos, is_null($carritoDB))) ?
+            err::SUCCESS : err::NO_SUCCESS;
+    
 }
 
 function validacion($datos)

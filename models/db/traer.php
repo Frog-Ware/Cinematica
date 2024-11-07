@@ -12,7 +12,7 @@ function traerPasswd($email)
 {
     $consultaSql = "SELECT passwd FROM Usuario WHERE email = ?";
     $datos = consultaUnica($consultaSql, [$email]);
-    return (isset($datos['passwd']) && !is_null($datos)) ?
+    return (!is_null($datos) && isset($datos['passwd'])) ?
         $datos['passwd'] : null;
 }
 
@@ -281,8 +281,11 @@ function traerCarrito($email)
     $datos = consultaUnica($consultaSql, [$email]);
     $consultaSql = "SELECT idProducto, cantidad FROM CarritoArticulo WHERE email = ?";
     $art = consultaClave($consultaSql, [$email]);
-    if (!is_null($art))
+    if (!is_null($art)) {
         $datos['articulos'] = $art;
+        if (!isset($datos['email']))
+            $datos['email'] = $email;
+    }
     return !is_null($datos) ?
         $datos : null;
 }
@@ -434,6 +437,7 @@ function consulta($consultaSql)
         while ($fila = $statement->fetch(PDO::FETCH_ASSOC))
             $datos[] = $fila;
     } catch (PDOException $pe) {
+        print $pe;
         return null;
     }
     return (isset($datos) && !blank($datos)) ?
@@ -450,6 +454,7 @@ function consultaClave($consultaSql, $clave)
         while ($fila = $statement->fetch(PDO::FETCH_ASSOC))
             $datos[] = $fila;
     } catch (PDOException $pe) {
+        print $pe;
         return null;
     }
     return (isset($datos) && !blank($datos)) ?
@@ -466,6 +471,7 @@ function consultaUnica($consultaSql, $clave)
         while ($fila = $statement->fetch(PDO::FETCH_ASSOC))
             $datos[] = $fila;
     } catch (PDOException $pe) {
+        print $pe;
         return null;
     }
     return (isset($datos) && !blank($datos)) ?

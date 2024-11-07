@@ -22,6 +22,12 @@ function nuevoCliente($datos)
         insertar([$datos['email']], $lineaSql) : false;
 }
 
+function eliminarUsuario($email)
+{
+    $lineaSql = "DELETE FROM Usuario WHERE email = ?";
+    return insertar([$email], $lineaSql);
+}
+
 // Actualiza la contraseña del usuario.
 function actPasswd($datos)
 {
@@ -41,6 +47,12 @@ function nuevaPFP($nmb)
 {
     $lineaSql = "INSERT INTO ImagenPerfil (imagenPerfil) VALUES (?)";
     return insertar([$nmb], $lineaSql);
+}
+
+function actPFP($datos)
+{
+    $lineaSql = "UPDATE ImagenPerfil SET imagenPerfil = ? WHERE imagenPerfil = ?";
+    return insertar($datos, $lineaSql);
 }
 
 function eliminarPFP($nmb)
@@ -183,13 +195,8 @@ function actPelicula($datos, $datosArr, $idProducto)
 // Elimina un producto de tipo película en la base de datos.
 function eliminarPelicula($idProducto)
 {
-    $tablas = ['TieneCategorias', 'TieneDimensiones', 'TieneIdiomas', 'Cartelera', 'Pelicula', 'Producto'];
-    foreach ($tablas as $x) {
-        $lineaSql = "DELETE FROM $x WHERE idProducto = ?";
-        if (!insertar([$idProducto], $lineaSql))
-            return false;
-    }
-    return true;
+    $lineaSql = "DELETE FROM Producto WHERE idProducto = ?";
+    return insertar([$idProducto], $lineaSql);
 }
 
 // Cambia el precio de las peliculas de una dimension en esp.
@@ -219,13 +226,8 @@ function actArticulo($datos, $idProducto)
 // Elimina un producto de tipo artículo en la base de datos.
 function eliminarArticulo($idProducto)
 {
-    $tablas = ['carritoArticulo', 'articulo', 'producto'];
-    foreach ($tablas as $x) {
-        $lineaSql = "DELETE FROM $x WHERE idProducto = ?";
-        if (!insertar([$idProducto], $lineaSql))
-            return false;
-    }
-    return true;
+    $lineaSql = "DELETE FROM Producto WHERE idProducto = ?";
+    return insertar([$idProducto], $lineaSql);
 }
 
 // Ingresa una película ya existente en la cartelera.
@@ -244,10 +246,14 @@ function eliminarEnCartelera($idProducto)
 // Crea o actualiza el carrito en la base de datos.
 function actCarrito($datos, $nuevo)
 {
-    $lineaSql = $nuevo ?
+    if (!is_null($nuevo))
+        eliminarCarrito($datos['email']);
+    $lineaSql = isset($datos['idFuncion']) ?
         "INSERT INTO Carrito (idFuncion, asientos, email) VALUES (?, ?, ?)" :
-        "UPDATE Carrito SET idFuncion = ?, asientos = ? WHERE email = ?";
-    return insertar($datos, $lineaSql);
+        "INSERT INTO Carrito (email) VALUES (?)";
+    if (!insertar($datos, $lineaSql))
+        return false;
+    return setAutoEliminar($datos);
 }
 
 // Guarda artículos en el carrito.
@@ -260,6 +266,41 @@ function actCarritoArt($email, $datos)
     return true;
 }
 
+function setAutoEliminar($datos)
+{
+    // Setea un evento de autoeliminación para los carritos al pasar 10 minutos.
+    $id = substr($datos['email'], 0, strpos($datos['email'], '@'));
+    $lineaSql = "CREATE EVENT IF NOT EXISTS auto_elim_carrito_$id
+                ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 10 MINUTE
+                DO BEGIN
+                    DELETE FROM carritoarticulo WHERE email = ?;
+                    DELETE FROM carrito WHERE email = ?;
+                END;";
+    if (!insertar([$datos['email'], $datos['email']], $lineaSql))
+        return false;
+    if (isset($datos['asientos'])) {
+        if (str_contains($datos['asientos'], ', ')) {
+            $asientos = [];
+            foreach (explode(', ', $datos['asientos']) as $x) {
+                $asientos = array_merge($asientos, explode('-', $x));
+                $asientosSql[] = "(fila = ? AND columna = ? AND idFuncion = " . $datos['idFuncion'] . " AND vendido = 0)";
+            }
+        } else {
+            $asientos = explode('-', $datos['asientos']);
+            $asientosSql[] = "(fila = ? AND columna = ? AND idFuncion = " . $datos['idFuncion'] . " AND vendido = 0)";
+        }
+        // Setea un evento de autoeliminación para los asientos al pasar 10 minutos.
+        $lineaSql = "CREATE EVENT auto_elim_asientos_$id
+        ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 10 MINUTE
+        DO DELETE FROM Asientos WHERE "
+            . implode(' OR ', $asientosSql) . ";";
+        if (!insertar($asientos, $lineaSql))
+            return false;
+    }
+
+    return true;
+}
+
 // Elimina el carrito.
 function eliminarCarrito($email)
 {
@@ -269,14 +310,26 @@ function eliminarCarrito($email)
         if (!insertar([$email], $lineaSql))
             return false;
     }
-    return true;
+    $id = substr($email, 0, strpos($email, '@'));
+    $lineaSql = "DROP EVENT IF EXISTS auto_elim_asientos_$id";
+    return insertar([], $lineaSql);
 }
 
 // Registra una nueva compra.
 function nuevaCompra($datos)
 {
-    $lineaSql = "INSERT INTO Compra VALUES (?, ?, ?, ?, ?, ?)";
+    $lineaSql = isset($datos['idFuncion']) ?
+        "INSERT INTO Compra (idCompra, email, fechaCompra, precio, idFuncion, asientos) VALUES (?, ?, ?, ?, ?, ?)" : "INSERT INTO Compra (idCompra, email, fechaCompra, precio) VALUES (?, ?, ?, ?)";
     return insertar($datos, $lineaSql);
+}
+
+function nuevaCompraArt($id, $art)
+{
+    $lineaSql = "INSERT INTO CompraArticulo VALUES (?, ?, ?)";
+    foreach ($art as $x)
+        if (!insertar([$id, $x['idProducto'], $x['cantidad']], $lineaSql))
+            return false;
+    return true;
 }
 
 // Agrega una nueva función.
@@ -288,12 +341,8 @@ function nuevaFunc($datos)
 
 function eliminarFunc($idFuncion)
 {
-    foreach (['carrito', 'funciones'] as $x) {
-        $lineaSql = "DELETE FROM $x WHERE idFuncion = ?";
-        if (!insertar([$idFuncion], $lineaSql))
-            return false;
-    }
-    return true;
+    $lineaSql = "DELETE FROM Funciones WHERE idFuncion = ?";
+    return insertar([$idFuncion], $lineaSql);
 }
 
 // Elimina la función según id de las películas implicadas.
@@ -354,8 +403,13 @@ function insertar($datos, $lineaSql)
     global $con;
     try {
         $statement = $con->prepare($lineaSql);
-        return $statement->execute(array_values($datos));
+        if (count($datos)) {
+            return $statement->execute(array_values($datos));
+        } else {
+            return $statement->execute();
+        }
     } catch (PDOException $pe) {
+        print $pe;
         return false;
     }
 }

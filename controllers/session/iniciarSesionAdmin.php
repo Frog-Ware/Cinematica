@@ -2,6 +2,7 @@
 
 // Este script inicia sesión o devuelve un código de error según la coincidencia de los valores ingresados por el usuario y los valores guardados en la base de datos.
 
+ob_start();
 header("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -34,7 +35,18 @@ enum err: int
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+// Restringe el acceso si no se utiliza el método de solicitud adecuado.
+$_SERVER['REQUEST_METHOD'] == 'POST' ?
+    main() : header('HTTP/1.0 405 Method Not Allowed');
+
+exit;
+
+
+
+// Funciones
+
+function main()
+{
     // Guarda las variables en un array llamado datos.
     $datos = [];
     foreach (['email', 'passwd'] as $x)
@@ -52,18 +64,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $response = ['error' => $error, 'errMsg' => $error->getMsg()];
     }
+    
+    // Actualiza el log y limpia el buffer.
+    file_put_contents('../../log.txt', crearLog(ob_get_clean(), basename(__FILE__)), FILE_APPEND);
+
+    // Devuelve un JSON con la respuesta.
     echo json_encode($response);
-} else {
-    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
-    header('HTTP/1.0 405 Method Not Allowed');
 }
-
-// Mata la ejecución.
-die();
-
-
-
-// Funciones
 
 function comprobar($datos)
 {
@@ -95,7 +102,7 @@ function comprobar($datos)
         err::MATCH : err::NO_MATCH;
 }
 
-// Inicia la sesión por 1 día.
+// Inicia la sesión por 2 horas.
 function inicioSesion($email)
 {
     $_SESSION['user'] = $email;

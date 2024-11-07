@@ -2,6 +2,7 @@
 
 // Este script actualiza los datos de una película o devuelve un código de error según la coincidencia de los valores ingresados por el usuario y los valores guardados en la base de datos.
 
+ob_start();
 header("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -44,8 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header('HTTP/1.0 405 Method Not Allowed', true, 405);
 }
 
-// Mata la ejecución.
-die();
+exit;
 
 
 
@@ -60,6 +60,10 @@ function main()
     // Devuelve el código de error correspondiente mediante JSON.
     $error = comprobar($datos, $datosArr);
     $response = ['error' => $error, 'errMsg' => $error->getMsg()];
+    // Actualiza el log y limpia el buffer.
+    file_put_contents('../../log.txt', crearLog(ob_get_clean(), basename(__FILE__)), FILE_APPEND);
+
+    // Devuelve un JSON con la respuesta.
     echo json_encode($response);
 }
 

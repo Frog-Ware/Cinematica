@@ -2,6 +2,7 @@
 
 // Este script permite actualizar los datos asociados a una cuenta en particular.
 
+ob_start();
 header("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -31,25 +32,31 @@ enum err: int
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+// Restringe el acceso si no se utiliza el método de solicitud adecuado.
+$_SERVER['REQUEST_METHOD'] == 'POST' ?
+    main() : header('HTTP/1.0 405 Method Not Allowed');
+
+exit;
+
+
+
+// Funciones
+
+function main()
+{
     // Guarda las variables en un array llamado datos.
     $datos = filtrar(['nombre', 'apellido', 'numeroCelular'], $_POST);
 
     // Devuelve el código de error correspondiente por JSON.
     $error = comprobar($datos);
     $response = ['error' => $error, 'errMsg' => $error->getMsg()];
+    
+    // Actualiza el log y limpia el buffer.
+    file_put_contents('../../log.txt', crearLog(ob_get_clean(), basename(__FILE__)), FILE_APPEND);
+
+    // Devuelve un JSON con la respuesta.
     echo json_encode($response);
-} else {
-    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
-    header('HTTP/1.0 405 Method Not Allowed');
 }
-
-// Mata la ejecución.
-die();
-
-
-
-// Funciones
 
 function comprobar($datos)
 {

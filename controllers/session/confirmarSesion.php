@@ -2,10 +2,12 @@
 
 // Este script devuelve los datos del usuario de estar la sesión activa. Si no es así, devuelve un error.
 
+ob_start();
 header("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE)
     session_start();
 require_once "../../models/db/traer.php";
+require_once "../../models/utilities/validacion.php";
 
 // Asigna un código de error según el caso.
 enum err: int
@@ -23,16 +25,26 @@ enum err: int
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Si hay una sesión iniciada, envía los datos del usuario en cuestión como respuesta. Devuelve el código de error correspondiente por JSON.
+// Restringe el acceso si no se utiliza el método de solicitud adecuado.
+$_SERVER['REQUEST_METHOD'] == 'POST' ?
+    main() : header('HTTP/1.0 405 Method Not Allowed');
+
+exit;
+
+
+
+// Funciones
+
+function main()
+{
+    // Si hay una sesión iniciada, envía los datos del usuario en cuestión como respuesta. 
     $response = isset($_SESSION['user']) ?
         ['error' => err::EXISTS, 'errMsg' => err::EXISTS->getMsg(), 'datos' => traerUsuario($_SESSION['user'])] :
         ['error' => err::NO_SESSION, 'errMsg' => err::NO_SESSION->getMsg()];
-    echo json_encode($response);
-} else {
-    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
-    header('HTTP/1.0 405 Method Not Allowed');
-}
+    
+    // Actualiza el log y limpia el buffer.
+    file_put_contents('../../log.txt', crearLog(ob_get_clean(), basename(__FILE__)), FILE_APPEND);
 
-// Mata la ejecución.
-die();
+    // Devuelve un JSON con la respuesta.
+    echo json_encode($response);
+}

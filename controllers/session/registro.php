@@ -2,6 +2,7 @@
 
 // Este script registra un nuevo usuario o devuelve un código de error según la coincidencia de los valores ingresados por el usuario y los valores guardados en la base de datos.
 
+ob_start();
 header("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -35,7 +36,17 @@ enum err: int
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+$_SERVER['REQUEST_METHOD'] == 'POST' ?
+    main() : header('HTTP/1.0 405 Method Not Allowed');
+    
+exit;
+
+
+
+// Funciones
+
+function main()
+{
     // Guarda las variables en un array llamado datos.
     $datos = [];
     foreach (['email', 'nombre', 'apellido', 'imagenPerfil', 'passwd', 'numeroCelular'] as $x)
@@ -45,21 +56,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Verifica los datos y registra a un nuevo usuario. Devuelve el código de error correspondiente por JSON.
     $token = generarToken();
     $error = comprobar($datos, $token);
-    $response = ($error->value == 0) ?
-        ['error' => $error, 'errMsg' => $error->getMsg(), 'datos' => traerUsuario($datos['email']), 'token' => $token] :
-        ['error' => $error, 'errMsg' => $error->getMsg()];
+    if ($error == err::SUCCESS) {
+        $response = ['error' => $error, 'errMsg' => $error->getMsg(), 'datos' => traerUsuario($datos['email']), 'token' => $token];
+        inicioSesion($datos['email']);
+    } else {
+        $response = ['error' => $error, 'errMsg' => $error->getMsg()];
+    }
+    
+    // Actualiza el log y limpia el buffer.
+    file_put_contents('../../log.txt', crearLog(ob_get_clean(), basename(__FILE__)), FILE_APPEND);
+
+    // Devuelve un JSON con la respuesta.
     echo json_encode($response);
-} else {
-    // Restringe el acceso si no se utiliza el método de solicitud adecuado.
-    header('HTTP/1.0 405 Method Not Allowed');
 }
-
-// Mata la ejecución.
-die();
-
-
-
-// Funciones
 
 function comprobar($datos, $token)
 {
@@ -78,7 +87,7 @@ function comprobar($datos, $token)
         return err::VALIDATION;
 
     // Devuelve un código de error si la imagen no existe.
-    if (!file_exists("../../assets/img/perfil/" . $datos['imagenPerfil']))
+    if (!file_exists("../../views/assets/img/perfil/" . $datos['imagenPerfil']))
         return err::IMG_ERR;
 
     // Devuelve un código de error si el usuario ya esta registrado.
@@ -93,6 +102,13 @@ function comprobar($datos, $token)
     // Intenta registrar al usuario en la base de datos y devuelve su correspondiente código de error.
     return (nuevoCliente($datos)) ?
         err::SUCCESS : err::NO_SUCCESS;
+}
+
+// Inicia la sesión por 2 horas.
+function inicioSesion($email)
+{
+    $_SESSION['user'] = $email;
+    session_regenerate_id(true);
 }
 
 // Genera un código de 6 caracteres aleatorios.

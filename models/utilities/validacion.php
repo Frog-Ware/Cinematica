@@ -78,7 +78,27 @@ function validarFecha($var)
     return preg_match($regex, $var);
 }
 
-function validarAsientos($var){
+function validarAsientos($var)
+{
     $regex = '/^\d{1,2}-\d{1,2}(, \d{1,2}-\d{1,2})*$/';
     return preg_match($regex, $var);
+}
+
+function http_err($err) 
+{
+    if (in_array($err, [401, 404, 405])) {
+        http_response_code($err);
+        header("Location: /error-$err.php");
+    } else {
+        http_response_code();
+        header("Location: /error-$err.php");
+    }
+}
+
+function crearLog($log, $file)
+{
+    $fecha = new DateTime('now', new DateTimeZone('America/Montevideo'));
+    $encab = "$file, " . $fecha->format('Y-m-d h:i:s') . ":\n";
+    return blank($log) ?
+        $encab . "Ejecutado con éxito. \n \n" : "$encab$log \n \n";
 }

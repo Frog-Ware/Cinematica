@@ -2,6 +2,7 @@
 
 // Este script devuelve un array con todos los asientos ocupados de una funcion específica.
 
+ob_start();
 header("Content-Type: application/json; charset=utf-8");
 require_once "../../models/db/traer.php";
 require_once "../../models/utilities/validacion.php";
@@ -34,8 +35,7 @@ enum err: int
 $_SERVER['REQUEST_METHOD'] == 'POST' ?
     main() : header('HTTP/1.0 405 Method Not Allowed', true, 405);
 
-// Mata la ejecución.
-die();
+exit;
 
 
 
@@ -43,8 +43,13 @@ die();
 
 function main()
 {
-    // Devuelve los asientos ocupados si no hay errores y un código de error de haberlos.
+    // Comprueba errores y fabrica la respuesta.
     $response = comprobar();
+
+    // Actualiza el log y limpia el buffer.
+    file_put_contents('../../log.txt', crearLog(ob_get_clean(), basename(__FILE__)), FILE_APPEND);
+
+    // Devuelve un JSON con la respuesta.
     echo json_encode($response);
 }
 

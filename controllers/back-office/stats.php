@@ -2,6 +2,7 @@
 
 // Este script devuelve un array con distintas estadísticas sobre la venta de entradas.
 
+ob_start();
 header("Content-Type: application/json; charset=utf-8");
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -32,10 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header('HTTP/1.0 405 Method Not Allowed', true, 405);
 }
 
-// Mata la ejecución.
-die();
-
-
+exit;
 
 // Funciones
 
@@ -53,5 +51,9 @@ function main()
         $stats['dia'][$dia]['cantEntradas'] = ($stats['dia'][$dia]['cantEntradas'] ?? 0) + traerSala($x['nombreCine'], $x['numeroSala'])['disp'] - $x['disp'];
     }
     
+    // Actualiza el log y limpia el buffer.
+    file_put_contents('../../log.txt', crearLog(ob_get_clean(), basename(__FILE__)), FILE_APPEND);
+
+    // Devuelve un JSON con la respuesta.
     echo json_encode($stats);
 }

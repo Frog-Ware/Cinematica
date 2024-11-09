@@ -10,7 +10,7 @@ require_once "../../models/utilities/validacion.php";
 // Registra un usuario en la base de datos.
 function nuevoUsuario($datos)
 {
-    $lineaSql = "INSERT INTO Usuario (email, nombre, apellido, imagenPerfil, passwd, numeroCelular, token) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $lineaSql = "INSERT INTO Usuario (email, nombre, apellido, imagenPerfil, passwd, numeroCelular) VALUES (?, ?, ?, ?, ?, ?)";
     return insertar($datos, $lineaSql);
 }
 
@@ -20,6 +20,12 @@ function nuevoCliente($datos)
     $lineaSql = "INSERT INTO Cliente (email) VALUES (?)";
     return (nuevoUsuario($datos)) ?
         insertar([$datos['email']], $lineaSql) : false;
+}
+
+function nuevaCC($email, $datosTarjeta)
+{
+    $lineaSql = "UPDATE Cliente SET numeroTarjeta = ?, banco = ? WHERE email = ?";
+    return insertar(array_merge($datosTarjeta, [$email]), $lineaSql);
 }
 
 function eliminarUsuario($email)
@@ -33,6 +39,21 @@ function actPasswd($datos)
 {
     $lineaSql = "UPDATE Usuario SET passwd = ? WHERE email = ?";
     return insertar($datos, $lineaSql);
+}
+
+// Crea un nuevo token de validación.
+function nuevoToken($token, $email)
+{
+    $lineaSql = "UPDATE Usuario SET token = ? WHERE email = ?";
+    if (!insertar([$token, $email], $lineaSql))
+        return false;
+    print 'x';
+
+    $id = substr($email, 0, strpos($email, '@'));
+    $lineaSql = "CREATE EVENT IF NOT EXISTS auto_elim_token_$id
+    ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 60 MINUTE
+    DO UPDATE Usuario SET token = null WHERE email = ?;";
+    return insertar([$email], $lineaSql);
 }
 
 // Actualiza la imagen del usuario.

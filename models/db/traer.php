@@ -44,7 +44,7 @@ function traerToken($email)
 {
     $consultaSql = "SELECT token FROM Usuario WHERE email = ?";
     $datos = consultaUnica($consultaSql, [$email]);
-    return (!is_null($datos) && isset($datos['token'])) ?
+    return (!is_null($datos) && !blank($datos['token'])) ?
         $datos['token'] : null;
 }
 
@@ -61,6 +61,17 @@ function traerClientes()
     foreach ($ids as $x)
         $datos[] = traerUsuario($x);
     return $datos;
+}
+
+function traerCC($email)
+{
+    $consultaSql = "SELECT numeroTarjeta, banco FROM Cliente WHERE email = ?";
+    $datos = consultaUnica($consultaSql, [$email]);
+    foreach (['numeroTarjeta', 'banco'] as $x)
+        if (blank($datos[$x]))
+            return null;
+    return (!is_null($datos)) ?
+        $datos : null;
 }
 
 // Devuelve una lista de los empleados.
@@ -85,15 +96,6 @@ function traerPFP()
     $datos = consulta($consultaSql);
     return (!is_null($datos)) ?
         array_column($datos, 'imagenPerfil') : null;
-}
-
-// Devuelve una lista de imagenes del slider.
-function traerSlider()
-{
-    $consultaSql = "SELECT * FROM ImagenSlider";
-    $datos = consulta($consultaSql);
-    return (!is_null($datos)) ?
-        array_column($datos, 'imagenSlider') : null;
 }
 
 
@@ -256,6 +258,15 @@ function traerBusqueda($busqueda)
         $datos : null;
 }
 
+// Devuelve una lista de imagenes del slider.
+function traerSlider()
+{
+    $consultaSql = "SELECT * FROM ImagenSlider";
+    $datos = consulta($consultaSql);
+    return (!is_null($datos)) ?
+        array_column($datos, 'imagenSlider') : null;
+}
+
 // Trae los registros de compra asociados a esa función.
 function traerRegistro($idFuncion)
 {
@@ -290,6 +301,7 @@ function traerCarrito($email)
         $datos : null;
 }
 
+// Devuelve una función específica.
 function traerFunc($idFuncion)
 {
     $consultaSql = "SELECT * FROM Funciones WHERE idFuncion = ?";
@@ -302,6 +314,7 @@ function traerFunc($idFuncion)
     return $datos;
 }
 
+// Devuelve todas las funciones.
 function traerFuncLista()
 {
     $consultaSql = "SELECT * FROM Funciones";
@@ -316,6 +329,7 @@ function traerFuncLista()
     return $datos;
 }
 
+// Devuelve las funciones de cierta película.
 function traerFuncEsp($idProducto)
 {
     $consultaSql = "SELECT * FROM Funciones WHERE idProducto = ?";
@@ -330,6 +344,7 @@ function traerFuncEsp($idProducto)
     return $datos;
 }
 
+// Devuelve las funciones programadas para cierta fecha.
 function traerFuncFecha($fecha)
 {
     $consultaSql = "SELECT * FROM Funciones WHERE fechaPelicula = ?";
@@ -394,6 +409,7 @@ function traerAsientosComprados($idFuncion)
         $datos : null;
 }
 
+// Devuelve todos los cines.
 function traerCines()
 {
     $consultaSql = "SELECT * FROM Cine";
@@ -406,6 +422,7 @@ function traerCines()
     return $datos;
 }
 
+// Devuelve la información de un cine en específico.
 function traerCine($nombreCine)
 {
     $consultaSql = "SELECT * FROM Cine WHERE nombreCine = ?";
@@ -417,10 +434,27 @@ function traerCine($nombreCine)
     return $datos;
 }
 
+// Devuelve la disposición de una sala en específico.
 function traerSala($nombreCine, $numeroSala)
 {
     $consultaSql = "SELECT ancho, largo, disp FROM Sala WHERE nombreCine = ? AND numeroSala = ?";
     $datos = consultaUnica($consultaSql, [$nombreCine, $numeroSala]);
+    return $datos;
+}
+
+// Devuelve la información de cinemática.
+function traerEmpresa()
+{
+    $consultaSql = "SELECT * FROM Empresa WHERE nombreEmpresa = ?";
+    $datos = consultaUnica($consultaSql, ['Cinematica']);
+    return $datos;
+}
+
+// Devuelve el contenido de un mail.
+function traerMail($asunto)
+{
+    $consultaSql = "SELECT cabecera, cuerpo FROM Mail WHERE asunto = ?";
+    $datos = consultaUnica($consultaSql, [$asunto]);
     return $datos;
 }
 

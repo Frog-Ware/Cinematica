@@ -15,10 +15,12 @@ enum err: int
 {
     case SUCCESS = 0;
     case NO_SUCCESS = 1;
-    case EXISTENT = 2;
+    case NONEXISTENT = 2;
     case VALIDATION = 3;
     case EMPTY = 4;
     case NOT_SET = 5;
+    case NO_TOKEN = 6;
+    case IDENTICAL = 7;
 
     // Devuelve el mensaje asociado con el código de error.
     function getMsg()
@@ -26,10 +28,12 @@ enum err: int
         return match ($this) {
             self::SUCCESS => "Procedimiento realizado con éxito.",
             self::NO_SUCCESS => "Al menos un dato ingresado no corresponde con el resto.",
-            self::EXISTENT => "La nueva contraseña es idéntica a la anterior.",
+            self::NONEXISTENT => "No existe una cuenta asociada con ese email.",
             self::VALIDATION => "El input no pasó la validación.",
             self::EMPTY => "Al menos un campo está vacio.",
-            self::NOT_SET => "Al menos un campo no está asignado."
+            self::NOT_SET => "Al menos un campo no está asignado.",
+            self::NO_TOKEN => "La cuenta no tiene un token registrado.",
+            self::IDENTICAL => "La nueva contraseña es idéntica a la anterior."
         };
     }
 }
@@ -37,8 +41,7 @@ enum err: int
 $_SERVER['REQUEST_METHOD'] == 'POST' ?
     main() : header('HTTP/1.0 405 Method Not Allowed');
 
-// Mata la ejecución.
-die();
+exit;
 
 
 
@@ -79,13 +82,21 @@ function comprobar($datos)
     if (!validacion($datos))
         return err::VALIDATION;
 
+    // Verifica que el email esté registrado.
+    if (!traerUsuario($datos['email']))
+        return err::NONEXISTENT;
+
     // Devuelve un código de error si la nueva contraseña es la ya existente.
     if (md5($datos['passwd']) == traerPasswd($datos['email']))
-        return err::EXISTENT;
+        return err::IDENTICAL;
+
+    if ($token = traerToken($datos['email']))
+        return err::NO_TOKEN;
 
     // Intenta actualizar la contraseña en la base de datos y devuelve su correspondiente código de error.
-    return ((traerToken($datos['email']) == md5($datos['token'])) && actPasswd([md5($datos['passwd']), $datos['email']])) ?
-        err::SUCCESS : err::NO_SUCCESS;
+    return (($token == md5($datos['token'])) 
+        and actPasswd([md5($datos['passwd']), $datos['email']])) ?
+            err::SUCCESS : err::NO_SUCCESS;
 }
 
 function validacion($datos)

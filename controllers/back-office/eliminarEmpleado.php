@@ -76,8 +76,7 @@ function comprobar()
         return err::VALIDATION;
 
     // Devuelve un código de error si no existe el email a eliminar.
-    $passwd = traerPasswd($email);
-    if (in_array($email, traerEmpleados(0)))
+    if (!in_array($email, traerEmpleados(0)))
         return err::NONEXISTENT;
 
     // Intenta eliminar el cliente de la base de datos y devuelve su correspondiente código de error.

@@ -12,11 +12,21 @@ function generarID($func)
 }
 
 // Verifica que una variable sea vacía (string vacío, nula, solo espacios en blanco o un array vacío).
-function blank($var) {
+function blank($var) 
+{
     return is_array($var) ?
         empty($var) : is_null($var) || $var === '' || preg_match('/^\s*$/', $var);
 }
 
+function array_blank($arr)
+{
+    foreach ($arr as $x)
+        if (blank($x))
+            return true;
+    return false;
+}
+
+// Devuelve un array solo con las claves elegidas.
 function array_pick($arr, $keys)
 {
     foreach ([$arr, $keys] as $x)

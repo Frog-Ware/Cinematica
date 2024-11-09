@@ -9,6 +9,7 @@ if (session_status() == PHP_SESSION_NONE)
 require_once "../../models/db/insertar.php";
 require_once "../../models/db/traer.php";
 require_once "../../models/utilities/validacion.php";
+require_once "../../models/utilities/enviarEmail.php";
 
 // Asigna un código de error según el caso.
 enum err: int
@@ -54,11 +55,11 @@ function main()
             $datos[$x] = $_POST[$x];
 
     // Verifica los datos y registra a un nuevo usuario. Devuelve el código de error correspondiente por JSON.
-    $token = generarToken();
-    $error = comprobar($datos, $token);
+    $error = comprobar($datos);
     if ($error == err::SUCCESS) {
-        $response = ['error' => $error, 'errMsg' => $error->getMsg(), 'datos' => traerUsuario($datos['email']), 'token' => $token];
+        $response = ['error' => $error, 'errMsg' => $error->getMsg(), 'datos' => traerUsuario($datos['email'])];
         inicioSesion($datos['email']);
+        enviarEmail($datos['email'], 'Registro', ['nombre' => $datos['nombre']]);
     } else {
         $response = ['error' => $error, 'errMsg' => $error->getMsg()];
     }
@@ -70,7 +71,7 @@ function main()
     echo json_encode($response);
 }
 
-function comprobar($datos, $token)
+function comprobar($datos)
 {
     // Devuelve un código de error si una variable no esta seteada.
     foreach (['email', 'nombre', 'apellido', 'imagenPerfil', 'passwd', 'numeroCelular'] as $x)
@@ -97,7 +98,6 @@ function comprobar($datos, $token)
     // Cifra la contraseña y el token generado en md5.
     if (isset($datos['passwd']))
         $datos['passwd'] = md5($datos['passwd']);
-    $datos['token'] = md5($token);
 
     // Intenta registrar al usuario en la base de datos y devuelve su correspondiente código de error.
     return (nuevoCliente($datos)) ?
@@ -109,15 +109,6 @@ function inicioSesion($email)
 {
     $_SESSION['user'] = $email;
     session_regenerate_id(true);
-}
-
-// Genera un código de 6 caracteres aleatorios.
-function generarToken()
-{
-    $bytes = random_bytes(3);
-    // Convierte los bytes en una cadena hexadecimal
-    $token = bin2hex($bytes);
-    return substr($token, 0, 6);
 }
 
 function validacion($datos)

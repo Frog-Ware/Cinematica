@@ -483,6 +483,15 @@ function traerCV($documento)
     return $datos;
 }
 
+function traerRS()
+{
+    $consultaSql = "SELECT * FROM RedesSociales";
+    $datos = consulta($consultaSql);
+    return $datos;
+}
+
+
+
 // Funciones de acceso a la base de datos.
 
 // Realiza la consulta requerida en la base de datos y devuelve un array que contiene los datos solicitados. Este método se utiliza cuando se traen todos los elementos de una tabla.

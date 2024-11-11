@@ -434,6 +434,24 @@ function eliminarCV($doc)
     return insertar([$doc], $lineaSql);
 }
 
+function nuevaRS($datos)
+{
+    $lineaSql = "INSERT INTO RedesSociales (redSocial, urlRS, logo, nombreEmpresa) VALUES (?, ?, ?, 'Cinematica')";
+    return insertar($datos, $lineaSql);
+}
+
+function actRS($datos)
+{
+    $lineaSql = "UPDATE RedesSociales SET urlRS = ? WHERE redSocial = ?";
+    return insertar($datos, $lineaSql);
+}
+
+function eliminarRS($doc)
+{
+    $lineaSql = "DELETE FROM RedesSociales WHERE redSocial = ?";
+    return insertar([$doc], $lineaSql);
+}
+
 
 
 // Funciones de acceso a la base de datos.

@@ -81,7 +81,7 @@ function comprobar($datos)
         if (!validacion($x))
             return err::VALIDATION;
     
-    if (!actNombreImg($datos['nombreNuevo'], $datos['nombreViejo'], 'perfil'))
+    if (!actNombreFile($datos['nombreNuevo'], $datos['nombreViejo'], 'img/perfil'))
         return err::IMG_ERR;
 
     // Intenta ingresar el nombre de la imagen en la base de datos y devuelve su correspondiente código de error.

@@ -63,37 +63,6 @@ function actImagenPerfil($datos)
     return insertar($datos, $lineaSql);
 }
 
-// Agrega otra opcion como imagen de perfil.
-function nuevaPFP($nmb)
-{
-    $lineaSql = "INSERT INTO ImagenPerfil (imagenPerfil) VALUES (?)";
-    return insertar([$nmb], $lineaSql);
-}
-
-function actPFP($datos)
-{
-    $lineaSql = "UPDATE ImagenPerfil SET imagenPerfil = ? WHERE imagenPerfil = ?";
-    return insertar($datos, $lineaSql);
-}
-
-function eliminarPFP($nmb)
-{
-    $lineaSql = "DELETE FROM ImagenPerfil WHERE imagenPerfil = ?";
-    return insertar([$nmb], $lineaSql);
-}
-
-function nuevoSlider($nmb)
-{
-    $lineaSql = "INSERT INTO ImagenSlider (imagenSlider) VALUES (?)";
-    return insertar([$nmb], $lineaSql);
-}
-
-function eliminarSlider($nmb)
-{
-    $lineaSql = "DELETE FROM ImagenSlider WHERE imagenSlider = ?";
-    return insertar([$nmb], $lineaSql);
-}
-
 // Actualiza los datos del usuario.
 function actUsuario($datos, $email)
 {
@@ -415,6 +384,57 @@ function eliminarAsientos($datos)
         return insertar(array_merge(explode("-", $datos['asientos']), [$datos['idFuncion']]), $lineaSql);
     }  
 }
+
+// Agrega otra opcion como imagen de perfil.
+function nuevaPFP($nmb)
+{
+    $lineaSql = "INSERT INTO ImagenPerfil (imagenPerfil) VALUES (?)";
+    return insertar([$nmb], $lineaSql);
+}
+
+function actPFP($datos)
+{
+    $lineaSql = "UPDATE ImagenPerfil SET imagenPerfil = ? WHERE imagenPerfil = ?";
+    return insertar($datos, $lineaSql);
+}
+
+function eliminarPFP($nmb)
+{
+    $lineaSql = "DELETE FROM ImagenPerfil WHERE imagenPerfil = ?";
+    return insertar([$nmb], $lineaSql);
+}
+
+function nuevoSlider($nmb)
+{
+    $lineaSql = "INSERT INTO ImagenSlider (imagenSlider) VALUES (?)";
+    return insertar([$nmb], $lineaSql);
+}
+
+function eliminarSlider($nmb)
+{
+    $lineaSql = "DELETE FROM ImagenSlider WHERE imagenSlider = ?";
+    return insertar([$nmb], $lineaSql);
+}
+
+function nuevoCV($datos)
+{
+    $lineaSql = "INSERT INTO CV (email, nombre, apellido, documento, numeroCelular, archivo, estado) VALUES (?, ?, ?, ?, ?, ?, 0)";
+    return insertar($datos, $lineaSql);
+}
+
+function actEstadoCV($doc)
+{
+    $lineaSql = "UPDATE CV set estado = 1 WHERE documento = ?";
+    return insertar([$doc], $lineaSql);
+}
+
+function eliminarCV($doc)
+{
+    $lineaSql = "DELETE FROM CV WHERE documento = ?";
+    return insertar([$doc], $lineaSql);
+}
+
+
 
 // Funciones de acceso a la base de datos.
 

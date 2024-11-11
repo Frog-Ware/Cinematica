@@ -21,4 +21,3 @@ function generarPDF($datos)
 
     return $dompdf->output();
 }
-

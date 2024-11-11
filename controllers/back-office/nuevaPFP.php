@@ -77,7 +77,7 @@ function comprobar()
     if (!validacion($nmb, $img))
         return err::VALIDATION;
     
-    if (!subirImg($img, $nmb, 'perfil'))
+    if (!subirFile($img, $nmb, 'img/perfil'))
         return err::IMG_ERR;
 
     // Intenta ingresar el nombre de la imagen en la base de datos y devuelve su correspondiente código de error.

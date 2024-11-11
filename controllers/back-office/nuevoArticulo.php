@@ -87,8 +87,6 @@ function comprobar($datos)
     foreach ($datos as $x)
         if (blank($x))
             return err::EMPTY;
-    if (blank($img))
-        return err::EMPTY;
 
     // Devuelve un código de error si algun campo no pasa la validación.
     if (!validacion($datos, $img))
@@ -102,7 +100,7 @@ function comprobar($datos)
     $datos['imagen'] = str_replace(" ", "_", $datos['nombreArticulo'] . ".webp");
 
     // Intenta subir la imagen a la carpeta.
-    if (!subirImg($img, $datos['imagen'], 'articulos'))
+    if (!subirFile($img, $datos['imagen'], 'img/articulos'))
         return err::IMG_ERR;
 
     // Intenta ingresar el artículo en la base de datos y devuelve su correspondiente código de error.

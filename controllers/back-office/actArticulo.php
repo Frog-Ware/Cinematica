@@ -97,12 +97,12 @@ function comprobar($datos)
     if (isset($datos['nombreArticulo'])) {
         $datos['imagen'] = str_replace(" ", "_", $datos['nombreArticulo'] . ".webp");
         $ok = isset($img) ?
-            actImg($img, $datos['imagen'], $articuloDB['imagen'], 'articulos') :
-            actNombreImg($datos['imagen'], $articuloDB['imagen'], 'articulos');
+            actFile($img, $datos['imagen'], $articuloDB['imagen'], 'img/articulos') :
+            actNombreFile($datos['imagen'], $articuloDB['imagen'], 'img/articulos');
         if (!$ok)
             return err::IMG_ERR;
     } else if (isset($img))
-        if (!actImg($img, $articuloDB['imagen'], $articuloDB['imagen'], 'articulos'))
+        if (!actFile($img, $articuloDB['imagen'], $articuloDB['imagen'], 'img/articulos'))
             return err::IMG_ERR;
 
     // Intenta ingresar el artículo en la base de datos y devuelve su correspondiente código de error.

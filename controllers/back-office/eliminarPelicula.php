@@ -92,7 +92,7 @@ function comprobar()
         return err::REG_EXIST;
 
     // Intenta eliminar la película de la base de datos.
-    if (borrarImg($peliculaDB['poster'], 'peliculas') && borrarImg($peliculaDB['cabecera'], 'peliculas'))
+    if (!borrarFile($peliculaDB['poster'], 'img/peliculas') || !borrarFile($peliculaDB['cabecera'], 'img/peliculas'))
         err::IMG_ERR;
 
     // Intenta borrar las imagenes de la carpeta y devuelve su correspondiente código de error.

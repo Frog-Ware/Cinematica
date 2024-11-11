@@ -5,6 +5,15 @@
 require_once "conn.php";
 require_once "../../models/utilities/validacion.php";
 
+// Función de Verificación
+
+function existe($key, $tabla, $val)
+{
+    $consultaSql = "SELECT $key FROM $tabla WHERE $key = ?";
+    $datos = consultaUnica($consultaSql, [$val]);
+    return !is_null($datos);
+}
+
 // Funciones de Inicio de Sesión
 
 // Devuelve la contraseña asociada al usuario poseedor del email ingresado.
@@ -458,6 +467,21 @@ function traerMail($asunto)
     return $datos;
 }
 
+// Trae la lista de todos los candidatos con CV.
+function traerListaCVs()
+{
+    $consultaSql = "SELECT * FROM CV";
+    $datos = consulta($consultaSql);
+    return $datos;
+}
+
+// Trae los detalles de un CV.
+function traerCV($documento)
+{
+    $consultaSql = "SELECT * FROM CV WHERE documento = ?";
+    $datos = consultaUnica($consultaSql, [$documento]);
+    return $datos;
+}
 
 // Funciones de acceso a la base de datos.
 

@@ -75,6 +75,12 @@ function validarImg($var, $type, $size)
     return $var['type'] == "image/$type" && $var['size'] <= $size * 1024;
 }
 
+// Valida un pdf, verificando que su formato y tamaño sean los permitidos.
+function validarPDF($var, $type, $size)
+{
+    return $var['type'] == "$type" && $var['size'] <= $size * 1024;
+}
+
 // Valida que la hora esté en el formato adecuado.
 function validarHora($var)
 {

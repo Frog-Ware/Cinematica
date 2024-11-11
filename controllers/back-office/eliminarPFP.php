@@ -79,11 +79,11 @@ function comprobar()
         return err::VALIDATION;
 
     // Devuelve un código de error si la película no esta en cartelera.
-    if (is_null(traerPFP()) || !in_array($nmb, traerPFP()) || !checkImg($nmb, 'perfil'))
+    if (is_null(traerPFP()) || !in_array($nmb, traerPFP()) || !checkFile($nmb, 'img/perfil'))
         return err::NONEXISTENT;
 
     // Intenta eliminar la película de la cartelera, devolviendo su correspondiente código de error.
-    return (borrarImg($nmb, 'perfil') && eliminarPFP($nmb)) ?
+    return (borrarFile($nmb, 'img/perfil') && eliminarPFP($nmb)) ?
         err::SUCCESS : err::NO_SUCCESS;
 }
 

@@ -1,6 +1,6 @@
 <?php
 
-// Este script elimina un artículo según el ID ingresado.
+// Este script elimina un curriculum según el ID ingresado.
 
 ob_start();
 header("Content-Type: application/json; charset=utf-8");
@@ -10,6 +10,7 @@ require_once "../../models/db/insertar.php";
 require_once "../../models/db/traer.php";
 require_once "../../models/files/subir.php";
 require_once "../../models/utilities/validacion.php";
+require_once "../../models/utilities/enviarEmail.php";
 
 // Asigna un código de error según el caso.
 enum err: int
@@ -20,7 +21,7 @@ enum err: int
     case VALIDATION = 3;
     case EMPTY = 4;
     case ID_NOT_SET = 5;
-    case IMG_ERR = 6;
+    case FILE_ERR = 6;
 
     // Devuelve el mensaje asociado con el código de error.
     function getMsg()
@@ -28,11 +29,11 @@ enum err: int
         return match ($this) {
             self::SUCCESS => "Procedimiento realizado con éxito.",
             self::DB_ERR => "Hubo un error en la remoción en la base de datos.",
-            self::NONEXISTENT => "El artículo a eliminar no existe.",
+            self::NONEXISTENT => "El currículum a eliminar no existe.",
             self::VALIDATION => "El ID no pasó la prueba de validación.",
             self::EMPTY => "El ID esta vacío.",
             self::ID_NOT_SET => "El ID no esta seteado.",
-            self::IMG_ERR => "Hubo un error al eliminar la imagen."
+            self::FILE_ERR => "Hubo un error al eliminar el archivo."
         };
     }
 }
@@ -55,8 +56,17 @@ exit;
 function main()
 {
     // Devuelve el código de error correspondiente por JSON.
-    $error = comprobar();
+    if (isset($_POST['documento']))
+        $documento = $_POST['documento'];
+    $dest = traerCV($documento);
+    $error = comprobar($documento);
     $response = ['error' => $error, 'errMsg' => $error->getMsg()];
+
+    if ($error == err::SUCCESS) {
+        // Envia un email avisando que se ha descartado su CV.
+        $destN = $dest['nombre'] . ' ' . $dest['apellido'];
+        enviarEmail($dest['email'], 'CV Descartado', ['nombre' => $destN]);
+    }
 
     // Actualiza el log y limpia el buffer.
     file_put_contents('../../log.txt', crearLog(ob_get_clean(), basename(__FILE__)), FILE_APPEND);
@@ -65,39 +75,35 @@ function main()
     echo json_encode($response);
 }
 
-function comprobar()
+function comprobar($documento)
 {
     // Devuelve un código de error si el ID no esta seteado.
-    if (isset($_POST['idProducto'])) {
-        $idProducto = $_POST['idProducto'];
-    } else {
+    if (!isset($documento))
         return err::ID_NOT_SET;
-    }
 
     // Devuelve un código de error si el ID esta vacío.
-    if (blank($idProducto))
+    if (blank($documento))
         return err::EMPTY;
 
     // Devuelve un código de error si el ID no pasa la validación.
-    if (!validacion($idProducto))
+    if (!validacion($documento))
         return err::VALIDATION;
 
     // Devuelve un código de error si no existe el artículo a eliminar.
-    $articuloDB = traerArticulo($idProducto);
-    if (is_null($articuloDB))
+    if (!existe('documento', 'CV', $documento))
         return err::NONEXISTENT;
 
     // Intenta borrar la imagen de la carpeta.
-    if (!borrarFile($articuloDB['imagen'], 'img/articulos'))
+    if (!borrarFile("$documento.pdf", 'files/curriculos'))
         return err::IMG_ERR;
 
     // Intenta eliminar el artículo de la base de datos y devuelve su correspondiente código de error.
-    return (eliminarArticulo($idProducto)) ?
+    return (eliminarCV($documento)) ?
         err::SUCCESS : err::DB_ERR;
 }
 
-function validacion($idProducto)
+function validacion($documento)
 {
     // Valida el ID, verificando que solo contenga digitos.
-    return validarInt($idProducto);
+    return validarInt($documento);
 }

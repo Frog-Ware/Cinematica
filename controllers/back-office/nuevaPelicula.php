@@ -93,7 +93,7 @@ function comprobar($datos, $datosArr)
     }
 
     // Devuelve un código de error si una variable esta vacía.
-    foreach (array_merge($datos, $datosArr, $img) as $x)
+    foreach (array_merge($datos, $datosArr) as $x)
         if (blank($x))
             return err::EMPTY;
 
@@ -112,7 +112,7 @@ function comprobar($datos, $datosArr)
 
     // Intenta subir las imagenes a la carpeta.
     foreach ($img as $k => $v)
-        if (!subirImg($v, $datos[$k], 'peliculas'))
+        if (!subirFile($v, $datos[$k], 'img/peliculas'))
             return err::IMG_ERR;
 
     // Intenta ingresar la película en la base de datos y devuelve su correspondiente código de error.

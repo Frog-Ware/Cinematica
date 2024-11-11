@@ -51,7 +51,6 @@ function main()
     if ($error == err::SUCCESS)
         enviarEmail($_POST['email'], 'Token', ['nombre' => traerUsuario($_POST['email'])['nombre'], 'token' => $token]);
     
-    print_r(traerUsuario($_POST['email'])['nombre']);
     // Actualiza el log y limpia el buffer.
     file_put_contents('../../log.txt', crearLog(ob_get_clean(), basename(__FILE__)), FILE_APPEND);
 

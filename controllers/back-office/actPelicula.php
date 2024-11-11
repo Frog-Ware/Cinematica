@@ -100,14 +100,14 @@ function comprobar($datos, $datosArr)
         foreach (['poster', 'cabecera'] as $x) {
             $datos[$x] = str_replace(" ", "_", $datos['nombrePelicula'] . "_$x.webp");
             $ok = isset($img[$x]) ?
-                actImg($img[$x], $datos[$x], $peliculaDB[$x], 'peliculas') :
-                actNombreImg($datos[$x], $peliculaDB[$x], 'peliculas');
+                actFile($img[$x], $datos[$x], $peliculaDB[$x], 'img/peliculas') :
+                actNombreFile($datos[$x], $peliculaDB[$x], 'img/peliculas');
             if (!$ok)
                 return err::IMG_ERR;
         }
     } else if (!blank($img)) {
         foreach (['poster', 'cabecera'] as $x)
-            if (isset($img[$x]) && !actImg($img[$x], $peliculaDB[$x], $peliculaDB[$x], 'peliculas'))
+            if (isset($img[$x]) && !actFile($img[$x], $peliculaDB[$x], $peliculaDB[$x], 'img/peliculas'))
                 return err::IMG_ERR;
     }
 

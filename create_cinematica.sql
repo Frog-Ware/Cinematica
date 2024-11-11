@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS Empresa;
 CREATE TABLE Empresa (
     nombreEmpresa varchar(50),
     email varchar(50),
+    passwd varchar(20),
     numeroTelefono varchar(9),
     calle varchar(50),
     numeroPuerta varchar(10),
@@ -14,12 +15,32 @@ CREATE TABLE Empresa (
     PRIMARY KEY (nombreEmpresa)
 );
 
-DROP TABLE IF EXISTS redesSociales;
-CREATE TABLE redesSociales (
+DROP TABLE IF EXISTS Mail;
+CREATE TABLE Mail (
+    asunto varchar(20),
+    cabecera varchar(50),
+    cuerpo varchar(1000),
+    PRIMARY KEY (asunto)
+);    
+
+DROP TABLE IF EXISTS CV;
+CREATE TABLE CV (
+    documento int,
+    nombre varchar(20),
+    apellido varchar(20),
+    email varchar(50),
+    numeroCelular varchar(9),
+    archivo varchar(20),
+    estado boolean,
+    PRIMARY KEY (documento)
+);  
+
+DROP TABLE IF EXISTS RedesSociales;
+CREATE TABLE RedesSociales (
     nombreEmpresa varchar(50),
     redSocial varchar(20),
     urlRS varchar(250),
-    logo varchar(1000),
+    logo varchar(25),
     FOREIGN KEY (nombreEmpresa) REFERENCES Empresa(nombreEmpresa),
     PRIMARY KEY (nombreEmpresa, redSocial)
 );
@@ -42,7 +63,7 @@ CREATE TABLE Sala (
     ancho int,
     largo int,
     disp INT GENERATED ALWAYS AS (largo * ancho) STORED,
-    FOREIGN KEY (nombreCine) REFERENCES Cine(nombreCine),
+    FOREIGN KEY (nombreCine) REFERENCES Cine(nombreCine) ON DELETE CASCADE,
     PRIMARY KEY (nombreCine, numeroSala)
 );
 
@@ -67,7 +88,7 @@ CREATE TABLE Usuario (
     passwd varchar(50),
     token varchar(50),
     numeroCelular varchar(9),
-    FOREIGN KEY (imagenPerfil) REFERENCES ImagenPerfil(imagenPerfil),
+    FOREIGN KEY (imagenPerfil) REFERENCES ImagenPerfil(imagenPerfil) ON DELETE SET NULL,
     PRIMARY KEY (email)
 );
 
@@ -76,7 +97,7 @@ CREATE TABLE Empleado (
     email varchar(50),
     esAdmin boolean,
     nombreEmpresa varchar(50),
-    FOREIGN KEY (email) REFERENCES Usuario(email),
+    FOREIGN KEY (email) REFERENCES Usuario(email) ON DELETE CASCADE,
     FOREIGN KEY (nombreEmpresa) REFERENCES Empresa(nombreEmpresa),
     PRIMARY KEY (email)
 );
@@ -84,8 +105,9 @@ CREATE TABLE Empleado (
 DROP TABLE IF EXISTS Cliente;
 CREATE TABLE Cliente (
     email varchar(50),
-    numeroTarjeta varchar(20),
-    FOREIGN KEY (email) REFERENCES Usuario(email),
+    numeroTarjeta varchar(16),
+    banco varchar(20),
+    FOREIGN KEY (email) REFERENCES Usuario(email) ON DELETE CASCADE,
     PRIMARY KEY (email)
 );
 
@@ -102,7 +124,7 @@ CREATE TABLE Articulo (
     descripcion varchar(250),
     precio int,
     imagen varchar(60),
-    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto),
+    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto) ON DELETE CASCADE,
     PRIMARY KEY (idProducto)
 );
 
@@ -118,14 +140,14 @@ CREATE TABLE Pelicula (
     director varchar(50),
     poster varchar(60),
     cabecera varchar(60),
-    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto),
+    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto) ON DELETE CASCADE,
     PRIMARY KEY (idProducto)
 );
 
 DROP TABLE IF EXISTS Cartelera;
 CREATE TABLE Cartelera (
     idProducto int,
-    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto),
+    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto) ON DELETE CASCADE,
     PRIMARY KEY (idProducto)
 );
 
@@ -153,7 +175,7 @@ CREATE TABLE TieneIdiomas (
     idioma varchar(20),
     idProducto int,
     FOREIGN KEY (idioma) REFERENCES Idiomas(idioma),
-    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto),
+    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto) ON DELETE CASCADE,
     PRIMARY KEY (idioma, idProducto)
 );
 
@@ -162,7 +184,7 @@ CREATE TABLE TieneCategorias (
     nombreCategoria varchar(20),
     idProducto int,
     FOREIGN KEY (nombreCategoria) REFERENCES Categorias(nombreCategoria),
-    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto),
+    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto) ON DELETE CASCADE,
     PRIMARY KEY (nombreCategoria, idProducto)
 );
 
@@ -171,7 +193,7 @@ CREATE TABLE TieneDimensiones (
     dimension varchar(2),
     idProducto int,
     FOREIGN KEY (dimension) REFERENCES Dimensiones(dimension),
-    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto),
+    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto) ON DELETE CASCADE,
     PRIMARY KEY (dimension, idProducto)
 );
 
@@ -196,7 +218,7 @@ CREATE TABLE Asientos (
     idFuncion int,
     fila int,
     columna int,
-    vendido bool,
+    vendido boolean,
     FOREIGN KEY (idFuncion) REFERENCES Funciones(idFuncion)
 );
 
@@ -205,8 +227,8 @@ CREATE TABLE Carrito (
     email varchar(50),
     idFuncion int,
     asientos varchar(50),
-    FOREIGN KEY (email) REFERENCES Usuario(email),
-    FOREIGN KEY (idFuncion) REFERENCES Funciones(idFuncion),
+    FOREIGN KEY (email) REFERENCES Usuario(email) ON DELETE CASCADE,
+    FOREIGN KEY (idFuncion) REFERENCES Funciones(idFuncion) ON DELETE CASCADE,
     PRIMARY KEY (email)
 );
 
@@ -215,8 +237,8 @@ CREATE TABLE CarritoArticulo (
     email varchar(50),
     idProducto int,
     cantidad int,
-    FOREIGN KEY (email) REFERENCES Usuario(email),
-    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto)
+    FOREIGN KEY (email) REFERENCES Usuario(email) ON DELETE CASCADE,
+    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Compra;
@@ -227,7 +249,7 @@ CREATE TABLE Compra (
     fechaCompra date,
     asientos varchar(50),
     precio int,
-    FOREIGN KEY (email) REFERENCES Usuario(email),
+    FOREIGN KEY (email) REFERENCES Usuario(email) ON DELETE SET NULL,
     FOREIGN KEY (idFuncion) REFERENCES Funciones(idFuncion),
     PRIMARY KEY (idCompra)
 );
@@ -238,6 +260,7 @@ CREATE TABLE CompraArticulo (
     idProducto int,
     cantidad int,
     FOREIGN KEY (idCompra) REFERENCES Compra(idCompra),
-    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto),
-    PRIMARY KEY (idCompra, idProducto)
+    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto) ON DELETE SET NULL
 );
+
+SET GLOBAL event_scheduler = ON;

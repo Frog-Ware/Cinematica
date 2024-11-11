@@ -1,12 +1,14 @@
 -- Active: 1723124682380@@127.0.0.1@3306@cinematica
 -- Insertar empresas
-INSERT INTO Empresa (nombreEmpresa, email, numeroTelefono, calle, numeroPuerta, localidad)
-VALUES ('Cinematica', 'contacto@cinematica.com', '26960056', 'Calle 1', '123', 'Montevideo');
+INSERT INTO Empresa (nombreEmpresa, email, passwd, numeroTelefono, calle, numeroPuerta, localidad)
+VALUES ('Cinematica', 'cinematicaescine@gmail.com', 'qrfw svuy mvbt vuoi', '26960056', 'Calle 1', '123', 'Montevideo');
 
 -- Insertar redes sociales de la empresa
-INSERT INTO redesSociales (nombreEmpresa, redSocial, urlRS, logo)
-VALUES ('Cinematica', 'Facebook', 'https://facebook.com/cinematica', 'logo_facebook.png'),
-       ('Cinematica', 'Twitter', 'https://twitter.com/cinematica', 'logo_twitter.png');
+INSERT INTO RedesSociales (nombreEmpresa, redSocial, urlRS, logo)
+VALUES ('Cinematica', 'Gmail', 'https://mail.google.com/mail/?view=cm&to=cinemaricaescine@gmail.com', 'bx-gmail'),
+       ('Cinematica', 'Instagram', 'https://www.instagram.com/', 'bx-instagram'),
+       ('Cinematica', 'Facebook', 'https://www.facebook.com/', 'bx-facebook'),
+       ('Cinematica', 'Linkedin', 'https://www.linkedin.com/', 'bx-linkedin');
 
 -- Insertar cines
 INSERT INTO Cine (nombreCine, calle, numeroPuerta, localidad, nombreEmpresa)
@@ -27,23 +29,23 @@ VALUES ('Costa Urbana', 1, 17, 13), ('Costa Urbana', 2, 14, 10),
        ('Cine Miramar', 1, 12, 8), ('Cine Miramar', 2, 12, 8);
        
 INSERT INTO ImagenPerfil (imagenPerfil) 
-VALUES ('venom.webp'), ('iron_man.webp'), ('morgan.webp'), ('robin.webp'), ('T-800.webp'), ('xenomorfo.webp'), ('rambo.webp'), ('will.webp'), ('doc_emmeth_brown.webp'), ('imagen1.webp'), ('imagen8.webp'), ('default.webp');
+VALUES ('venom.webp'), ('iron_man.webp'), ('morgan.webp'), ('robin.webp'), ('T-800.webp'),
+       ('xenomorfo.webp'), ('rambo.webp'), ('will.webp'), ('doc_emmeth_brown.webp'), ('imagen1.webp'), ('imagen8.webp'), ('default.webp');
 
 INSERT INTO ImagenSlider (imagenSlider)
 VALUES ('300-slider.webp'), ('ForrestGump.webp'), ('GT-slider.webp'), ('movieTime.webp');
 
--- Insertar usuarios (token: token1)
-INSERT INTO Usuario (email, nombre, apellido, imagenPerfil, passwd, token, numeroCelular)
-VALUES ('wchocho@gmail.com','Washington','Chocho','default.webp','343121f36388c204d0249a8285ee3f00','78b1e6d775cec5260001af137a79dbd5','091234567'), -- passwd: wchocho123
-       ('mtorres@gmail.com','Marcelo','Torres','default.webp','2045ef6212256f3f9acf3f07ce136006','78b1e6d775cec5260001af137a79dbd5','098901234'), -- passwd: mtorres123
-       ('cmenendez@gmail.com','Christian','Menendez','default.webp','b6ecabcb73a2f334a9260e344af62e1d','78b1e6d775cec5260001af137a79dbd5','095678901'), -- passwd: cmenendez123
-       ('dcauto@outlook.com','Delis','Cauto','default.webp','a000ee16202ce758c681432b5508d649','78b1e6d775cec5260001af137a79dbd5','092345678'), -- passwd: dcauto123
-       ('nfernandez@gmail.com','Nicolás','Fernandez','default.webp','0911e4b4dd93ff9da3431d46f444e2bf','78b1e6d775cec5260001af137a79dbd5','091234568'), -- passwd: nfernandez123
-       ('gmadruga@gmail.com','Giselle','Madruga','default.webp','0e544a574a3b4389d8ba473be7be86f1','78b1e6d775cec5260001af137a79dbd5','095245659'), -- passwd: gmadruga123
-       ('mbritos@outlook.com','Maria','Britos','default.webp','b2d51d1818747410708c5b68e7e2f4af','78b1e6d775cec5260001af137a79dbd5','096202358'), -- passwd: mbritos123
-       ('kgancio@gmail.com','Karen','Gancio','default.webp','677b695fdb95b9f2b8cf2e2f7e3abfb8','78b1e6d775cec5260001af137a79dbd5','094593909'), -- passwd: kgancio123
-       ('mdacunha@outlook.com','Maria','Da Cunha','default.webp','cbad96a3206f6749f243617a952ae5bc','78b1e6d775cec5260001af137a79dbd5','097441403'), -- passwd: mdacunha123
-       ('ssoutullo@gmail.com','Sussi','Soutullo','default.webp','6c96c7480ea8a8aab3daa34b2e35b450','78b1e6d775cec5260001af137a79dbd5','092102203'); -- passwd: ssoutullo123
+INSERT INTO Usuario (email, nombre, apellido, imagenPerfil, passwd, numeroCelular)
+VALUES ('wchocho@gmail.com','Washington','Chocho','default.webp','343121f36388c204d0249a8285ee3f00','091234567'), -- passwd: wchocho123
+       ('mtorres@gmail.com','Marcelo','Torres','default.webp','2045ef6212256f3f9acf3f07ce136006','098901234'), -- passwd: mtorres123
+       ('cmenendez@gmail.com','Christian','Menendez','default.webp','b6ecabcb73a2f334a9260e344af62e1d','095678901'), -- passwd: cmenendez123
+       ('dcauto@outlook.com','Delis','Cauto','default.webp','a000ee16202ce758c681432b5508d649','092345678'), -- passwd: dcauto123
+       ('nfernandez@gmail.com','Nicolás','Fernandez','default.webp','10c9c2cd128bb4da723f0f5fb3399f42','091234568'), -- passwd: nfernande123
+       ('gmadruga@gmail.com','Giselle','Madruga','default.webp','0e544a574a3b4389d8ba473be7be86f1','095245659'), -- passwd: gmadruga123
+       ('mbritos@outlook.com','Maria','Britos','default.webp','b2d51d1818747410708c5b68e7e2f4af','096202358'), -- passwd: mbritos123
+       ('kgancio@gmail.com','Karen','Gancio','default.webp','677b695fdb95b9f2b8cf2e2f7e3abfb8','094593909'), -- passwd: kgancio123
+       ('mdacunha@outlook.com','Maria','Da Cunha','default.webp','cbad96a3206f6749f243617a952ae5bc','097441403'), -- passwd: mdacunha123
+       ('ssoutullo@gmail.com','Sussi','Soutullo','default.webp','6c96c7480ea8a8aab3daa34b2e35b450','092102203'); -- passwd: ssoutullo123
 
 -- Insertar empleados
 INSERT INTO Empleado (email, esAdmin, nombreEmpresa)
@@ -53,13 +55,16 @@ VALUES ('wchocho@gmail.com',FALSE,'Cinematica'),
        ('cmenendez@gmail.com',FALSE,'Cinematica');
 
 -- Insertar clientes
-INSERT INTO Cliente (email, numeroTarjeta)
-VALUES ('dcauto@outlook.com', '4532015112830366'),
-       ('mbritos@outlook.com', '6011735678420972'),
-       ('mdacunha@outlook.com', '378282246310005'),
-       ('kgancio@gmail.com', '6011111111111117'),
-       ('gmadruga@gmail.com', '4000056655665556'),
-       ('nfernandez@gmail.com', '371449635398431');
+INSERT INTO Cliente (email)
+VALUES ('dcauto@outlook.com'),
+       ('mdacunha@outlook.com'),
+       ('kgancio@gmail.com');
+
+-- Insertar clientes con CC incorporadas
+INSERT INTO Cliente (email, numeroTarjeta, banco)
+VALUES ('mbritos@outlook.com', '00283892333400001', 'BROU'),
+       ('nfernandez@gmail.com', '2792336621880000', 'Santander'),
+       ('gmadruga@gmail.com', '1224559000010000', 'Itaú');;
 
 -- Insertar productos (películas y artículos)
 INSERT INTO Producto (idProducto)
@@ -87,8 +92,8 @@ VALUES (200000001, 'Agua', '500ml', 110, 'agua.webp'),
        (200000018, 'Pop Giga', 'Pop de 750g', 590, 'pop_giga.webp');
 
 -- Insertar películas
-INSERT INTO Pelicula (idProducto, actores, sinopsis, duracion, nombrePelicula, pegi, trailer, director, poster, cabecera) VALUES
-       (100000001, 'Gerard Butler, Lena Headey, David Wenham', 'Rey Leonidas de Esparta y un ejército de 300 hombres luchan contra el Imperio persa.', '01:57:00', '300', 'R', 'https://www.youtube.com/watch?v=UrIbxk7idYA', 'Zack Snyder', '300_poster.webp', '300_cabecera.webp'), 
+INSERT INTO Pelicula (idProducto, actores, sinopsis, duracion, nombrePelicula, pegi, trailer, director, poster, cabecera)
+VALUES (100000001, 'Gerard Butler, Lena Headey, David Wenham', 'Rey Leonidas de Esparta y un ejército de 300 hombres luchan contra el Imperio persa.', '01:57:00', '300', 'R', 'https://www.youtube.com/watch?v=UrIbxk7idYA', 'Zack Snyder', '300_poster.webp', '300_cabecera.webp'), 
        (100000002, 'Cate Blanchett, Kevin Hart, Jamie Lee Curtis', 'Cazadores de bóvedas enfrentan criaturas salvajes y un villano tiránico en un planeta alienígena.', '02:00:00', 'Borderlands', 'PG-13', 'https://www.youtube.com/watch?v=link-borderlands', 'Eli Roth', 'borderlands_poster.webp', 'borderlands_cabecera.webp'),
        (100000003, 'Ryan Reynolds, Hugh Jackman, Morena Baccarin', 'Deadpool y Wolverine unen fuerzas para enfrentarse a nuevas amenazas en esta aventura llena de acción y humor irreverente.', '02:15:00', 'Deadpool y Wolverine', 'R', 'https://www.youtube.com/watch?v=link-deadpool-wolverine', 'Shawn Levy', 'deadpool_y_wolverine_poster.webp', 'deadpool_y_wolverine_cabecera.webp'),
        (100000004, 'Colin Farrell, Cristin Milioti, Michael Zegen', 'Serie sobre el ascenso del infame villano de Gotham, el Pingüino.', '00:45:00', 'El Pingüino', 'TV-MA', 'https://www.youtube.com/watch?v=link-pinguino', 'Craig Zobel', 'el_pinguino_poster.webp', 'el_pinguino_cabecera.webp'),
@@ -117,46 +122,46 @@ INSERT INTO Dimensiones (dimension, precio)
 VALUES ('2D', 440), ('3D', 490);
 
 -- Relacionar productos con idiomas
-INSERT INTO TieneIdiomas (idioma, idProducto) VALUES
-('Inglés', 100000001), ('Español', 100000001),
-('Inglés', 100000002), ('Español', 100000002),
-('Inglés', 100000003), ('Español', 100000003),
-('Inglés', 100000004), ('Español', 100000004),
-('Inglés', 100000005), ('Español', 100000005),
-('Inglés', 100000006), ('Español', 100000006),
-('Inglés', 100000007), ('Español', 100000007),
-('Inglés', 100000008), ('Español', 100000008),
-('Inglés', 100000009), ('Español', 100000009),
-('Inglés', 100000010), ('Español', 100000010),
-('Inglés', 100000011), ('Español', 100000011);
+INSERT INTO TieneIdiomas (idioma, idProducto) 
+VALUES ('Inglés', 100000001), ('Español', 100000001),
+       ('Inglés', 100000002), ('Español', 100000002),
+       ('Inglés', 100000003), ('Español', 100000003),
+       ('Inglés', 100000004), ('Español', 100000004),
+       ('Inglés', 100000005), ('Español', 100000005),
+       ('Inglés', 100000006), ('Español', 100000006),
+       ('Inglés', 100000007), ('Español', 100000007),
+       ('Inglés', 100000008), ('Español', 100000008),
+       ('Inglés', 100000009), ('Español', 100000009),
+       ('Inglés', 100000010), ('Español', 100000010),
+       ('Inglés', 100000011), ('Español', 100000011);
 
 -- Relacionar productos con categorías
-INSERT INTO TieneCategorias (nombreCategoria, idProducto) VALUES
-('Acción', 100000001), ('Historia', 100000001), -- 300
-('Aventura', 100000002), ('Ciencia ficción', 100000002), -- Borderlands
-('Acción', 100000003), ('Comedia', 100000003), -- Deadpool y Wolverine
-('Acción', 100000004), ('Ciencia ficción', 100000004), -- El Pingüino
-('Ciencia ficción', 100000005), ('Aventura', 100000005), -- El Planeta de los Simios
-('Comedia', 100000006), ('Animación', 100000006), -- Garfield
-('Acción', 100000007), ('Deportes', 100000007), -- Gran Turismo
-('Drama', 100000008), ('Crimen', 100000008), -- Joker
-('Acción', 100000009), ('Ciencia ficción', 100000009), -- Transformers
-('Acción', 100000010), ('Thriller', 100000010), -- Twisters
-('Ciencia ficción', 100000011), ('Drama', 100000011); -- Uglies
+INSERT INTO TieneCategorias (nombreCategoria, idProducto) 
+VALUES ('Acción', 100000001), ('Historia', 100000001), -- 300
+       ('Aventura', 100000002), ('Ciencia ficción', 100000002), -- Borderlands
+       ('Acción', 100000003), ('Comedia', 100000003), -- Deadpool y Wolverine
+       ('Acción', 100000004), ('Ciencia ficción', 100000004), -- El Pingüino
+       ('Ciencia ficción', 100000005), ('Aventura', 100000005), -- El Planeta de los Simios
+       ('Comedia', 100000006), ('Animación', 100000006), -- Garfield
+       ('Acción', 100000007), ('Deportes', 100000007), -- Gran Turismo
+       ('Drama', 100000008), ('Crimen', 100000008), -- Joker
+       ('Acción', 100000009), ('Ciencia ficción', 100000009), -- Transformers
+       ('Acción', 100000010), ('Thriller', 100000010), -- Twisters
+       ('Ciencia ficción', 100000011), ('Drama', 100000011); -- Uglies
 
 -- Relacionar productos con dimensiones
-INSERT INTO TieneDimensiones (dimension, idProducto) VALUES
-('2D', 100000001), ('3D', 100000001),
-('2D', 100000002), ('3D', 100000002),
-('2D', 100000003), ('3D', 100000003),
-('2D', 100000004), ('3D', 100000004),
-('2D', 100000005),
-('2D', 100000006), ('3D', 100000006),
-('2D', 100000007),
-('2D', 100000008), ('3D', 100000008),
-('2D', 100000009),
-('2D', 100000010), ('3D', 100000010),
-('2D', 100000011);
+INSERT INTO TieneDimensiones (dimension, idProducto) 
+VALUES ('2D', 100000001), ('3D', 100000001),
+       ('2D', 100000002), ('3D', 100000002),
+       ('2D', 100000003), ('3D', 100000003),     
+       ('2D', 100000004), ('3D', 100000004),
+       ('2D', 100000005),
+       ('2D', 100000006), ('3D', 100000006),
+       ('2D', 100000007),
+       ('2D', 100000008), ('3D', 100000008),
+       ('2D', 100000009),
+       ('2D', 100000010), ('3D', 100000010),
+       ('2D', 100000011);
 
 INSERT INTO Funciones (idFuncion, idProducto, nombreCine, numeroSala, fechaPelicula, horaPelicula, dimension, disp)
 VALUES (900000001, 100000001, 'Costa Urbana', 2, '2024-11-22', '17:50:00', '2D', 140),
@@ -231,3 +236,69 @@ VALUES (900000001, 100000001, 'Costa Urbana', 2, '2024-11-22', '17:50:00', '2D',
        (900000070, 100000006, 'Cine Miramar', 1, '2024-11-24', '18:30:00', '2D', 48),
        (900000071, 100000007, 'Cine Miramar', 2, '2024-11-24', '20:05:00', '2D', 48),
        (900000072, 100000008, 'Cine Miramar', 1, '2024-11-24', '21:10:00', '2D', 48);
+
+INSERT INTO Mail (asunto, cabecera, cuerpo)
+VALUES ('Registro', 'Bienvenido a Cinemática', 
+"Hola @nombre,
+
+Tu registro se ha realizado con éxito.
+
+Nos complace darte la bienvenida a nuestra comunidad. A partir de ahora, tendrás acceso a tu cuenta de Cinemática, donde podrás comprar entradas desde donde sea que estes.
+
+Si tienes alguna pregunta o necesitas ayuda con tu cuenta, no dudes en contactarnos.
+
+¡Esperamos que disfrutes de todo lo que Cinemática tiene para ofrecer!
+
+Saludos, 
+El equipo de Cinemática,
+Todas las estrellas en un solo lugar."),
+       ('Token', 'Restablecimiento de contraseña solicitado', 
+"Hola @nombre,
+
+Recibimos una solicitud para restablecer tu contraseña. Si no realizaste esta solicitud, puedes ignorar este mensaje.
+
+Para cambiar tu contraseña, ingresa el siguiente token de verificación: @token.
+
+Este token expirará en 60 minutos.
+Si tienes alguna pregunta o necesitas ayuda adicional, no dudes en contactarnos.
+
+Saludos, 
+El equipo de Cinemática,
+Todas las estrellas en un solo lugar."),
+       ('Compra', 'Confirmación de compra y envio de factura',
+"Estimado/a @cliente,
+
+Estamos complacidos de anunciarle que se ha realizado su compra en Cinemática.
+
+Adjunto encontrarás la factura correspondiente a tu pedido realizado el @fechaCompra, con el número de identificador @idCompra.
+Este documento incluye todos los detalles de tu transacción, así como la información de facturación y los productos adquiridos.
+
+Si tienes alguna pregunta sobre tu compra o necesitas asistencia, no dudes en contactarnos.
+
+Atentamente,
+El equipo de Cinemática,
+Todas las estrellas en un solo lugar."),
+       ('CV Leido', 'Su curriculum es tenido en cuenta', 
+"Estimado/a @nombre:
+
+Le agradecemos por habernos enviado su currículum. Queremos informarle que ya hemos revisado su aplicación y valoramos su interés en unirse a nuestro equipo.
+
+Nos pondremos en contacto con usted en brevedad para informarle sobre los siguientes pasos en el proceso de selección.
+
+Agradecemos su paciencia y le deseamos mucho éxito.
+
+Atentamente,
+El equipo de Cinemática,
+Todas las estrellas en un solo lugar."),
+       ('CV Descartado', 'Agradecimiento por su postulación',
+"Estimado/a @nombre:
+
+Gracias por haberse tomado el tiempo de enviar su currículum vitae y postularse para formar parte de nuestro equipo.
+
+Después de una cuidadosa revisión, lamentamos informarle que hemos decidido continuar con otros candidatos cuyas experiencias se alinean mejor con los requisitos de esta empresa.
+
+Apreciamos su interés y le deseamos mucho éxito en sus futuros proyectos profesionales. Le invitamos a seguir atento/a a nuevas oportunidades de Cinemática, donde esperamos tener el placer de recibir nuevamente su postulación.
+
+Atentamente,
+El equipo de Cinemática,
+Todas las estrellas en un solo lugar.");

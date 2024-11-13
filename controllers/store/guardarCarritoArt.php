@@ -79,7 +79,7 @@ function comprobar($datos)
         return err::NO_SESSION;
     }
 
-    if (is_null(traerCarrito($email)))
+    if (is_null($carritoDB = traerCarrito($email)))
         return err::NO_INSTANCE;
 
     // Devuelve un código de error si una variable no esta seteada.
@@ -98,6 +98,9 @@ function comprobar($datos)
         return err::VALIDATION;
 
     // Intenta persistir el carrito en la base de datos
+    if (isset($carritoDB['articulos']))
+        foreach ($datos as $k => $v)
+            $datos[$k]['act'] = (int) in_array($v['idProducto'], array_column($carritoDB['articulos'], 'idProducto'));
     return actCarritoArt($email, $datos) ?
         err::SUCCESS : err::NO_SUCCESS;
 }

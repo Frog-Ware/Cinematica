@@ -90,7 +90,7 @@ function comprobar($datos)
     if (md5($datos['passwd']) == traerPasswd($datos['email']))
         return err::IDENTICAL;
 
-    if ($token = traerToken($datos['email']))
+    if (is_null($token = traerToken($datos['email'])))
         return err::NO_TOKEN;
 
     // Intenta actualizar la contraseña en la base de datos y devuelve su correspondiente código de error.

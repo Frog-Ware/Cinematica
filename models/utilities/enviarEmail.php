@@ -47,7 +47,6 @@ function enviarEmail($destinatario, $asunto, $datos)
             $mail->addStringAttachment(generarPDF($datos), 'factura.pdf');
 
         // Envia el mail
-        print_r(strlen(generarPDF($datos)));
         $mail->send();
         return true;
     } catch (Exception $e) {

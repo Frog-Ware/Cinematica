@@ -249,10 +249,13 @@ function actCarrito($datos, $nuevo)
 // Guarda artículos en el carrito.
 function actCarritoArt($email, $datos)
 {
-    $lineaSql = "INSERT INTO carritoArticulo VALUES ('$email', ?, ?)";
-    foreach ($datos as $x)
-        if (!insertar($x, $lineaSql))
+    foreach ($datos as $x) {
+        $lineaSql = ($x['act'] == 0) ?
+            "INSERT INTO carritoArticulo (email, cantidad, idProducto) VALUES ('$email', ?, ?)"
+            : "UPDATE carritoArticulo SET cantidad = cantidad + ? WHERE email = '$email' AND idProducto = ?";
+        if (!insertar([$x['cantidad'], $x['idProducto']], $lineaSql))
             return false;
+    }
     return true;
 }
 

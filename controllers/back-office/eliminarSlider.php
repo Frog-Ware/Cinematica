@@ -78,17 +78,17 @@ function comprobar()
     if (!validacion($nmb))
         return err::VALIDATION;
 
-    // Devuelve un código de error si la película no esta en cartelera.
-    if (is_null(traerPFP()) || !in_array($nmb, traerPFP()) || !checkFile($nmb, 'img/slider'))
+    // Devuelve un código de error si el slider no esta en la BD.
+    if (is_null(traerSlider()) || !in_array($nmb, traerSlider()) || !checkFile($nmb, 'img/slider'))
         return err::NONEXISTENT;
 
-    // Intenta eliminar la película de la cartelera, devolviendo su correspondiente código de error.
+    // Intenta eliminar la imagen de slider de la BD.
     return (borrarFile($nmb, 'img/slider') && eliminarSlider($nmb)) ?
         err::SUCCESS : err::NO_SUCCESS;
 }
 
 function validacion($nmb)
 {
-    // Valida el ID, verificando que solo contenga digitos.
+    // Valida el nombre de la imagen, verificando que solo tenga carácteres permitidos.
     return validarStr($nmb, 40);
 }

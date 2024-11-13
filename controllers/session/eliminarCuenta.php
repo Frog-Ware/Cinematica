@@ -99,7 +99,7 @@ function comprobar()
         return err::DB_ERR;
 
     // Intenta eliminar el cliente de la base de datos y devuelve su correspondiente código de error.
-    return (eliminarUsuario($datos['email'])) ?
+    return (eliminarUsuario($datos['email']) && session_destroy()) ?
         err::SUCCESS : err::DB_ERR;
 }
 

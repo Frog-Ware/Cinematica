@@ -259,6 +259,12 @@ function actCarritoArt($email, $datos)
     return true;
 }
 
+function eliminarCarritoArt($datos)
+{
+    $lineaSql = "DELETE FROM CarritoArticulo WHERE email = ? AND idProducto = ?";
+    return insertar($datos, $lineaSql);
+}
+
 function setAutoEliminar($datos)
 {
     // Setea un evento de autoeliminación para los carritos al pasar 10 minutos.

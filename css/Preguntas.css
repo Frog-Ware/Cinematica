@@ -49,33 +49,3 @@ main{
     color: var(--blanco);
     text-align: center;
 }
-@media only screen and (max-width: 1920px) {
-
-}
-/*tablet rules*/
-@media only screen and (max-width: 1199px) and (min-width: 768px),
-  only screen and (max-width: 767px) and (min-width: 480px) and (orientation: landscape) {
-  }
-/*tablet verticales rules*/
-@media only screen and (max-width: 767px) and (min-width: 480px) and (orientation: portrait) {
-    
-    .pregunta{
-        font-size: 25px;
-    }
-    .texto{
-        font-size: 15px;
-    }
-}
-/*mobile rules*/
-@media screen and (max-width: 479px) {
-
-    .titulo{
-        font-size: 30px;
-    }
-    .pregunta{
-        font-size: 20px;
-    }
-    .texto{
-        font-size: 10px;
-    }
-}

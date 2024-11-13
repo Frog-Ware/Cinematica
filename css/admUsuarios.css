@@ -5,10 +5,12 @@ main
     align-items: center;
     flex-direction: column;
 }
+.volver{position: absolute;}
+
 .lista
 {
     margin: 10% 0 5% 0;
-    height: 80vh;
+    height: 60vh;
     width: 80%;
     background-color: var(--color-secundario);
 }
@@ -28,7 +30,7 @@ main
     height: 10vh;
     width: 10%;
     background-color: var(--color-secundario);
-    top: 17%;
+    top: 12.5%;
     z-index: 1;
     border-top-right-radius: 15px;
     border-top-left-radius: 15px;

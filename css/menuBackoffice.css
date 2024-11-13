@@ -12,6 +12,24 @@ a {
   color: var(--negro);
   text-decoration: none;
 }
+
+h3{
+  margin-top: 10%;
+  text-align: center;    
+  font-weight: 700;
+  color: var(--color-cuartenario);
+  font-size: 25px;
+  transform-origin: center;
+  transition: 0.5s ease;
+  cursor: pointer;  }
+
+h3:hover
+{
+    font-size: 30px;
+    text-shadow: 1px 1px 17px #cacaca;
+    color: var(--color-principal-detalles);
+}
+
 .nombreAdministrador {
   height: 30vh;
   display: flex;
@@ -61,23 +79,6 @@ h2 {
 
 }
 
-.volver {
-  color: var(--blanco);
-  position: absolute;
-  top: 2%;
-  left: 2%;
-  font-size: 60px;
-  display: flex;
-  align-items: center;
-  /* display: block; */
-}
-.volver:hover {
-  color: var(--color-secundario-detalles);
-  cursor: pointer;
-}
-.volver__texto {
-    font-size: 20px;
-}
 
 @media only screen and (max-width: 1920px) {
 }

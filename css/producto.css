@@ -30,7 +30,7 @@ html {
   color: var(--negro);
   text-transform: uppercase;
   font-weight: 700;
-  border-radius: 15px;
+  border-radius: 2x5px;
   box-shadow: 10px 10px 5px 2px rgba(0, 0, 0, 0.6);
   transition: 0.2s;
 }
@@ -187,11 +187,11 @@ html {
 }
 .boton{
 height: 40px;
-width: 8%;
+width: 10%;
 margin: 0 46%;
 background-color: white;
 border: none;
-font-size: 20px;
+font-size: 30px;
 color: black;
 font-weight: 600;
 border-radius: 10px;
@@ -212,6 +212,9 @@ transition: 0.3s;
     width: 99%;
     height: 99%;
   }
+  .boton{
+    font-size: 25px;
+    }
 }
 @media only screen and (max-width: 767px) and (orientation: portrait) {
   .filtro > ul {
@@ -224,15 +227,8 @@ transition: 0.3s;
   .contenedorProductos__productos {
     width: 120%;
   }
-  
-.boton{
-  height: 40px;
-  width: 14%;
-  }
-}
-@media screen and (max-width: 479px) {
-
   .boton{
-    width: 22%;
+  margin: 0 38%;
+  font-size: 25px;
   }
 }

@@ -1,0 +1,95 @@
+body
+{
+    background-color: rgb(214, 219, 223);
+    height: 100vh;
+    box-shadow: none;
+}
+main
+{
+    height: 87%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.inicioAdmin
+{
+    display: flex;
+    height: 70%;
+    width: 30%;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid white;
+    background-color: whitesmoke;
+    border-radius: 3px;
+    box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
+}
+
+.inicioAdmin > div
+{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.inicioAdmin h2
+{
+     font-weight: bold;
+     position: relative;
+     top: 5%;
+     color: Black;
+     font-size: 28px;
+     text-shadow: -1px 0px 18px rgba(255, 255, 255, 0.91);
+}
+
+button
+{
+    width: 72%;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #e3343b;
+    height: 12%;
+    border: none;
+    outline: none;
+}
+
+button:hover
+{
+    background-color: #f83b41;
+    cursor: pointer;
+}
+
+input{
+    width: 70%;
+    height: 20%;
+    margin-top: 5%;
+    text-align: center;
+}
+
+input::placeholder
+{
+    text-align: center;
+}
+
+footer
+{
+    height: 13%;
+    margin-top: 0%;
+    background-color: black;
+    text-align: center;
+    color: white;
+    box-shadow: none;
+}
+
+footer > div
+{
+    position: relative;
+    top: 40%;
+}

@@ -1,18 +1,7 @@
-/* Estilos generales */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #000A1C;
-    color: #fccd01;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
 }
 
-/* Contenedor del formulario */
 form {
     background-color: #fff;
     border-radius: 8px;
@@ -23,27 +12,16 @@ form {
     box-sizing: border-box;
 }
 
-/* Título del formulario */
-h2 {
-    margin-top: 0;
-    color: #fccd01;
-    text-align: center;
-}
 
-/* Contenedor de cada campo del formulario */
-div {
-    margin-bottom: 15px;
-}
-
-/* Estilos de los labels */
 label {
     display: block;
     margin-bottom: 5px;
     color: #fccd01;
     font-weight: bold;
+    text-align: center;
 }
 
-/* Estilos de los inputs */
+
 input[type="text"],
 input[type="password"] {
     width: 100%;
@@ -51,9 +29,9 @@ input[type="password"] {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    margin-bottom: 10px;
 }
 
-/* Estilo del botón */
 button {
     width: 100%;
     padding: 10px;
@@ -64,12 +42,22 @@ button {
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
+    
 }
+
+.botones
+{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
 
 button:hover {
     background-color: #0056b3;
 }
 .contenedor{
+    margin-top: 10%;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -79,4 +67,12 @@ button:hover {
     position: relative;
     width: 234px;
     height: 340px;
+}
+
+main h2
+{
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
 }

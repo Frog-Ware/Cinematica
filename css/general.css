@@ -505,6 +505,46 @@ footer {
  
 }
 
+.volver {
+  color: var(--blanco);
+  position: absolute;
+  top: 2%;
+  left: 2%;
+  font-size: 60px;
+  display: flex;
+  align-items: center;
+  /* display: block; */
+}
+.volver:hover {
+  color: var(--color-secundario-detalles);
+  cursor: pointer;
+}
+.volver__texto {
+    font-size: 20px;
+}
+
+.vistaCarrito
+{
+  position: absolute;
+  top: 6%;
+  left: 75%;
+  height: 50vh;
+  width: 20%;
+  background-color: var(--color-terciario);
+  z-index: 300;
+  padding: 1%;
+}
+
+.contenidoCarrito
+{
+  display: flex;
+  width: 100%;
+  height: 30%;
+  padding: 2px;
+  text-align: center;
+  background-color: #000a1c;
+}
+
 @media screen and (max-width: 1000px) and (min-width: 600px) {
   .login__titulo {
     text-align: center;
@@ -714,4 +754,50 @@ footer {
 .botonEnviar button:hover{
   color: black;
   background-color: var(--color-secundario-detalles);
+}
+
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%; 
+  width: 50px;
+  height: 50px; 
+  animation: spin 1s linear infinite; 
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.mensajeFinal
+{
+    z-index: 3000;
+    position: fixed;
+    top: 30%;
+    left: 35%;
+    width:25%;
+    height: 40%;
+    background-color: var(--color-secundario);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius:15px;
+    gap: 10%;
+    color: white;
+    border: var(--color-secundario-detalles) 2px solid;
+    font-size: 28px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 1%;
+}
+
+.mensajeFinal p
+{
+    font-weight: 500;
+    font-size: 18px;
+    color: black;
 }

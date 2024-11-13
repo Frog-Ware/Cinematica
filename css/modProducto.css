@@ -195,43 +195,23 @@ label{
 }
 
 
-@media only screen and (max-width: 1920px) {
-  
-}
-/*tablet rules*/
 @media only screen and (max-width: 1199px) and (min-width: 768px),
   only screen and (max-width: 767px) and (min-width: 480px) and (orientation: landscape) {
-    
-}
-
-/*tablet verticales rules*/
-@media only screen and (max-width: 767px) and (min-width: 480px) and (orientation: portrait) {
-  .div-form{
-    width: 450px;
-  }
-  .boton{
-    width: 225px;
-  }
-  .contenedor-formulario{
-    margin-left: 32%;
+  .contenedorProductos__productos {
+    width: 99%;
+    height: 99%;
   }
 }
-
-/*mobile rules*/
-@media screen and (max-width: 479px) {
-
-  .div-form{
-    width: 300px;
+@media only screen and (max-width: 767px) and (orientation: portrait) {
+  .filtro > ul {
+    margin-right: 2%;
   }
-  .boton{
-    width: 150px;
+  .filtro li > button {
+    width: 60px;
+    font-size: 10px;
   }
-  .contenedor-formulario{
-    margin-left: 18%;
+  .contenedorProductos__productos {
+    width: 120%;
   }
-  .contenedorProductos{
-    width: 100%;
-    margin-left: 15%;
-  }
-
 }
+

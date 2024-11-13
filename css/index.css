@@ -4,6 +4,60 @@ html {
   scroll-behavior: smooth;
 }
 
+.div_resultados{
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  height: 20vh;
+  max-height: 40vh;
+  margin-left: 40%;
+  margin-top: 5px;
+  background-color: #003552;
+  border-radius: 5px;
+  display: none;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  
+}
+.pelicula_buscador{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 98%;
+  height: 9vh;
+  background-color: rgb(0, 103, 148);
+  margin-left: 1%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  border-radius: 10px;
+  transition: .5s ease;
+  word-wrap: break-word;
+}
+.pelicula_buscador > img{
+  margin-left: 5%;
+  width: 20%;
+  height: 80%;
+}
+.pelicula_buscador > h3 {
+  color: aliceblue;
+  font-size: 18px;
+  margin-left: 5%;  
+  flex-grow: 1;              
+}
+.pelicula_buscador:hover{
+  box-shadow: 0px 0px 8px #00edff;
+}
+.div_resultados::-webkit-scrollbar {
+  width: 10px;
+  background: var(--color-secundario-detalles);
+  border-radius: 10px;
+}
+.div_resultados::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+}
+
 /* Estilos expositor */
 .expositor {
   width: 100%;

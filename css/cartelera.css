@@ -10,9 +10,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
-a {
-  text-decoration: none;
-}
+a  { text-decoration: none;}
 
 /* cartlera */
 main {

@@ -471,7 +471,7 @@ hr
       font-size: 5px;
   }
   .butaca{
-      height: 15px;
+      height: 14px;
   }
   .titulo{
       font-size: 30px;
@@ -483,6 +483,7 @@ hr
   }
   .fila{
       gap: 4px;
+      font-size: 0px;
   }
   .cuadro_butacas{
       height: 40vh;
@@ -498,10 +499,10 @@ hr
 /*mobile rules*/
 @media screen and (max-width: 479px) {
   .etiqueta{
-      font-size: 1px;
+      font-size: 7px;
   }
   .butaca{
-      height: 15px;
+      height: 13px;
   }
   .titulo{
       font-size: 20px;
@@ -513,6 +514,7 @@ hr
   }
   .fila{
       gap: 3px;
+      font-size: 0px;
   }
   .cuadro_butacas{
       height: 40vh;

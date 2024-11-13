@@ -1,5 +1,5 @@
 html{  height: 100vh;}
-main
+body
 {
     display: flex;
     flex-direction: column;
@@ -9,10 +9,36 @@ main
     height: 100vh;
 }
 
-main > div
-{    display: flex;
-  justify-content: center;
-  align-items: center;}
+.admSlider h2
+{
+    font-size: 28px;
+    color: white;
+    font-weight: 700;
+}
+
+.admSlider button
+{
+    position: relative;
+    top: -3px;
+    margin-left: 10px;
+    text-align: center;
+    height: 30px;
+    width: 200px;
+    color: white;
+    background-color:var(--color-terciario);
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: 400;
+    transition: 0.3s;
+    outline: none;
+    border: none;
+}
+.admSlider button:hover
+{
+    background-color: var(--color-cuartenario);
+    cursor: pointer;
+}
+
 
 .botonEnviar{
   font-weight: 700;
@@ -44,6 +70,7 @@ main > div
   padding: 5px;
  font-weight: 400;
  transition: 0.3s;
+ margin-right: 30px;
 }
 
 .etiquetas label:hover
@@ -86,7 +113,7 @@ label {
     flex-direction: column;
 }
 
-#imagen{
+#nuevoSlider{
   display: none;
 }
 

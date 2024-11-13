@@ -96,7 +96,7 @@ function validacion($nmb, $img)
         return false;
 
     // Valida que la imagen sea del tipo y tamaño permitidos.    
-    if (!validarImg($img, 'webp', 500))
+    if (!validarImg($img, 'webp', 10240))
         return false;
 
     return true;

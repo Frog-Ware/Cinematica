@@ -250,7 +250,7 @@ function actCarrito($datos, $nuevo)
 function actCarritoArt($email, $datos)
 {
     foreach ($datos as $x) {
-        $lineaSql = ($x['act'] == 0) ?
+        $lineaSql = (!isset($x['act']) || $x['act'] == 0) ?
             "INSERT INTO carritoArticulo (email, cantidad, idProducto) VALUES ('$email', ?, ?)"
             : "UPDATE carritoArticulo SET cantidad = cantidad + ? WHERE email = '$email' AND idProducto = ?";
         if (!insertar([$x['cantidad'], $x['idProducto']], $lineaSql))

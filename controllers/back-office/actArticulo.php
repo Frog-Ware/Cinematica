@@ -139,7 +139,7 @@ function validacion($datos, $img, $idProducto)
         return false;
 
     // Valida el tamaño y el tipo de la imagen.
-    if (isset($img) && !validarImg($img, 'webp', 500))
+    if (isset($img) && !validarImg($img, 'webp', 10240))
         return false;
 
     // Si todos los campos estan bien, retorna true.

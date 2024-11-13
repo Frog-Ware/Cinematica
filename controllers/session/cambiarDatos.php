@@ -46,10 +46,15 @@ function main()
 {
     // Guarda las variables en un array llamado datos.
     $datos = filtrar(['nombre', 'apellido', 'numeroCelular'], $_POST);
+    if (isset($_SESSION['user']))
+        $email = $_SESSION['user'];
 
     // Devuelve el código de error correspondiente por JSON.
-    $error = comprobar($datos);
+    $error = comprobar($datos, $email);
     $response = ['error' => $error, 'errMsg' => $error->getMsg()];
+
+    if ($error == err::SUCCESS)
+        $response['datos'] = traerUsuario($email);
     
     // Actualiza el log y limpia el buffer.
     file_put_contents('../../log.txt', crearLog(ob_get_clean(), basename(__FILE__)), FILE_APPEND);
@@ -58,14 +63,11 @@ function main()
     echo json_encode($response);
 }
 
-function comprobar($datos)
+function comprobar($datos, $email)
 {
     // Devuelve un código de error si la sesión no está iniciada.
-    if (isset($_SESSION['user'])) {
-        $email = $_SESSION['user'];
-    } else {
+    if (!isset($email)) 
         return err::NO_SESSION;
-    }
 
     // Devuelve un código de error si todos los campos estan vacios.
     if (blank($datos))

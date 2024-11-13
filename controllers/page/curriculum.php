@@ -118,7 +118,7 @@ function validacion($datos, $cvpdf)
         return false;
 
     // Valida el tamaño y el tipo de la imagen.
-    if (!validarPDF($cvpdf, 'application/pdf', 5120))
+    if (!validarPDF($cvpdf, 'application/pdf', 10240))
         return false;
 
     return true;

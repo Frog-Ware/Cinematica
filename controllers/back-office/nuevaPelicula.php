@@ -142,7 +142,7 @@ function validacion($datos, $datosArr, $img)
 
     // Valida el tamaño y el tipo de las imágenes.
     foreach ($img as $x)
-        if (!validarImg($x, 'webp', 500))
+        if (!validarImg($x, 'webp', 10240))
             return false;
 
     // Valida los datos múltiples, verificando que existan.

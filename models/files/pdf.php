@@ -3,6 +3,7 @@
 // Genera un PDF para la compra.
 
 use Dompdf\Dompdf;
+use Dompdf\Options;
 require_once '../../vendor/autoload.php';
 
 function generarPDF($datos)
@@ -14,7 +15,7 @@ function generarPDF($datos)
         return ob_get_clean();
     };
     $dompdf->loadHtml($pdf($datos));
-    $dompdf->setPaper('A4', 'landscape');
+    $dompdf->setPaper('legal', 'portrait');
 
     // Renderiza el HTML como un PDF
     $dompdf->render();

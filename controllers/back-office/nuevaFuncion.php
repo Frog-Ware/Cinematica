@@ -127,6 +127,7 @@ function validacion($datos)
         return false;
 
     // Valida la hora, verificando que este en el formato permitido.
+    $datos['horaPelicula'] .= ":00";
     if (!validarHora($datos['horaPelicula']))
         return false;
 

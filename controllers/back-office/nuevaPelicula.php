@@ -150,7 +150,7 @@ function validacion($datos, $datosArr, $img)
         foreach ($datosArr as $k => $v)
             foreach ($v as $x) {
                 $func = "traer$k";
-                if (!in_array($x, array_column($func(), array_key_first($func()[0]))))
+                if (!in_array($x, $func()))
                     return false;
             }
 
